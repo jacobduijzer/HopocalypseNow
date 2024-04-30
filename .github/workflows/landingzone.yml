@@ -1,4 +1,4 @@
-name: Landingzone: Azure Infrastructure Deployment
+name: Landingzone - Azure Infrastructure Deployment
 on: 
   workflow_dispatch:
   push:
