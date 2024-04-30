@@ -76,4 +76,10 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     cosmosDbAccountName: cosmosDb.outputs.cosmosDbAccountName
   }
   scope: resourceGroup(rgName)
+  dependsOn: [
+    applicationInsights
+    appPlan
+    cosmosDb
+    storageAccount
+  ]
 }
