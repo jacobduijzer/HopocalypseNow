@@ -1,19 +1,10 @@
 param projectName string
-param location string
+param location string 
 
-@description('Cosmos DB account name')
-param accountName string = 'cosmos-${uniqueString(resourceGroup().id)}'
+var accountName = 'cosmos-${projectName}-${uniqueString(resourceGroup().id)}'
+var databaseName = 'db-${projectName}'
 
-@description('Location for the Cosmos DB account.')
-param location string = resourceGroup().location
-
-@description('The name for the SQL API database')
-param databaseName string
-
-@description('The name for the SQL API container')
-param containerName string
-
-resource account 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
   name: toLower(accountName)
   location: location
   properties: {
@@ -30,8 +21,8 @@ resource account 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
   }
 }
 
-resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-11-15' = {
-  parent: account
+resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-11-15' = {
+  parent: cosmosDbAccount
   name: databaseName
   properties: {
     resource: {
@@ -43,36 +34,38 @@ resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-11-15
   }
 }
 
-resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-11-15' = {
-  parent: database
-  name: containerName
-  properties: {
-    resource: {
-      id: containerName
-      partitionKey: {
-        paths: [
-          '/myPartitionKey'
-        ]
-        kind: 'Hash'
-      }
-      indexingPolicy: {
-        indexingMode: 'consistent'
-        includedPaths: [
-          {
-            path: '/*'
-          }
-        ]
-        excludedPaths: [
-          {
-            path: '/_etag/?'
-          }
-        ]
-      }
-    }
-  }
-}
+// @description('The name for the SQL API container')
+// param containerName string
+// resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-11-15' = {
+//   parent: database
+//   name: containerName
+//   properties: {
+//     resource: {
+//       id: containerName
+//       partitionKey: {
+//         paths: [
+//           '/myPartitionKey'
+//         ]
+//         kind: 'Hash'
+//       }
+//       indexingPolicy: {
+//         indexingMode: 'consistent'
+//         includedPaths: [
+//           {
+//             path: '/*'
+//           }
+//         ]
+//         excludedPaths: [
+//           {
+//             path: '/_etag/?'
+//           }
+//         ]
+//       }
+//     }
+//   }
+// }
 
-output location string = location
-output name string = container.name
-output resourceGroupName string = resourceGroup().name
-output resourceId string = container.id
+// output location string = location
+// output name string = container.name
+// output resourceGroupName string = resourceGroup().name
+// output resourceId string = container.id

@@ -27,6 +27,15 @@ module applicationInsights 'modules/application-insights.bicep' = {
   scope: resourceGroup(rgName)
 }
 
+module cosmosDb 'modules/cosmos-db.bicep' = {
+  name: 'CosmosDb'
+  params: {
+    projectName: projectName
+    location: location
+  }
+  scope: resourceGroup(rgName)
+}
+
 // module storageAccount 'modules/storage-account.bicep' = {
 //   name: 'StorageAccount'
 //   params: {
