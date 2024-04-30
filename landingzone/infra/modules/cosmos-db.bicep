@@ -19,6 +19,11 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
         locationName: location
       }
     ]
+    capabilities: [
+      {
+        name: 'EnableServerLess'
+      }
+    ]
   }
 }
 

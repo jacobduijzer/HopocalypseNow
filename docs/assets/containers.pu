@@ -5,13 +5,21 @@
 !includeurl AzurePuml/AzureCommon.puml
 !includeurl AzurePuml/Compute/AzureFunction.puml
 !includeurl AzurePuml/Compute/AzureAppService.puml
+!includeurl AzurePuml/Databases/AzureCosmosDb.puml
+!includeurl AzurePuml/DevOps/AzureApplicationInsights.puml
 !includeurl AzurePuml/Integration/AzureServiceBus.puml
 !includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
 
 Person(customer, "Customer")
 
 System_Boundary(landingZone, "Landing Zone") {
+    AzureAppService(api, "Frontend API", "GraphQL", "")
+    AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
+
+    AzureApplicationInsights(appi, "Application Insights", "")
+
     
+    Rel_D(api, cosmosDb, "")
 }
 
 @enduml

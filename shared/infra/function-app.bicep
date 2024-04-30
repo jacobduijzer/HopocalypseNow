@@ -4,9 +4,14 @@ param location string
 param uniquePostFix string
 param hostingPlanId string
 param appiName string
+param storageAccountName string
 param cosmosDbAccountName string
 
 var functionAppName = 'fn-${projectName}-${applicationName}-${uniquePostFix}'
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
+  name: storageAccountName
+}
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' existing = {
   name: cosmosDbAccountName
@@ -29,7 +34,11 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+          value: storageAccount.listConnectionStrings().connectionStrings[0].connectionString 
+        }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: storageAccount.listConnectionStrings().connectionStrings[0].connectionString 
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
@@ -54,6 +63,10 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
           value: 'dotnet'
+        }
+        {
+          name: 'CosmosDbConnectionString'
+          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
         }
       ]
       ftpsState: 'FtpsOnly'

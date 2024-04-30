@@ -24,7 +24,7 @@ module rg '../../shared/infra/resource-group.bicep' = {
 var uniquePostFix = uniqueString(rg.outputs.id)
 
 module applicationInsights 'modules/application-insights.bicep' = {
-  name: 'ApplicationInsights'
+  name: 'ApplicationInsightsModule'
   params: {
     projectName: projectName
     location: location
@@ -34,7 +34,7 @@ module applicationInsights 'modules/application-insights.bicep' = {
 }
 
 module cosmosDb 'modules/cosmos-db.bicep' = {
-  name: 'CosmosDb'
+  name: 'CosmosDbModule'
   params: {
     projectName: projectName
     location: dbLocation
@@ -44,7 +44,17 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
 }
 
 module appPlan '../../shared/infra/hosting-plan.bicep' = {
-  name: 'AppPlan'
+  name: 'AppPlanModule'
+  params: {
+    projectName: projectName
+    location: location
+    uniquePostFix: uniquePostFix
+  }
+  scope: resourceGroup(rgName)
+}
+
+module storageAccount 'modules/storage-account.bicep' = {
+  name: 'StorageAccountModule'
   params: {
     projectName: projectName
     location: location
@@ -54,7 +64,7 @@ module appPlan '../../shared/infra/hosting-plan.bicep' = {
 }
 
 module functionApp '../../shared/infra/function-app.bicep' = {
-  name: 'FunctionApp'
+  name: 'FunctionAppModule'
   params: {
     projectName: projectName
     applicationName: 'api'
@@ -62,6 +72,7 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     uniquePostFix: uniquePostFix
     hostingPlanId: appPlan.outputs.hostingPlanId
     appiName: applicationInsights.outputs.appiName
+    storageAccountName: storageAccount.outputs.name
     cosmosDbAccountName: cosmosDb.outputs.cosmosDbAccountName
   }
   scope: resourceGroup(rgName)
