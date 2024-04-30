@@ -28,11 +28,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@main
     
-    - name: Azure CLI Action
+    - name: 'What-If Bicep Deployment'
       uses: Azure/cli@v2.0.0
       with:
         inlineScript: |
           az deployment sub what-if \
+            --template-file ${{ env.BICEP_TEMPLATE }} \
+            --location ${{ env.LOCATION }} \
+            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+
+    - name: 'Bicep Deployment'
+      uses: Azure/cli@v2.0.0
+      with:
+        inlineScript: |
+          az deployment sub create \
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
             --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
