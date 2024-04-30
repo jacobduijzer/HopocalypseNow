@@ -1,8 +1,9 @@
 param projectName string
 param location string
+param uniquePostFix string
 
-var appiName = 'appi-${projectName}'
-var logAnalyticsWorkspaceName = 'log-${projectName}'
+var appiName = 'appi-${projectName}-${uniquePostFix}'
+var logAnalyticsWorkspaceName = 'log-${projectName}-${uniquePostFix}'
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: logAnalyticsWorkspaceName
@@ -34,5 +35,3 @@ resource fnsrp 'Microsoft.Insights/components@2020-02-02' = {
     WorkspaceResourceId: logAnalyticsWorkspace.id
   }
 }
-
-output appiName string = appiName

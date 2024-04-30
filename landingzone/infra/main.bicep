@@ -21,11 +21,14 @@ module rg '../../shared/infra/resource-group.bicep' = {
   }
 }
 
+var uniquePostFix = uniqueString(rg.outputs.id)
+
 module applicationInsights 'modules/application-insights.bicep' = {
   name: 'ApplicationInsights'
   params: {
     projectName: projectName
     location: location
+    uniquePostFix: uniquePostFix
   }
   scope: resourceGroup(rgName)
 }
@@ -35,6 +38,7 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
   params: {
     projectName: projectName
     location: dbLocation
+    uniquePostFix: uniquePostFix
   }
   scope: resourceGroup(rgName)
 }

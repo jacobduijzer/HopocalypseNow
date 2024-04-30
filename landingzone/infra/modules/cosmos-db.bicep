@@ -1,8 +1,9 @@
 param projectName string
-param location string 
+param location string
+param uniquePostFix string
 
-var accountName = 'cosmos-${projectName}-${uniqueString(resourceGroup().id)}'
-var databaseName = 'db-${projectName}'
+var accountName = 'cosmos-${projectName}-${uniquePostFix}'
+var databaseName = 'db-${projectName}-${uniquePostFix}'
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
   name: toLower(accountName)
