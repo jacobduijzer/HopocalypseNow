@@ -9,6 +9,7 @@
 !includeurl AzurePuml/DevOps/AzureApplicationInsights.puml
 !includeurl AzurePuml/Integration/AzureServiceBus.puml
 !includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
+!includeurl AzurePuml/Storage/AzureStorage.puml
 
 Person(customer, "Customer")
 
@@ -17,7 +18,7 @@ System_Boundary(landingZone, "Landing Zone") {
     AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
 
     AzureApplicationInsights(appi, "Application Insights", "")
-
+    AzureStorage(st, "Storage Account", "")
     
     Rel_D(api, cosmosDb, "")
 }

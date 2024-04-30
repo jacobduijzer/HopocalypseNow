@@ -1,8 +1,10 @@
+@minLength(2)
+@maxLength(8)
 param projectName string
 param location string
 param uniquePostFix string
 
-var storageAccountName = 'sa${projectName}${uniquePostFix}}'
+var storageAccountName = 'sa${projectName}${uniquePostFix}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: storageAccountName
