@@ -9,7 +9,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
   name: toLower(accountName)
   location: location
   properties: {
-    enableFreeTier: true
+    //enableFreeTier: true
     databaseAccountOfferType: 'Standard'
     consistencyPolicy: {
       defaultConsistencyLevel: 'Session'
@@ -17,11 +17,6 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
     locations: [
       {
         locationName: location
-      }
-    ]
-    capabilities: [
-      {
-        name: 'EnableServerLess'
       }
     ]
   }

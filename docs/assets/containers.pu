@@ -17,10 +17,15 @@ System_Boundary(landingZone, "Landing Zone") {
     AzureAppService(api, "Frontend API", "GraphQL", "")
     AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
 
-    AzureApplicationInsights(appi, "Application Insights", "")
-    AzureStorage(st, "Storage Account", "")
-    
+    AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
+    AzureStorage(st, "Storage Account", "Storage account to be used by function apps.")
+
+    ' LAYOUT
+    Lay_D(st, appi)
+
+    ' RELATIONS
     Rel_D(api, cosmosDb, "")
+    Rel_R(api, st, "")
 }
 
 @enduml
