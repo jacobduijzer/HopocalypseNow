@@ -34,11 +34,11 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: storageAccount.listConnectionStrings().connectionStrings[0].connectionString 
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: storageAccount.listConnectionStrings().connectionStrings[0].connectionString 
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
         }
         {
           name: 'WEBSITE_CONTENTSHARE'

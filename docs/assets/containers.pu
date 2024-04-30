@@ -30,6 +30,11 @@ System_Boundary(landingZone, "Landing Zone") {
 
 System_Boundary(orders, "Orders") {
     AzureCosmosDb(orderDb, "Order Database", "CosmosDb Database")
+    AzureFunction(orderProcessor, "Order Processor", $processorTech, "")
+
+    ' RELATIONS
+    Rel_D(cosmosDb, orderDb, "Orders")
+    Rel_D(orderDb, orderProcessor, "")
 }
 
 @enduml
