@@ -32,10 +32,6 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
         }
         {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-        }
-        {
           name: 'WEBSITE_CONTENTSHARE'
           value: toLower(functionAppName)
         }

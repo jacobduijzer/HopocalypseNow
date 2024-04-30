@@ -1,0 +1,17 @@
+@startuml "Container Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Compute/AzureAppService.puml
+!includeurl AzurePuml/Integration/AzureServiceBus.puml
+!includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
+
+Person(customer, "Customer")
+
+System_Boundary(landingZone, "Landing Zone") {
+    
+}
+
+@enduml
