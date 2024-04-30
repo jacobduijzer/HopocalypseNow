@@ -1,7 +1,7 @@
 @minLength(2)
 @maxLength(8)
 @description('Provide a project name for the naming of all resources')
-param projectName string = 'hn'
+param projectName string 
 
 @description('Provide a location for the resources.')
 param location string = 'westeurope'
@@ -18,14 +18,14 @@ module rg '../../shared/infra/resource-group.bicep' = {
   }
 }
 
-
-// module applicationInsights 'modules/application-insights.bicep' = {
-//   name: 'ApplicationInsights'
-//   params: {
-//     projectName: projectName
-//     location: location
-//   }
-// }
+module applicationInsights 'modules/application-insights.bicep' = {
+  name: 'ApplicationInsights'
+  params: {
+    projectName: projectName
+    location: location
+  }
+  scope: resourceGroup(rgName)
+}
 
 // module storageAccount 'modules/storage-account.bicep' = {
 //   name: 'StorageAccount'
