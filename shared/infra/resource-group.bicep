@@ -1,4 +1,4 @@
-param name string 
+param resourceGroupName string 
 param location string
 
 param tags object = {
@@ -9,7 +9,7 @@ param tags object = {
 targetScope = 'subscription'
 
 resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
-  name: name
+  name: resourceGroupName
   location: location
   tags: tags
 }

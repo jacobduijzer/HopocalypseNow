@@ -35,6 +35,8 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
   }
 }
 
+output cosmosDbAccountName string = cosmosDbAccount.name
+
 // @description('The name for the SQL API container')
 // param containerName string
 // resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-11-15' = {
