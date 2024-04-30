@@ -8,6 +8,7 @@ on:
 env:
   PROJECT_NAME: "hn"
   LOCATION: "westeurope"
+  DB_LOCATION: "northeurope"
   BICEP_TEMPLATE: "landingzone/infra/main.bicep"
 
 permissions:
@@ -35,7 +36,7 @@ jobs:
           az deployment sub what-if \
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
-            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}
 
     - name: 'Bicep Deployment'
       uses: Azure/cli@v2.0.0
@@ -44,7 +45,7 @@ jobs:
           az deployment sub create \
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
-            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}
 
           
         # Azure CLI version to be used to execute the script. If not provided, latest version is used

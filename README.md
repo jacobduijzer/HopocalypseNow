@@ -7,3 +7,48 @@ GitHub Actions need permissions to execute bicep or other commands in Azure. Cre
 Changes:
 
 --scope /subscriptions/$subscriptionId
+
+
+## Notes
+
+### Create cosmos container
+
+``` bicep
+module storageAccount 'modules/storage-account.bicep' = {
+  name: 'StorageAccount'
+  params: {
+    projectName: projectName
+    location: location
+  }
+}
+
+module serviceBus 'modules/serviceBus.bicep' = {
+  name: 'ServiceBus'
+  params: {
+    projectName: projectName
+    location: location
+  }
+}
+
+module functionApp 'modules/functionApp.bicep' = {
+  name: 'FunctionApp'
+  params: { 
+    projectName: projectName
+    location: location
+    applicationInsightsName: applicationInsights.outputs.appiName
+    storageAccountName: storageAccount.outputs.name
+    newOrdersTopicName: serviceBus.outputs.topicNewOrdersName
+    newOrdersSubscriptionName: serviceBus.outputs.subscriptionNewOrdersName
+    newOrdersListenRuleConnectionString: serviceBus.outputs.connectionStringNewOrdersListen
+    newOrdersSendRuleConnectionString: serviceBus.outputs.connectionStringNewOrdersSend
+    newPaymentsTopicName: serviceBus.outputs.topicNewPaymentName
+    newPaymentsSubscriptionName: serviceBus.outputs.subscriptionNewPaymentName
+    newPaymentsListenRuleConnectionString: serviceBus.outputs.connectionStringNewPaymentsListen
+    newPaymentsSendRuleConnectionString: serviceBus.outputs.connectionStringNewPaymentsSend
+  }
+  dependsOn: [
+    storageAccount
+    serviceBus
+  ]
+}
+```

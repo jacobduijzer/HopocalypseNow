@@ -6,6 +6,9 @@ param projectName string
 @description('Provide a location for the resources.')
 param location string = 'westeurope'
 
+@description('Provide a location for the database.')
+param dbLocation string = 'northeurope'
+
 targetScope = 'subscription'
 
 var rgName = 'rg-${projectName}-landingzone'
@@ -31,45 +34,7 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
   name: 'CosmosDb'
   params: {
     projectName: projectName
-    location: location
+    location: dbLocation
   }
   scope: resourceGroup(rgName)
 }
-
-// module storageAccount 'modules/storage-account.bicep' = {
-//   name: 'StorageAccount'
-//   params: {
-//     projectName: projectName
-//     location: location
-//   }
-// }
-
-// module serviceBus 'modules/serviceBus.bicep' = {
-//   name: 'ServiceBus'
-//   params: {
-//     projectName: projectName
-//     location: location
-//   }
-// }
-
-// module functionApp 'modules/functionApp.bicep' = {
-//   name: 'FunctionApp'
-//   params: { 
-//     projectName: projectName
-//     location: location
-//     applicationInsightsName: applicationInsights.outputs.appiName
-//     storageAccountName: storageAccount.outputs.name
-//     newOrdersTopicName: serviceBus.outputs.topicNewOrdersName
-//     newOrdersSubscriptionName: serviceBus.outputs.subscriptionNewOrdersName
-//     newOrdersListenRuleConnectionString: serviceBus.outputs.connectionStringNewOrdersListen
-//     newOrdersSendRuleConnectionString: serviceBus.outputs.connectionStringNewOrdersSend
-//     newPaymentsTopicName: serviceBus.outputs.topicNewPaymentName
-//     newPaymentsSubscriptionName: serviceBus.outputs.subscriptionNewPaymentName
-//     newPaymentsListenRuleConnectionString: serviceBus.outputs.connectionStringNewPaymentsListen
-//     newPaymentsSendRuleConnectionString: serviceBus.outputs.connectionStringNewPaymentsSend
-//   }
-//   dependsOn: [
-//     storageAccount
-//     serviceBus
-//   ]
-// }
