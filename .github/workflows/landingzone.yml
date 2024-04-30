@@ -25,38 +25,36 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   
-    - name: 'Run Azure CLI commands'
-      run: |
-          az account show
-          az group list
-          pwd 
+    - name: Checkout code
+      uses: actions/checkout@main
+    
+    - name: Azure CLI Action
+      uses: Azure/cli@v2.0.0
+      with:
+        inlineScript: |
+          az deployment sub what-if \
+            --template-file ${{ env.BICEP_TEMPLATE }} \
+            --location ${{ env.LOCATION }} \
+            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+
           
-# jobs:
-#   build-and-deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-
-#     - name: Checkout code
-#       uses: actions/checkout@main
-
-#     - name: Log into Azure
-#       uses: azure/login@v1
-#       with:
-#         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-#     - name: deployment-what-if
-#       uses: Azure/deployment-what-if-action@v1.0.0
-#       with:
-#         subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
-#         resourceGroup: ${{ secrets.AZURE_RG }}
-#         templateFile: ${{ env.BICEP_TEMPLATE }}
-#         additionalParameters: 'projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}'
+        # Azure CLI version to be used to execute the script. If not provided, latest version is used
+        # azcliversion: # optional, default is agentazcliversion
+          
+    # - name: deployment-what-if
+    #   uses: Azure/deployment-what-if-action@v1.0.0
+    #   with:
+    #     subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
+    #     resourceGroup: ${{ secrets.AZURE_RG }}
+    #     templateFile: ${{ env.BICEP_TEMPLATE }}
+    #     additionalParameters: 'projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}'
         
-#     - name: Deploy Bicep file
-#       uses: azure/arm-deploy@v1
-#       with:
-#         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-#         resourceGroupName: ${{ secrets.AZURE_RG }}
-#         template: ${{ env.BICEP_TEMPLATE }}
-#         parameters: 'projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}'
-#         failOnStdErr: false
+    # - name: Deploy Bicep file
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+    #     resourceGroupName: ${{ secrets.AZURE_RG }}
+    #     template: ${{ env.BICEP_TEMPLATE }}
+    #     parameters: 'projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}'
+    #     failOnStdErr: false
+
