@@ -43,6 +43,17 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
   scope: resourceGroup(rgName)
 }
 
+var order = { name: 'order', partitionKey: 'orderId'}
+
+module cosmosDbDatabases 'modules/cosmos-db.collection.bicep' = {
+  name: 'CosmosDbDatabases'
+  params: {
+    databaseName: cosmosDb.outputs.cosmosDbName
+    table: order
+  }
+  scope: resourceGroup(rgName)
+}
+
 module appPlan '../../shared/infra/hosting-plan.bicep' = {
   name: 'AppPlanModule'
   params: {
