@@ -18,8 +18,7 @@ permissions:
       
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest # For Linux, use ubuntu-latest
-    environment: dev
+    runs-on: ubuntu-latest
     steps:
 
     - name: 'Az CLI login'
