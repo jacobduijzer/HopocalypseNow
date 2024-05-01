@@ -14,27 +14,33 @@
 ' Person(customer, "Customer")
 
 System_Boundary(landingZone, "Landing Zone") {
+    
+    ' RESOURCES
     AzureAppService(api, "Frontend API", "GraphQL", "")
     AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
-
     AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
     AzureStorage(st, "Storage Account", "Azure Table Storage", "Storage account to be used by function apps.")
-    AzureCosmosDb(orderDb, "Order Database", "CosmosDb Database")
+    AzureCosmosDb(orderDb, "Order Collection", "CosmosDb Collection")
+    AzureServiceBus(azureServiceBus, "Azure Service Bus", "Azure Service Bus", "")
 
     ' LAYOUT
-    Lay_R(st, appi)
+    Lay_D(st, appi)
+    Lay_D(appi, azureServiceBus)
 
     ' RELATIONS
     Rel_D(api, cosmosDb, "")
     Rel_R(api, st, "")
-    Rel_D(st, orderDb, "Order information")
+    Rel_D(cosmosDb, orderDb, "Order information")
 }
 
-System_Boundary(orders, "Orders") {
-    AzureFunction(orderProcessor, "Order Processor", $processorTech, ".NET Serverless Function")
+System_Boundary(payments, "Payments") {
+
+    ' RESOURCES
+    AzureFunction(newOrderProcessor, "New Order Processor", ".NET Serverless Function")
+    AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
 
     ' RELATIONS
-    Rel_D(orderDb, orderProcessor, "")
+    Rel_D(orderDb, newOrderProcessor, "")
 }
 
 @enduml

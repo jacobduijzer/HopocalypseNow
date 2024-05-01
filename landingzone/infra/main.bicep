@@ -46,7 +46,7 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
 var order = { name: 'order', partitionKey: 'orderId'}
 
 module cosmosDbDatabases 'modules/cosmos-db.collection.bicep' = {
-  name: 'CosmosDbDatabases'
+  name: 'CosmosDbDatabaseModule'
   params: {
     databaseAccount: cosmosDb.outputs.cosmosDbAccountName
     databaseName: cosmosDb.outputs.cosmosDbName
@@ -57,6 +57,16 @@ module cosmosDbDatabases 'modules/cosmos-db.collection.bicep' = {
   dependsOn: [
     cosmosDb
   ]
+}
+
+module serviceBus 'modules/service-bus.bicep' = {
+  name: 'ServiceBusModule'
+  params: {
+    projectName: projectName
+    location: location
+    uniquePostFix: uniquePostFix
+  }
+  scope: resourceGroup(rgName)
 }
 
 module appPlan '../../shared/infra/hosting-plan.bicep' = {
