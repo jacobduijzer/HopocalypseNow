@@ -9,6 +9,7 @@ env:
   PROJECT_NAME: "hn"
   LOCATION: "westeurope"
   BICEP_TEMPLATE: "spokes/products/infra/main.bicep"
+  BUILD_NAME: "products-${{ github.run_id }}"
 
 permissions:
       id-token: write
@@ -33,7 +34,7 @@ jobs:
       with:
         inlineScript: |
           az deployment sub what-if \
-            --name 'products-${{ github.run_id }}'
+            --name ${{ env.BUILD_NAME }}
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
             --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
@@ -43,7 +44,7 @@ jobs:
       with:
         inlineScript: |
           az deployment sub create \
-            --name 'products-${{ github.run_id }}'
+            --name ${{ env.BUILD_NAME }}
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
             --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
