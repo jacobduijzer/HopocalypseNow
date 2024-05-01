@@ -35,6 +35,7 @@ jobs:
       with:
         inlineScript: |
           az deployment sub what-if \
+            --name 'landingzone-${{ github.run_id }}'
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
             --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}
@@ -44,6 +45,7 @@ jobs:
       with:
         inlineScript: |
           az deployment sub create \
+            --name 'landingzone-${{ github.run_id }}'
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
             --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}

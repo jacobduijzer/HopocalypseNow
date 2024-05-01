@@ -33,6 +33,7 @@ jobs:
       with:
         inlineScript: |
           az deployment sub what-if \
+            --name 'products-${{ github.run_id }}'
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
             --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
@@ -42,6 +43,7 @@ jobs:
       with:
         inlineScript: |
           az deployment sub create \
+            --name 'products-${{ github.run_id }}'
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
             --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
