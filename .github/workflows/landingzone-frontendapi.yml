@@ -13,8 +13,8 @@ env:
   DOTNET_VERSION: '6.0.x'                   # set this to the dotnet version to use (e.g. '2.1.x', '3.1.x', '5.0.x')
 
 permissions:
-      id-token: write
-      contents: read
+  id-token: write
+  contents: read
       
 jobs:
   build-and-deploy:
