@@ -48,9 +48,10 @@ var order = { name: 'order', partitionKey: 'orderId'}
 module cosmosDbDatabases 'modules/cosmos-db.collection.bicep' = {
   name: 'CosmosDbDatabases'
   params: {
+    databaseAccount: cosmosDb.outputs.cosmosDbAccountName
     databaseName: cosmosDb.outputs.cosmosDbName
-    tableName: 'order'
-    partitionKey: 'orderId'
+    tableName: order.name
+    partitionKey: order.partitionKey
   }
   scope: resourceGroup(rgName)
   dependsOn: [
