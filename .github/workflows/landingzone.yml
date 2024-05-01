@@ -37,7 +37,7 @@ jobs:
           az deployment sub what-if \
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
-            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}
+            --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}
 
     - name: 'Bicep Deployment'
       uses: Azure/cli@v2.0.0
@@ -46,26 +46,4 @@ jobs:
           az deployment sub create \
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
-            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}
-
-          
-        # Azure CLI version to be used to execute the script. If not provided, latest version is used
-        # azcliversion: # optional, default is agentazcliversion
-          
-    # - name: deployment-what-if
-    #   uses: Azure/deployment-what-if-action@v1.0.0
-    #   with:
-    #     subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
-    #     resourceGroup: ${{ secrets.AZURE_RG }}
-    #     templateFile: ${{ env.BICEP_TEMPLATE }}
-    #     additionalParameters: 'projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}'
-        
-    # - name: Deploy Bicep file
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-    #     resourceGroupName: ${{ secrets.AZURE_RG }}
-    #     template: ${{ env.BICEP_TEMPLATE }}
-    #     parameters: 'projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}'
-    #     failOnStdErr: false
-
+            --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }} dbLocation=${{ env.DB_LOCATION}}

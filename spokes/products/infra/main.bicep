@@ -1,3 +1,5 @@
+param buildNumber string
+
 @minLength(2)
 @maxLength(8)
 @description('Provide a project name for the naming of all resources')
@@ -12,7 +14,7 @@ var rgName = 'rg-${projectName}-products'
 var rgLandingZoneName = 'rg-${projectName}-landingzone'
 
 module rg '../../../shared/infra/resource-group.bicep' = {
-  name: 'resource-groupModule'
+  name: 'resourceGroupModule-${buildNumber}'
   params: {
     resourceGroupName: rgName
     location: location
@@ -25,15 +27,9 @@ resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing 
   name: rgLandingZoneName
 }
 
-// resource appi 'Microsoft.Insights/components@2020-02-02' existing = {
-//   name: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
-//   scope: resourceGroup(rgLandingZone.name)
-// }
-
-
 // collection, TODO: style / beer things
 module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = {
-  name: 'CosmosDbDatabaseModule'
+  name: 'CosmosDbDatabaseModule-${buildNumber}'
   params: {
     databaseAccount: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
     databaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
@@ -45,7 +41,7 @@ module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = {
 
 // function
 module functionApp '../../../shared/infra/function-app.bicep' = {
-  name: 'FunctionAppModule'
+  name: 'FunctionAppModule-${buildNumber}'
   params: {
     projectName: projectName
     applicationName: 'api'

@@ -35,7 +35,7 @@ jobs:
           az deployment sub what-if \
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
-            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+            --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
 
     - name: 'Bicep Deployment'
       uses: Azure/cli@v2.0.0
@@ -44,5 +44,5 @@ jobs:
           az deployment sub create \
             --template-file ${{ env.BICEP_TEMPLATE }} \
             --location ${{ env.LOCATION }} \
-            --parameters projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+            --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
             

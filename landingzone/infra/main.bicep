@@ -1,3 +1,5 @@
+param buildNumber string
+
 @minLength(2)
 @maxLength(8)
 @description('Provide a project name for the naming of all resources')
@@ -14,7 +16,7 @@ targetScope = 'subscription'
 var rgName = 'rg-${projectName}-landingzone'
 
 module rg '../../shared/infra/resource-group.bicep' = {
-  name: 'resource-groupModule'
+  name: 'resourceGroupModule-${buildNumber}'
   params: {
     resourceGroupName: rgName
     location: location
@@ -24,7 +26,7 @@ module rg '../../shared/infra/resource-group.bicep' = {
 var uniquePostFix = uniqueString(rg.outputs.id)
 
 module applicationInsights 'modules/application-insights.bicep' = {
-  name: 'ApplicationInsightsModule'
+  name: 'ApplicationInsightsModule-${buildNumber}'
   params: {
     projectName: projectName
     location: location
@@ -34,7 +36,7 @@ module applicationInsights 'modules/application-insights.bicep' = {
 }
 
 module cosmosDb 'modules/cosmos-db.bicep' = {
-  name: 'CosmosDbModule'
+  name: 'CosmosDbModule-${buildNumber}'
   params: {
     projectName: projectName
     location: dbLocation
@@ -46,7 +48,7 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
 var order = { name: 'order', partitionKey: 'orderId'}
 
 module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = {
-  name: 'CosmosDbDatabaseModule'
+  name: 'CosmosDbDatabaseModule-${buildNumber}'
   params: {
     databaseAccount: cosmosDb.outputs.cosmosDbAccountName
     databaseName: cosmosDb.outputs.cosmosDbName
@@ -60,7 +62,7 @@ module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = {
 }
 
 module serviceBus 'modules/service-bus.bicep' = {
-  name: 'ServiceBusModule'
+  name: 'ServiceBusModule-${buildNumber}'
   params: {
     projectName: projectName
     location: location
@@ -70,7 +72,7 @@ module serviceBus 'modules/service-bus.bicep' = {
 }
 
 module appPlan '../../shared/infra/hosting-plan.bicep' = {
-  name: 'AppPlanModule'
+  name: 'AppPlanModule-${buildNumber}'
   params: {
     projectName: projectName
     location: location
@@ -80,7 +82,7 @@ module appPlan '../../shared/infra/hosting-plan.bicep' = {
 }
 
 module storageAccount 'modules/storage-account.bicep' = {
-  name: 'StorageAccountModule'
+  name: 'StorageAccountModule-${buildNumber}'
   params: {
     projectName: projectName
     location: location
@@ -90,7 +92,7 @@ module storageAccount 'modules/storage-account.bicep' = {
 }
 
 module functionApp '../../shared/infra/function-app.bicep' = {
-  name: 'FunctionAppModule'
+  name: 'FunctionAppModule-${buildNumber}'
   params: {
     projectName: projectName
     applicationName: 'api'
