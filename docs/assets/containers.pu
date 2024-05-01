@@ -11,6 +11,9 @@
 !includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
 !includeurl AzurePuml/Storage/AzureStorage.puml
 
+' TEXTS
+!$topicTech = "Azure Service Bus Topic"
+
 ' Person(customer, "Customer")
 
 System_Boundary(landingZone, "Landing Zone") {
@@ -34,10 +37,9 @@ System_Boundary(landingZone, "Landing Zone") {
 }
 
 System_Boundary(payments, "Payments") {
-
-    ' RESOURCES
     AzureFunction(newOrderProcessor, "New Order Processor", ".NET Serverless Function")
     AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
+    AzureServiceBusTopic(topicPaymentRequests, "topic-payment-requests", $topicTech, "")
 
     ' RELATIONS
     Rel_D(orderDb, newOrderProcessor, "")
