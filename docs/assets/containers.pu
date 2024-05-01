@@ -18,7 +18,7 @@ System_Boundary(landingZone, "Landing Zone") {
     AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
 
     AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
-    AzureStorage(st, "Storage Account", "Storage account to be used by function apps.")
+    AzureStorage(st, "Storage Account", "Azure Table Storage", "Storage account to be used by function apps.")
     AzureCosmosDb(orderDb, "Order Database", "CosmosDb Database")
 
     ' LAYOUT
@@ -31,7 +31,7 @@ System_Boundary(landingZone, "Landing Zone") {
 }
 
 System_Boundary(orders, "Orders") {
-    AzureFunction(orderProcessor, "Order Processor", $processorTech, "")
+    AzureFunction(orderProcessor, "Order Processor", $processorTech, ".NET Serverless Function")
 
     ' RELATIONS
     Rel_D(orderDb, orderProcessor, "")

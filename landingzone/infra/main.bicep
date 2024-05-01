@@ -49,8 +49,8 @@ module cosmosDbDatabases 'modules/cosmos-db.collection.bicep' = {
   name: 'CosmosDbDatabases'
   params: {
     databaseName: cosmosDb.outputs.cosmosDbName
-    tableName: order.name
-    partitionKey: order.partitionKey
+    tableName: 'order'
+    partitionKey: 'orderId'
   }
   scope: resourceGroup(rgName)
   dependsOn: [
