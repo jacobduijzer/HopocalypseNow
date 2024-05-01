@@ -96,10 +96,11 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     applicationName: 'api'
     location: location
     uniquePostFix: uniquePostFix
-    hostingPlanId: appPlan.outputs.hostingPlanId
+    hostingPlanName: appPlan.outputs.hostingPlanName
     appiName: applicationInsights.outputs.appiName
     storageAccountName: storageAccount.outputs.name
     cosmosDbAccountName: cosmosDb.outputs.cosmosDbAccountName
+    scopeResourceGroup: rgName
   }
   scope: resourceGroup(rgName)
   dependsOn: [

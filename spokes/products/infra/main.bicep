@@ -19,9 +19,17 @@ module rg '../../../shared/infra/resource-group.bicep' = {
   }
 }
 
+// EXISTING RESOURCES
+
 resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
   name: rgLandingZoneName
 }
+
+// resource appi 'Microsoft.Insights/components@2020-02-02' existing = {
+//   name: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
+//   scope: resourceGroup(rgLandingZone.name)
+// }
+
 
 // collection, TODO: style / beer things
 module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = {
@@ -43,14 +51,17 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     applicationName: 'api'
     location: location
     uniquePostFix: uniqueString(rg.outputs.id)
-    hostingPlanId: appPlan.outputs.hostingPlanId
-    appiName: applicationInsights.outputs.appiName
-    storageAccountName: storageAccount.outputs.name
+    hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
+    appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
+    storageAccountName: 'sa${projectName}${uniqueString(rgLandingZone.id)}'
     cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
+    scopeResourceGroup: rgLandingZone.name
   }
   scope: resourceGroup(rgName)
   dependsOn: [
     rg
   ]
 }
+
+
 

@@ -15,4 +15,4 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   properties: {}
 }
 
-output hostingPlanId string = hostingPlan.id
+output hostingPlanName string = hostingPlan.name
