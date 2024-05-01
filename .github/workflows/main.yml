@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_NAME: "hn"
   LOCATION: "westeurope"
-  BICEP_TEMPLATE: "spoles/products/infra/main.bicep"
+  BICEP_TEMPLATE: "spokes/products/infra/main.bicep"
 
 permissions:
       id-token: write
