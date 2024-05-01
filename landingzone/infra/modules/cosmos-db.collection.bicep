@@ -1,6 +1,7 @@
 
 param databaseName string
-param table object
+param tableName string
+param partitionKey string
 
 resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-11-15' existing = {
   name: databaseName
@@ -8,13 +9,13 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
 
 resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-11-15' = {
   parent: cosmosDbDatabase
-  name: table.name
+  name: tableName
   properties: {
     resource: {
-      id: table.name
+      id: tableName
       partitionKey: {
         paths: [
-          '/${table.partitionKey}'
+          '/${partitionKey}'
         ]
         kind: 'Hash'
       }
