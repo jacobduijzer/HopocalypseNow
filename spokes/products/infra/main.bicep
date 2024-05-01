@@ -36,7 +36,7 @@ module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = {
     tableName: 'product'
     partitionKey: 'productId'
   }
-  scope: resourceGroup(rgName)
+  scope: resourceGroup(rgLandingZoneName)
 }
 
 // function
