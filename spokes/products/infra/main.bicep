@@ -21,25 +21,29 @@ module rg '../../../shared/infra/resource-group.bicep' = {
   }
 }
 
-// EXISTING RESOURCES
-
 resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
   name: rgLandingZoneName
 }
 
 // collection, TODO: style / beer things
-module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = {
-  name: 'CosmosDbDatabaseModule-${buildNumber}'
+
+var beer = { name: 'beers', partitionKey: 'beerId'}
+var breweries = { name: 'breweries', partitionKey: 'breweryId' }
+var styles = { name: 'styles', partitionKey: 'styleId' }
+
+var collections = [beer, breweries, styles]
+
+module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = [for collection in collections: {
+  name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
   params: {
     databaseAccount: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
     databaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
-    tableName: 'product'
-    partitionKey: 'productId'
+    tableName: collection.name
+    partitionKey: collection.partitionKey
   }
   scope: resourceGroup(rgLandingZoneName)
-}
+}]
 
-// function
 module functionApp '../../../shared/infra/function-app.bicep' = {
   name: 'FunctionAppModule-${buildNumber}'
   params: {
