@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - landingzone/infra/**
+      - shared/infra/**
       
 env:
   PROJECT_NAME: "hn"
