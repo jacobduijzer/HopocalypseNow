@@ -45,7 +45,7 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
 
 var order = { name: 'order', partitionKey: 'orderId'}
 
-module cosmosDbDatabases 'modules/cosmos-db.collection.bicep' = {
+module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = {
   name: 'CosmosDbDatabaseModule'
   params: {
     databaseAccount: cosmosDb.outputs.cosmosDbAccountName

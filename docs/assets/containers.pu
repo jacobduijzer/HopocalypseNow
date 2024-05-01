@@ -12,6 +12,7 @@
 !includeurl AzurePuml/Storage/AzureStorage.puml
 
 ' TEXTS
+!$functionTech = "Azure Serverless Function (.NET)"
 !$topicTech = "Azure Service Bus Topic"
 
 ' Person(customer, "Customer")
@@ -32,17 +33,28 @@ System_Boundary(landingZone, "Landing Zone") {
 
     ' RELATIONS
     Rel_D(api, cosmosDb, "")
-    Rel_R(api, st, "")
+    Rel_L(api, st, "")
     Rel_D(cosmosDb, orderDb, "Order information")
 }
 
 System_Boundary(payments, "Payments") {
-    AzureFunction(newOrderProcessor, "New Order Processor", ".NET Serverless Function")
+    AzureFunction(newOrderProcessor, "New Order Processor", $functionTech)
     AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
     AzureServiceBusTopic(topicPaymentRequests, "topic-payment-requests", $topicTech, "")
 
     ' RELATIONS
     Rel_D(orderDb, newOrderProcessor, "")
+}
+
+System_Boundary(products, "Products") {
+    
+    ' RESOURCES
+    AzureFunction(productsApi, "Products API", $functionTech)
+    AzureCosmosDb(productDb, "Product Collection", "CosmosDb Collection")
+
+    ' RELATIONS
+    Rel(productsApi, productDb, "")
+    Rel_L(productsApi, api, "")
 }
 
 @enduml
