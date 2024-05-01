@@ -46,20 +46,25 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
 }
 
 var order = { name: 'order', partitionKey: 'orderId'}
+var beer = { name: 'beers', partitionKey: 'beerId'}
+var breweries = { name: 'breweries', partitionKey: 'breweryId' }
+var styles = { name: 'styles', partitionKey: 'styleId' }
 
-module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = {
-  name: 'CosmosDbDatabaseModule-${buildNumber}'
+var collections = [ order, beer, breweries, styles]
+
+module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = [for collection in collections: {
+  name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
   params: {
     databaseAccount: cosmosDb.outputs.cosmosDbAccountName
     databaseName: cosmosDb.outputs.cosmosDbName
-    tableName: order.name
-    partitionKey: order.partitionKey
+    tableName: collection.name
+    partitionKey: collection.partitionKey
   }
   scope: resourceGroup(rgName)
   dependsOn: [
     cosmosDb
   ]
-}
+}]
 
 module serviceBus 'modules/service-bus.bicep' = {
   name: 'ServiceBusModule-${buildNumber}'
