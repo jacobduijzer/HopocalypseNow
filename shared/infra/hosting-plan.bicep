@@ -12,7 +12,9 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
     name: 'B1'
     tier: 'Basic'
   }
-  properties: {}
+  properties: {
+    reserved: true
+  }
 }
 
 output hostingPlanName string = hostingPlan.name
