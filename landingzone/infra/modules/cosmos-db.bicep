@@ -36,3 +36,4 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
 
 output cosmosDbAccountName string = cosmosDbAccount.name
 output cosmosDbName string = cosmosDbDatabase.name
+output cosmosDbDatabaseName string = cosmosDbDatabase.name

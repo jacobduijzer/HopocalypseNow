@@ -6,6 +6,7 @@ param hostingPlanName string
 param appiName string
 param storageAccountName string
 param cosmosDbAccountName string
+param cosmosDbDatabaseName string
 param scopeResourceGroup string
 
 var functionAppName = 'fn-${projectName}-${applicationName}-${uniquePostFix}'
@@ -78,7 +79,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
           name: 'CosmosDbDatabaseName'
-          value: cosmosDbAccountName
+          value: cosmosDbDatabaseName
         }
       ]
       ftpsState: 'FtpsOnly'

@@ -55,6 +55,7 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
     storageAccountName: 'sa${projectName}${uniqueString(rgLandingZone.id)}'
     cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
+    cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
   }
   scope: resourceGroup(rgName)
