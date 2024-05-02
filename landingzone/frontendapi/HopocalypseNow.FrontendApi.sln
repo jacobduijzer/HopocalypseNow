@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HopocalypseNow.FrontendApi.Api", "src\HopocalypseNow.FrontendApi.Api\HopocalypseNow.FrontendApi.Api.csproj", "{80C0389C-34A5-4788-B94C-8A19CC68272A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HopocalypseNow.FrontendApi.Domain", "src\HopocalypseNow.FrontendApi.Domain\HopocalypseNow.FrontendApi.Domain.csproj", "{F6440BFF-6FA5-42AD-BFAE-123441D58B05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HopocalypseNow.Infrastructure", "src\HopocalypseNow.Infrastructure\HopocalypseNow.Infrastructure.csproj", "{1E0780DC-37FB-4038-B7D0-E51357FF2452}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{80C0389C-34A5-4788-B94C-8A19CC68272A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80C0389C-34A5-4788-B94C-8A19CC68272A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80C0389C-34A5-4788-B94C-8A19CC68272A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6440BFF-6FA5-42AD-BFAE-123441D58B05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6440BFF-6FA5-42AD-BFAE-123441D58B05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6440BFF-6FA5-42AD-BFAE-123441D58B05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6440BFF-6FA5-42AD-BFAE-123441D58B05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E0780DC-37FB-4038-B7D0-E51357FF2452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E0780DC-37FB-4038-B7D0-E51357FF2452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E0780DC-37FB-4038-B7D0-E51357FF2452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E0780DC-37FB-4038-B7D0-E51357FF2452}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

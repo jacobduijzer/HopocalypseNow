@@ -76,6 +76,10 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           name: 'CosmosDbConnectionString'
           value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
         }
+        {
+          name: 'CosmosDbDatabaseName'
+          value: cosmosDbAccountName
+        }
       ]
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
@@ -85,4 +89,6 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     httpsOnly: true
   }
 }
+
+
 

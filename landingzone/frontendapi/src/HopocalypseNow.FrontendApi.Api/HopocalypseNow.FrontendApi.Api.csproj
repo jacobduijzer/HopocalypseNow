@@ -14,10 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="HotChocolate.Abstractions" Version="13.9.0" />
+        <PackageReference Include="HotChocolate.Data" Version="13.9.0" />
+        <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.9.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.29" />
         <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1"/>
         <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0"/>
-        <PackageReference Include="HotChocolate.AzureFunctions" Version="14.0.0-p.88"/>
-        <PackageReference Include="HotChocolate.Types.Analyzers" Version="14.0.0-p.88">
+        <PackageReference Include="HotChocolate.AzureFunctions" Version="13.9.0" />
+        <PackageReference Include="HotChocolate.Types.Analyzers" Version="13.9.0">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
@@ -31,6 +35,11 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HopocalypseNow.FrontendApi.Domain\HopocalypseNow.FrontendApi.Domain.csproj" />
+      <ProjectReference Include="..\HopocalypseNow.Infrastructure\HopocalypseNow.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HopocalypseNow.FrontendApi.Domain\HopocalypseNow.FrontendApi.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="HotChocolate" Version="13.9.0" />
+      <PackageReference Include="HotChocolate.Types" Version="13.9.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.29" />
+    </ItemGroup>
+
+</Project>
