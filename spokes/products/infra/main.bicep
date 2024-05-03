@@ -57,6 +57,8 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
     cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
+    
+  ]
   }
   scope: resourceGroup(rgName)
   dependsOn: [

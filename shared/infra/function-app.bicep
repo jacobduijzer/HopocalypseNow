@@ -11,7 +11,7 @@ param scopeResourceGroup string
 
 param extraAppSettings [object] = [{
     name: 'PlaceholderSetting'
-    value: 'test'
+    value: ''
   }
 ]
 

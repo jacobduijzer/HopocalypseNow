@@ -47,8 +47,9 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
     cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
-    extraAppsettings: [{
-      ServiceBusConnectionString: serviceBusTopic.outputs.sendConnectionString
+    extraAppSettings: [{
+      name: 'ServiceBusConnectionString'
+      value: serviceBusTopic.outputs.sendConnectionString
     }]
   }
   scope: resourceGroup(rgName)
