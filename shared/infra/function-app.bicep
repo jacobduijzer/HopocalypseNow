@@ -79,8 +79,6 @@ var basicAppSettings = [
   }
 ]
 
-// var completeAppSettings = union(basicAppSettings, extraAppsettings)
-
 resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   name: functionAppName
   location: location
@@ -100,12 +98,6 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
     httpsOnly: true
   }
 }
-
-// resource appsettings 'Microsoft.Web/sites/config@2023-01-01' = {
-//   parent: functionApp
-//   name: 'appsettings'
-//   properties: union(functionApp.listAppSettings().properties, extraAppsettings)
-// }
 
 
 
