@@ -62,6 +62,10 @@ resource subscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2022
   }
 }
 
+output listenConnectionString string = listenRule.listKeys().primaryConnectionString
+output sendConnectionString string = sendRule.listKeys().primaryConnectionString
+
+
 // // Filter (belongs to a subscription)
 // resource filter 'Microsoft.ServiceBus/namespaces/topics/subscriptions/rules@2022-10-01-preview' = {
 //   name: 'filter-payment-requests'

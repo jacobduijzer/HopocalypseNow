@@ -34,36 +34,29 @@ module serviceBusTopic '../../../shared/infra/service-bus.topic.bicep' = {
   scope: rgLandingZone
 }
 
-// module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = {
-//   name: 'CosmosDbDatabaseModule-${buildNumber}'
-//   params: {
-//     databaseAccount: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
-//     databaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
-//     tableName: 'payments'
-//     partitionKey: 'paymentId'
-//   }
-//   scope: resourceGroup(rgLandingZoneName)
-// }
-
-// module functionApp '../../../shared/infra/function-app.bicep' = {
-//   name: 'FunctionAppModule-${buildNumber}'
-//   params: {
-//     projectName: projectName
-//     applicationName: 'payments'
-//     location: location
-//     uniquePostFix: uniqueString(rg.outputs.id)
-//     hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
-//     appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
-//     storageAccountName: 'sa${projectName}${uniqueString(rgLandingZone.id)}'
-//     cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
-//     cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
-//     scopeResourceGroup: rgLandingZone.name
-//   }
-//   scope: resourceGroup(rgName)
-//   dependsOn: [
-//     rg
-//   ]
-// }
+module functionApp '../../../shared/infra/function-app.bicep' = {
+  name: 'FunctionAppModule-${buildNumber}'
+  params: {
+    projectName: projectName
+    applicationName: 'payments'
+    location: location
+    uniquePostFix: uniqueString(rg.outputs.id)
+    hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
+    appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
+    storageAccountName: 'sa${projectName}${uniqueString(rgLandingZone.id)}'
+    cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
+    cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
+    scopeResourceGroup: rgLandingZone.name
+    extraAppsettings: [{
+      ServiceBusConnectionString: serviceBusTopic.outputs.sendConnectionString
+    }]
+  }
+  scope: resourceGroup(rgName)
+  dependsOn: [
+    rg
+    serviceBusTopic
+  ]
+}
 
 
 

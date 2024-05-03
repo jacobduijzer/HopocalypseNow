@@ -9,6 +9,10 @@ param cosmosDbAccountName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
 
+param extraAppsettings array= [{
+  PlaceholderSetting: ''
+}]
+
 var functionAppName = 'fn-${projectName}-${applicationName}-${uniquePostFix}'
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' existing = {
@@ -30,17 +34,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
   scope: resourceGroup(scopeResourceGroup)
 }
 
-resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
-  name: functionAppName
-  location: location
-  kind: 'functionapp,linux'
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    serverFarmId: hostingPlan.id
-    siteConfig: {
-      appSettings: [
+var basicAppSettings = [
         {
           name: 'AzureWebJobsStorage'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
@@ -82,6 +76,20 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           value: cosmosDbDatabaseName
         }
       ]
+
+var completeAppSettings = union(basicAppSettings, extraAppsettings)
+
+resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
+  name: functionAppName
+  location: location
+  kind: 'functionapp,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: hostingPlan.id
+    siteConfig: {
+      appSettings: completeAppSettings
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
       linuxFxVersion: 'DOTNET|6.0'
