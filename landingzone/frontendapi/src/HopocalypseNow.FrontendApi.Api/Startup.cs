@@ -1,4 +1,5 @@
-using HopocalypseNow.Infrastructure;
+using HopocalypseNow.FrontendApi.Infrastructure;
+using HopocalypseNow.FrontendApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 [assembly: FunctionsStartup(typeof(Startup))]
@@ -22,6 +23,10 @@ public class Startup : FunctionsStartup
         builder
             .AddGraphQLFunction()
             .RegisterDbContext<DatabaseContext>(DbContextKind.Synchronized)
-            .AddQueryType<QueryType>();
+            .AddQueryType<QueryType>()
+            .AddMutationType<MutationType>();
+
+        builder.Services.AddScoped<ConvertToOrderCommandHandler>()
+            .AddScoped<IRepository<Beer>, BaseRepository<Beer>>();
     }
 }

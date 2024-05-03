@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HopocalypseNow.FrontendApi.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HopocalypseNow.FrontendApi.Domain", "src\HopocalypseNow.FrontendApi.Domain\HopocalypseNow.FrontendApi.Domain.csproj", "{F6440BFF-6FA5-42AD-BFAE-123441D58B05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HopocalypseNow.Infrastructure", "src\HopocalypseNow.Infrastructure\HopocalypseNow.Infrastructure.csproj", "{1E0780DC-37FB-4038-B7D0-E51357FF2452}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HopocalypseNow.FrontendApi.Infrastructure", "src\HopocalypseNow.FrontendApi.Infrastructure\HopocalypseNow.FrontendApi.Infrastructure.csproj", "{1E0780DC-37FB-4038-B7D0-E51357FF2452}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

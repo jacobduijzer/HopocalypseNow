@@ -39,7 +39,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\HopocalypseNow.FrontendApi.Domain\HopocalypseNow.FrontendApi.Domain.csproj" />
-      <ProjectReference Include="..\HopocalypseNow.Infrastructure\HopocalypseNow.Infrastructure.csproj" />
+      <ProjectReference Include="..\HopocalypseNow.FrontendApi.Infrastructure\HopocalypseNow.FrontendApi.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

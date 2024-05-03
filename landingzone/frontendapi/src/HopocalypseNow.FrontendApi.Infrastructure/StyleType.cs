@@ -2,7 +2,7 @@ using HopocalypseNow.FrontendApi.Models;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 
-namespace HopocalypseNow.Infrastructure;
+namespace HopocalypseNow.FrontendApi.Infrastructure;
 
 public class StyleType : ObjectType<Style>
 {

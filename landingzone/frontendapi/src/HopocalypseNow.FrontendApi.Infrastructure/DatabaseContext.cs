@@ -1,7 +1,7 @@
 using HopocalypseNow.FrontendApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HopocalypseNow.Infrastructure;
+namespace HopocalypseNow.FrontendApi.Infrastructure;
 
 public class DatabaseContext : DbContext
 {
@@ -13,6 +13,8 @@ public class DatabaseContext : DbContext
     public DbSet<Beer>? Beers { get; set; }
     public DbSet<Brewery>? Breweries { get; set; }
     public DbSet<Style>? Styles { get; set; }
+    
+    public DbSet<Order>? Orders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,28 +22,21 @@ public class DatabaseContext : DbContext
         modelBuilder.HasDefaultContainer("beers");
         modelBuilder.Entity<Beer>()
             .HasNoDiscriminator()
-            // .HasOne<Style>(b => b.Style)
-            // .WithMany(b => b.Beers);
-        // .HasPartitionKey(x => x.Brewery.BreweryId)
-        // .HasPartitionKey(x => x.Style.StyleId)
-        // modelBuilder.Entity<Beer>()
             .HasKey(x => x.BeerId);
 
         modelBuilder.Entity<Brewery>()
             .HasNoDiscriminator()
             .ToContainer("breweries")
-        //     .HasMany<Beer>(b => b.Beers);
-        // modelBuilder.Entity<Brewery>()
-            // .HasPartitionKey(x => x.Beers)
             .HasKey(x => x.BreweryId);
 
         modelBuilder.Entity<Style>()
             .HasNoDiscriminator()
             .ToContainer("styles")
-            // .HasMany<Beer>(s => s.Beers)
-            // .WithOne(s => s.Style);
-        // modelBuilder.Entity<Style>()
             .HasKey(s => s.StyleId);
-        // .HasPartitionKey(x => x.StyleId)
+        
+        modelBuilder.Entity<Order>()
+            .HasNoDiscriminator()
+            .ToContainer("order")
+            .HasKey(s => s.OrderId);
     }
 }
