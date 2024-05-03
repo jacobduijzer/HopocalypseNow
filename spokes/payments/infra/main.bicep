@@ -29,7 +29,7 @@ module serviceBusTopic '../../../shared/infra/service-bus.topic.bicep' = {
   name: 'ServiceBusTopic-${buildNumber}'
   params: {
     projectName: projectName
-    uniquePostFix: uniqueString(rg.outputs.id)
+    uniquePostFix: uniqueString(rgLandingZone.id)
   }
   scope: rgLandingZone
 }
