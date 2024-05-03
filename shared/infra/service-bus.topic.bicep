@@ -46,7 +46,7 @@ resource sendRule 'Microsoft.ServiceBus/namespaces/topics/AuthorizationRules@202
 }
 
 resource subscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2022-10-01-preview' = {
-  name: '${topic.name}-subscription'
+  name: 'sub-${topic.name}'
   parent: topic
   properties: {
     isClientAffine: false
