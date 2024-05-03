@@ -31,7 +31,7 @@ module serviceBusTopic '../../../shared/infra/service-bus.topic.bicep' = {
     projectName: projectName
     uniquePostFix: uniqueString(rg.outputs.id)
   }
-  scope: resourceGroup(rgLandingZone.id)
+  scope: rgLandingZone
 }
 
 // module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = {
