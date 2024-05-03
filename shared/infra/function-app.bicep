@@ -9,9 +9,11 @@ param cosmosDbAccountName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
 
-param extraAppsettings array= [{
-  PlaceholderSetting: ''
-}]
+param extraAppSettings [object] = [{
+    name: 'PlaceholderSetting'
+    value: 'test'
+  }
+]
 
 var functionAppName = 'fn-${projectName}-${applicationName}-${uniquePostFix}'
 
@@ -89,7 +91,7 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      appSettings: basicAppSettings
+      appSettings: union(basicAppSettings, extraAppSettings)
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
       linuxFxVersion: 'DOTNET|6.0'
@@ -99,11 +101,11 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   }
 }
 
-resource appsettings 'Microsoft.Web/sites/config@2023-01-01' = {
-  parent: functionApp
-  name: 'appsettings'
-  properties: union(functionApp.listAppSettings().properties, extraAppsettings)
-}
+// resource appsettings 'Microsoft.Web/sites/config@2023-01-01' = {
+//   parent: functionApp
+//   name: 'appsettings'
+//   properties: union(functionApp.listAppSettings().properties, extraAppsettings)
+// }
 
 
 
