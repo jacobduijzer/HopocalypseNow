@@ -6,7 +6,7 @@ param uniquePostFix string
 
 var storageAccountName = 'sa${projectName}${uniquePostFix}'
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
   location: location
   sku: {

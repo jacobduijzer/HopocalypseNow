@@ -5,7 +5,7 @@ param uniquePostFix string
 var accountName = 'cosmos-${projectName}-${uniquePostFix}'
 var databaseName = 'db-${projectName}-${uniquePostFix}'
 
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview' = {
   name: toLower(accountName)
   location: location
   properties: {
@@ -21,7 +21,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' = {
   }
 }
 
-resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-11-15' = {
+resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-02-15-preview' = {
   parent: cosmosDbAccount
   name: databaseName
   properties: {
