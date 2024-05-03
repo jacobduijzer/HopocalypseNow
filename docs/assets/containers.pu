@@ -44,11 +44,11 @@ System_Boundary(landingZone, "Landing Zone") {
 System_Boundary(payments, "Payments") {
     AzureFunction(orderPlacedTrigger, "Order Placed Trigger", $functionTech)
     AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
-    AzureServiceBusTopic(topicPaymentRequests, "topic-payment-requests", $topicTech, "")
+    AzureServiceBusTopic(topicPayments, "topic-payments", $topicTech, "")
 
     ' RELATIONS
     Rel_D(orderDb, orderPlacedTrigger, "")
-    Rel_L(orderPlacedTrigger, topicPaymentRequests, "")
+    Rel_L(orderPlacedTrigger, topicPayments, "PaymentRequested events")
 }
 
 ' System_Boundary(products, "Products") {
