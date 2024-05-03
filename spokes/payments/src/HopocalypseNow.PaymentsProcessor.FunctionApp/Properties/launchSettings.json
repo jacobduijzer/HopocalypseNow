@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "HopocalypseNow.PaymentsProcessor.FunctionApp": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7075",
+      "launchBrowser": false
+    }
+  }
+}

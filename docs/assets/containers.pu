@@ -11,6 +11,8 @@
 !includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
 !includeurl AzurePuml/Storage/AzureStorage.puml
 
+title Hopocalypse Now - Best Beershop Online
+
 ' TEXTS
 !$functionTech = "Azure Serverless Function (.NET)"
 !$topicTech = "Azure Service Bus Topic"
@@ -25,6 +27,7 @@ System_Boundary(landingZone, "Landing Zone") {
     AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
     AzureStorage(st, "Storage Account", "Azure Table Storage", "Storage account to be used by function apps.")
     AzureCosmosDb(orderDb, "Order Collection", "CosmosDb Collection")
+    AzureCosmosDb(productDb, "Beer Collection", "CosmosDb Collection", "Collections with beers, breweries and styles.")
     AzureServiceBus(azureServiceBus, "Azure Service Bus", "Azure Service Bus", "")
 
     ' LAYOUT
@@ -34,7 +37,8 @@ System_Boundary(landingZone, "Landing Zone") {
     ' RELATIONS
     Rel_D(api, cosmosDb, "")
     Rel_L(api, st, "")
-    Rel_D(cosmosDb, orderDb, "Order information")
+    BiRel_D(cosmosDb, orderDb, "Order information")
+    Rel_U(productDb, cosmosDb, "Order information")
 }
 
 System_Boundary(payments, "Payments") {
@@ -46,15 +50,14 @@ System_Boundary(payments, "Payments") {
     Rel_D(orderDb, newOrderProcessor, "")
 }
 
-System_Boundary(products, "Products") {
+' System_Boundary(products, "Products") {
     
-    ' RESOURCES
-    AzureFunction(productsApi, "Products API", $functionTech)
-    AzureCosmosDb(productDb, "Product Collection", "CosmosDb Collection")
+'     ' RESOURCES
+'     ' AzureFunction(productsApi, "Products API", $functionTech)
 
-    ' RELATIONS
-    Rel(productsApi, productDb, "")
-    Rel_L(productsApi, api, "")
-}
+'     ' ' RELATIONS
+'     ' Rel(productsApi, productDb, "")
+'     ' Rel_L(productsApi, api, "")
+' }
 
 @enduml

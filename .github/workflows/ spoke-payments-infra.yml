@@ -1,0 +1,51 @@
+name: Spoke - Payments - Azure Infrastructure Deployment
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - spokes/payments/infra/**
+      
+env:
+  PROJECT_NAME: "hn"
+  LOCATION: "westeurope"
+  BICEP_TEMPLATE: "spokes/payments/infra/main.bicep"
+  BUILD_NAME: "payments-${{ github.run_id }}"
+
+permissions:
+      id-token: write
+      contents: read
+      
+jobs: 
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: Checkout code
+      uses: actions/checkout@main
+    
+    - name: 'What-If Bicep Deployment'
+      uses: Azure/cli@v2.0.0
+      with:
+        inlineScript: |
+          az deployment sub what-if \
+            --name ${{ env.BUILD_NAME }} \
+            --template-file ${{ env.BICEP_TEMPLATE }} \
+            --location ${{ env.LOCATION }} \
+            --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+
+    - name: 'Bicep Deployment'
+      uses: Azure/cli@v2.0.0
+      with:
+        inlineScript: |
+          az deployment sub create \
+            --name ${{ env.BUILD_NAME }} \
+            --template-file ${{ env.BICEP_TEMPLATE }} \
+            --location ${{ env.LOCATION }} \
+            --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
+            
