@@ -9,6 +9,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: 'app-hn-frontend-zjllqjptqbkey'
   AZURE_WEBAPP_PACKAGE_PATH: './spokes/frontend/src/HopocalypseNow.Frontend.BlazorApp'
+  AZURE_WEBAPP_SOLUTION_FILE: './spokes/frontend/src/HopocalypseNow.Frontend.sln'
   DOTNET_VERSION: '6.0.x'                   
 
 permissions:
@@ -16,34 +17,84 @@ permissions:
   contents: read
       
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-
-    - name: 'Az CLI login'
-      uses: azure/login@v1
+    - uses: actions/checkout@v2x
+      
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
       with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  
-    - name: Checkout code
-      uses: actions/checkout@main
+        dotnet-version: '6.0.x'
+       
+    - name: Build with dotnet# run the command for build the dotnet app
+      run: dotnet build ${{env.AZURE_WEBAPP_SOLUTION_FILE}} --configuration Release
 
-    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: dotnet publish# run the command to pack the build files and dependencies into folder for deployment
+      run: dotnet publish ${{env.AZURE_WEBAPP_SOLUTION_FILE}} --configuration Release --output ${{env.DOTNET_ROOT}}/myapp
 
-    - name: 'Resolve Project Dependencies Using Dotnet'
-      shell: pwsh 
-      run: |
-        pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-        dotnet build --configuration Release --output ./output
-        popd
-    - name: Azure WebApp
-      uses: Azure/webapps-deploy@v3.0.1
+    - name: Upload artifact for deployment job#Reference a specific upload artifact
+      uses: actions/upload-artifact@v2
       with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
+        name: .net-app
+        path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build 
+    environment:
+      name: 'Production'
+      url: 'app-hn-frontend-zjllqjptqbkey.azurewebsites.net'
+
+    steps:
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Download artifact from build job#Reference a specific download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp# Reference the deploy web app
+        uses: azure/webapps-deploy@v3.0.1
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: 'Production'
+          package: .
+
+    # build-and-deploy:
+    #   runs-on: ubuntu-latest
+    #   steps:
+
+    #   - name: 'Az CLI login'
+    #     uses: azure/login@v1
+    #     with:
+    #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
+    #   - name: Checkout code
+    #     uses: actions/checkout@main
+
+    #   - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+    #     uses: actions/setup-dotnet@v3
+    #     with:
+    #       dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    #   - name: 'Resolve Project Dependencies Using Dotnet'
+    #     shell: pwsh 
+    #     run: |
+    #       pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+    #       dotnet build --configuration Release --output ./output
+    #       popd
+    #   - name: Azure WebApp
+    #     uses: Azure/webapps-deploy@v3.0.1
+    #     with:
+    #       app-name: ${{ env.AZURE_WEBAPP_NAME }}
+    #       package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
+      
