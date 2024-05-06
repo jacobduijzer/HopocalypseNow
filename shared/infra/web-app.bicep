@@ -4,10 +4,14 @@ param location string
 param uniquePostFix string
 param hostingPlanName string
 param appiName string
-// param storageAccountName string
 param cosmosDbAccountName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
+
+param extraAppSettings [object] = [{
+    name: 'PlaceholderSetting'
+    value: ''
+  }]
 
 var webAppName = 'app-${projectName}-${applicationName}-${uniquePostFix}'
 
@@ -15,11 +19,6 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2023-01-01' existing = {
   name: hostingPlanName
   scope: resourceGroup(scopeResourceGroup)
 }
-
-// resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
-//   name: storageAccountName
-//   scope: resourceGroup(scopeResourceGroup)
-// }
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview' existing = {
   name: cosmosDbAccountName
@@ -31,6 +30,25 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
   scope: resourceGroup(scopeResourceGroup)
 }
 
+var basicAppSettings = [
+  {
+    name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+    value: applicationInsights.properties.InstrumentationKey
+  }
+  {
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    value: applicationInsights.properties.ConnectionString
+  }
+  {
+    name: 'CosmosDbConnectionString'
+    value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+  }
+  {
+    name: 'CosmosDbDatabaseName'
+    value: cosmosDbDatabaseName
+  }
+]
+
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webAppName
   location: location
@@ -38,24 +56,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: hostingPlan.id
     siteConfig: {
       linuxFxVersion: 'DOTNET|6.0'
-      appSettings: [
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: applicationInsights.properties.InstrumentationKey
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: applicationInsights.properties.ConnectionString
-        }
-        {
-          name: 'CosmosDbConnectionString'
-          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-        }
-        {
-          name: 'CosmosDbDatabaseName'
-          value: cosmosDbDatabaseName
-        }
-      ]
+      appSettings: union(basicAppSettings, extraAppSettings)
     }
   }
 }

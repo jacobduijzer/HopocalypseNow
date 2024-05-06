@@ -1,0 +1,22 @@
+{
+  "schema": "schema.graphql",
+  "documents": "**/*.graphql",
+  "extensions": {
+    "strawberryShake": {
+      "name": "HopocalypseNowClient",
+      "namespace": "HopocalypseNow.Frontend.BlazorApp.GraphQL",
+      "url": "https://fn-hn-api-f4trzz3cw5dkg.azurewebsites.net/api/graphql",
+      "dependencyInjection": true,
+      "records": {
+        "inputs": false,
+        "entities": false
+      },
+      "transportProfiles": [
+        {
+          "default": "Http",
+          "subscription": "WebSocket"
+        }
+      ]
+    }
+  }
+}

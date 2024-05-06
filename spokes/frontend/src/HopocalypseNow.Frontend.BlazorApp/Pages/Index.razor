@@ -1,9 +1,38 @@
 ﻿@page "/"
+<PageTitle>Hopocalypse Now - World Class Beers!</PageTitle>
 
-<PageTitle>Index</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?"/>
+<h1>Our Beers!</h1>
+<UseGetAllBeers Context="result">
+    <ChildContent>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">ABV</th>
+                <th scope="col">IBU</th>
+                <th scope="col">Style</th>
+                <th scope="col">Brewery</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var beer in result.Beers!)
+            {
+                <tr>
+                    <td>@beer!.Name</td>
+                    <td>@beer.Abv</td>
+                    <td>@beer.Ibu</td>
+                    <td>@beer.Style!.Name</td>
+                    <td>@beer.Brewery!.Name</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </ChildContent>
+    <ErrorContent>
+        Something went wrong ...<br />
+        @result.First().Message
+    </ErrorContent>
+    <LoadingContent>
+        Loading ...
+    </LoadingContent>
+</UseGetAllBeers>

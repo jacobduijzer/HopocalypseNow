@@ -1,0 +1,14 @@
+query GetAllBeers {
+    beers {
+        beerId
+        name
+        abv
+        ibu
+        style {
+            name
+        }
+        brewery {
+            name
+        }
+    }
+}

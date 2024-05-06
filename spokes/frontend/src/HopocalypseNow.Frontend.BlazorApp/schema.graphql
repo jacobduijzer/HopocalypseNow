@@ -1,0 +1,76 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  beers: [Beer]
+  breweries: [Brewery]
+  styles: [Style]
+  orders: [Order]
+  order(orderId: ID!): Order
+}
+
+type Mutation {
+  addOrder(input: OrderPayloadInput!): OrderAddedPayload!
+}
+
+type Beer {
+  brewery: Brewery
+  style: Style
+  beerId: UUID!
+  name: String!
+  breweryId: UUID!
+  styleId: UUID!
+  abv: Float!
+  ibu: Float!
+  description: String!
+}
+
+type Brewery {
+  beers: [Beer]
+  breweryId: UUID!
+  name: String!
+}
+
+type Style {
+  beers: [Beer]
+  styleId: UUID!
+  name: String!
+}
+
+type Order {
+  created: DateTime
+  orderId: UUID!
+  orderStatus: OrderStatus!
+  orderItems: [OrderItem!]!
+}
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime
+
+type OrderAddedPayload {
+  order: Order!
+}
+
+input OrderPayloadInput {
+  orderItems: [OrderItemPayloadInput!]!
+}
+
+scalar UUID
+
+enum OrderStatus {
+  PLACED
+  COMPLETED
+}
+
+type OrderItem {
+  orderItemId: UUID!
+  beerId: UUID!
+  amount: Int!
+}
+
+input OrderItemPayloadInput {
+  beerId: UUID!
+  amount: Int!
+}

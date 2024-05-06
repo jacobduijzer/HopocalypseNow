@@ -26,6 +26,11 @@ resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing 
   name: rgLandingZoneName
 }
 
+resource functionApp 'Microsoft.Web/sites@2023-01-01' existing = {
+  name: 'fn-${projectName}-landingzone-${uniqueString(rgLandingZone.id)}'
+  scope: resourceGroup(rgLandingZoneName)
+}
+
 module webApp '../../../shared/infra/web-app.bicep' = {
   name: 'FunctionAppModule-${buildNumber}'
   params: {
@@ -35,10 +40,13 @@ module webApp '../../../shared/infra/web-app.bicep' = {
     uniquePostFix: uniqueString(rg.outputs.id)
     hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
     appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
-    // storageAccountName: 'sa${projectName}${uniqueString(rgLandingZone.id)}'
     cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
     cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
+    extraAppSettings: [{
+      name: 'FrontendApiAddress'
+      value: '${functionApp.properties.defaultHostName}/api/graphql'
+    }]
   }
   scope: resourceGroup(rgName)
   dependsOn: [
