@@ -27,7 +27,7 @@ resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing 
 }
 
 resource functionApp 'Microsoft.Web/sites@2023-01-01' existing = {
-  name: 'fn-${projectName}-landingzone-${uniqueString(rgLandingZone.id)}'
+  name: 'fn-${projectName}-api-${uniqueString(rgLandingZone.id)}'
   scope: resourceGroup(rgLandingZoneName)
 }
 
