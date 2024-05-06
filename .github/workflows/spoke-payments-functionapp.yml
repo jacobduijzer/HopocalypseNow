@@ -1,4 +1,4 @@
-name: Spoke - Deploy Payments FunctionApp
+name: Spoke - Payments - Deploy Payments FunctionApp
 
 on: 
   workflow_dispatch:
