@@ -41,9 +41,9 @@ jobs:
         pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
-    # - name: 'Run Azure Functions Action'
-    #   uses: Azure/functions-action@v1
-    #   id: fa
-    #   with:
-    #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
-    #     package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v3.0.1
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
+    
