@@ -43,9 +43,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build 
-    environment:
-      name: 'Production'
-      url: 'app-hn-frontend-zjllqjptqbkey.azurewebsites.net'
+    # environment:
+    #   name: 'Production'
+    #   url: 'app-hn-frontend-zjllqjptqbkey.azurewebsites.net'
 
     steps:
       - name: 'Az CLI login'
@@ -65,7 +65,7 @@ jobs:
         uses: azure/webapps-deploy@v3.0.1
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: 'Production'
+          # slot-name: 'Production'
           package: .
 
     # build-and-deploy:
