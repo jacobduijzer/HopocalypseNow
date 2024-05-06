@@ -1,0 +1,50 @@
+
+name: Spoke - Deploy Frontend WebApp
+
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - spokes/frontend/**
+
+env:
+  AZURE_WEBAPP_NAME: 'app-hn-frontend-zjllqjptqbkey'
+  AZURE_WEBAPP_PACKAGE_PATH: './spokes/frontend/src/HopocalypseNow.Frontend.BlazorApp'
+  DOTNET_VERSION: '6.0.x'                   
+
+permissions:
+  id-token: write
+  contents: read
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: Checkout code
+      uses: actions/checkout@main
+
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: 'Resolve Project Dependencies Using Dotnet'
+      shell: pwsh 
+      run: |
+        pushd './${{ env.AZURE_WEBAPP_NAME }}'
+        dotnet build --configuration Release --output ./output
+        popd
+    # - name: 'Run Azure Functions Action'
+    #   uses: Azure/functions-action@v1
+    #   id: fa
+    #   with:
+    #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
+    #     package: '${{ env.AZURE_WEBAPP_NAME }}/output'
