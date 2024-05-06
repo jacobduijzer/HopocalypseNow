@@ -45,7 +45,7 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
   scope: resourceGroup(rgName)
 }
 
-var order = { name: 'order', partitionKey: 'orderId'}
+var order = { name: 'orders', partitionKey: 'orderId'}
 var beer = { name: 'beers', partitionKey: 'beerId'}
 var breweries = { name: 'breweries', partitionKey: 'breweryId' }
 var styles = { name: 'styles', partitionKey: 'styleId' }
