@@ -60,7 +60,7 @@ jobs:
           name: .net-app
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp# Reference the deploy web app
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3.0.1
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
