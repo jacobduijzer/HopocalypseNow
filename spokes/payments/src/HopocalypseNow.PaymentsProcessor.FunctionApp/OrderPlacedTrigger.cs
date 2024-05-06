@@ -19,7 +19,7 @@ public  class OrderPlacedTrigger
     [FunctionName("OrderPlacedTrigger")]
     public async Task RunAsync([CosmosDBTrigger(
             databaseName: "%CosmosDbDatabaseName%",
-            containerName: "order",
+            containerName: "orders",
             Connection = "CosmosDbConnectionString",
             LeaseContainerName = "leases",
             CreateLeaseContainerIfNotExists = true)]

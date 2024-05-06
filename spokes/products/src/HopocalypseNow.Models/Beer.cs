@@ -8,5 +8,6 @@ public class Beer
     public Style Style { get; set; } = new Style();
     public double Abv { get; set; }
     public double Ibu { get; set; }
+    public decimal Price { get; set; }
     public string Description { get; set; }
 }

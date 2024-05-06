@@ -13,5 +13,8 @@ public class Beer
     
     public double Abv { get; set; } = 0;
     public double Ibu { get; set; } = 0;
+
+    public decimal Price { get; set; } = 0;
+    
     public string Description { get; set; } = string.Empty;
 }

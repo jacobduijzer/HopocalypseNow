@@ -36,7 +36,7 @@ public class DatabaseContext : DbContext
         
         modelBuilder.Entity<Order>()
             .HasNoDiscriminator()
-            .ToContainer("order")
+            .ToContainer("orders")
             .HasKey(s => s.OrderId);
     }
 }

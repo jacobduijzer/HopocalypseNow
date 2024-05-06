@@ -1,3 +1,4 @@
+using Bogus;
 using HopocalypseNow.Models;
 
 namespace HopocalypseNow.DataFeeder;
@@ -6,15 +7,18 @@ public class BeerDataFeeder
 {
     private List<Brewery> breweries;
     private List<Style> styles;
+    private readonly Faker _faker;
 
     public BeerDataFeeder()
     {
+        _faker = new Faker("en");
+        
         // Sample Breweries
         breweries = new List<Brewery>
         {
-            new Brewery { BreweryId = Guid.NewGuid(), Name = "Sample Brewery 1" },
-            new Brewery { BreweryId = Guid.NewGuid(), Name = "Sample Brewery 2" },
-            new Brewery { BreweryId = Guid.NewGuid(), Name = "Sample Brewery 3" }
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" }
         };
 
         // Sample Styles
@@ -35,16 +39,18 @@ public class BeerDataFeeder
         {
             Brewery randomBrewery = breweries[random.Next(breweries.Count)];
             Style randomStyle = styles[random.Next(styles.Count)];
-
+            var abv = GetRandomAbv();
+            var ibu = GetRandomIbu();
             beers.Add(new Beer
             {
                 BeerId = Guid.NewGuid(),
-                Name = $"Beer {i + 1}",
+                Name = _faker.Commerce.ProductName(),
                 Brewery = randomBrewery,
                 Style = randomStyle,
                 Abv = GetRandomAbv(),
                 Ibu = GetRandomIbu(),
-                Description = $"A random beer with {randomStyle.Name} style from {randomBrewery.Name}."
+                Description = $"A random beer with {randomStyle.Name} style from {randomBrewery.Name}.",
+                Price = (decimal)(abv + (ibu * 0.1))
             });
         }
 
@@ -53,9 +59,9 @@ public class BeerDataFeeder
 
     private double GetRandomAbv()
     {
-        // Generate a random alcohol by volume (ABV) between 4.0% and 10.0%
+        // Generate a random alcohol by volume (ABV) between 4.0% and 12.0%
         Random random = new Random();
-        return Math.Round(random.NextDouble() * (10.0 - 4.0) + 4.0, 1);
+        return Math.Round(random.NextDouble() * (12.0 - 4.0) + 4.0, 1);
     }
 
     private int GetRandomIbu()
