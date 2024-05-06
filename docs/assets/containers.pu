@@ -19,7 +19,7 @@ title Hopocalypse Now - Best Beershop Online
 
 ' Person(customer, "Customer")
 
-System_Boundary(landingZone, "Landing Zone") {
+System_Boundary(landingZone, "Landing Zone / Hub") {
     
     ' RESOURCES
     AzureAppService(api, "Frontend API", "GraphQL", "")
@@ -41,7 +41,17 @@ System_Boundary(landingZone, "Landing Zone") {
     Rel_U(productDb, cosmosDb, "Order information")
 }
 
-System_Boundary(payments, "Payments") {
+System_Boundary(frontend, "Frontend Spoke", "Wep App") {
+
+    ' RESOURCES
+    AzureAppService(website, "Frontend", "Wep App", "")
+
+    ' RELATIONS
+    Rel_L(website, api, "")
+
+}
+
+System_Boundary(payments, "Payments Spoke") {
     AzureFunction(orderPlacedTrigger, "Order Placed Trigger", $functionTech)
     AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
     AzureServiceBusTopic(topicPayments, "topic-payments", $topicTech, "")
