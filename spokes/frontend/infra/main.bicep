@@ -45,7 +45,7 @@ module webApp '../../../shared/infra/web-app.bicep' = {
     scopeResourceGroup: rgLandingZone.name
     extraAppSettings: [{
       name: 'FrontendApiAddress'
-      value: '${functionApp.properties.defaultHostName}/api/graphql'
+      value: 'https://${functionApp.properties.defaultHostName}/api/graphql'
     }]
   }
   scope: resourceGroup(rgName)
