@@ -2,6 +2,8 @@ query GetAllBeers {
     beers {
         beerId
         name
+        description
+        price
         abv
         ibu
         style {

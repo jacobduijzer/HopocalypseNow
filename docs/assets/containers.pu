@@ -58,7 +58,8 @@ System_Boundary(payments, "Payments Spoke") {
 
     ' RELATIONS
     Rel_D(orderDb, orderPlacedTrigger, "")
-    Rel_L(orderPlacedTrigger, topicPayments, "PaymentRequested events")
+    Rel_L(orderPlacedTrigger, topicPayments, "OrderPaid events")
+    Rel_R(orderPlacedTrigger, orderDb, "Order details")
 }
 
 ' System_Boundary(products, "Products") {

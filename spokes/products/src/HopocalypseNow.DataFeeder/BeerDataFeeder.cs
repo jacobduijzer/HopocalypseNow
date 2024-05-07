@@ -7,18 +7,17 @@ public class BeerDataFeeder
 {
     private List<Brewery> breweries;
     private List<Style> styles;
-    private readonly Faker _faker;
 
     public BeerDataFeeder()
     {
-        _faker = new Faker("en");
-        
+        var faker = new Faker("en");
+
         // Sample Breweries
         breweries = new List<Brewery>
         {
-            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
-            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
-            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" }
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{faker.Company.CompanyName()} Brewery" },
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{faker.Company.CompanyName()} Brewery" },
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{faker.Company.CompanyName()} Brewery" }
         };
 
         // Sample Styles
@@ -44,7 +43,7 @@ public class BeerDataFeeder
             beers.Add(new Beer
             {
                 BeerId = Guid.NewGuid(),
-                Name = _faker.Commerce.ProductName(),
+                Name = BeerNameGenerator.GenerateBeerName(),
                 Brewery = randomBrewery,
                 Style = randomStyle,
                 Abv = GetRandomAbv(),

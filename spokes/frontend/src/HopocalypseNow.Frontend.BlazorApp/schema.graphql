@@ -24,6 +24,7 @@ type Beer {
   styleId: UUID!
   abv: Float!
   ibu: Float!
+  price: Decimal!
   description: String!
 }
 
@@ -58,6 +59,9 @@ input OrderPayloadInput {
 }
 
 scalar UUID
+
+"The built-in `Decimal` scalar type."
+scalar Decimal
 
 enum OrderStatus {
   PLACED

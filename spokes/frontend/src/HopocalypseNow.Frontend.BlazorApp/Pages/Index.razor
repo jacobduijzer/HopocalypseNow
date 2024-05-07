@@ -12,6 +12,7 @@
                 <th scope="col">IBU</th>
                 <th scope="col">Style</th>
                 <th scope="col">Brewery</th>
+                <th scope="col">Price</th>
             </tr>
             </thead>
             <tbody>
@@ -23,6 +24,7 @@
                     <td>@beer.Ibu</td>
                     <td>@beer.Style!.Name</td>
                     <td>@beer.Brewery!.Name</td>
+                    <td>@beer.Price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("nl-NL"))</td>
                 </tr>
             }
             </tbody>
