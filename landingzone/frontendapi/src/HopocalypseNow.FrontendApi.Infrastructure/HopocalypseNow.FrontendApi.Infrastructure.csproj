@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.5" />
       <PackageReference Include="HotChocolate" Version="13.9.0" />
       <PackageReference Include="HotChocolate.Types" Version="13.9.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.29" />
