@@ -111,7 +111,7 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     scopeResourceGroup: rgName
     extraAppSettings: [
       {
-        name: 'ServiceBusConnection'
+        name: 'ServiceBusConnectionString'
         value: serviceBus.outputs.serviceBusConnectionString
       }
     ]
