@@ -1,28 +1,30 @@
+using System.Text.Json;
+using Azure.Messaging.ServiceBus;
 using HopocalypseNow.FrontendApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace HopocalypseNow.FrontendApi.Infrastructure;
 
 public class Mutation
 {
     private readonly ConvertToOrderCommandHandler _convertToOrderCommandHandler;
-    private readonly IDbContextFactory<DatabaseContext> _dbContextFactory;
+    private readonly ServiceBusClient _serviceBusClient;
 
     public Mutation(
         ConvertToOrderCommandHandler convertToOrderCommandHandler,
-        IDbContextFactory<DatabaseContext> dbContextFactory)
+        ServiceBusClient serviceBusClient)
     {
         _convertToOrderCommandHandler = convertToOrderCommandHandler;
-        _dbContextFactory = dbContextFactory;
+        _serviceBusClient = serviceBusClient;
     }
 
     public async Task<OrderAddedPayload> AddOrder(OrderPayload input)
     {
-        Order order = _convertToOrderCommandHandler.Handle(new ConvertToOrderCommand(input));
+        var order = _convertToOrderCommandHandler.Handle(new ConvertToOrderCommand(input));
         
-        await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        await dbContext.Orders!.AddAsync(order);
-        await dbContext.SaveChangesAsync();
+        var sender = _serviceBusClient.CreateSender("topic-orders");
+        var payload = JsonSerializer.Serialize(new OrderAddedPayload(order));
+        await sender.SendMessageAsync(new ServiceBusMessage(payload));
+        
         return new OrderAddedPayload(order);
     } 
 }

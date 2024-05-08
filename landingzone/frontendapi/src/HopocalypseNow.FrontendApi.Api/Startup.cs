@@ -1,6 +1,7 @@
 using HopocalypseNow.FrontendApi.Infrastructure;
 using HopocalypseNow.FrontendApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 
@@ -16,6 +17,11 @@ public class Startup : FunctionsStartup
         var cosmosDbDatabaseName = Environment.GetEnvironmentVariable("CosmosDbDatabaseName") ??
                                throw new ArgumentNullException("Can't find variable 'CosmosDbDatabaseName'.");
         
+        var serviceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString") ??
+                                        throw new ArgumentNullException("Can't find variable 'ServiceBusConnectionString'."); 
+
+      
+        
         builder.Services
             .AddPooledDbContextFactory<DatabaseContext>(
                 options => options.UseCosmos(cosmosDbConnectionString, cosmosDbDatabaseName));
@@ -28,5 +34,8 @@ public class Startup : FunctionsStartup
 
         builder.Services.AddScoped<ConvertToOrderCommandHandler>()
             .AddScoped<IRepository<Beer>, BaseRepository<Beer>>();
+        
+        builder.Services.AddAzureClients(clientBuilder =>
+            clientBuilder.AddServiceBusClient(serviceBusConnectionString)); 
     }
 }
