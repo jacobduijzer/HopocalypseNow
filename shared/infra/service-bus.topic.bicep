@@ -1,4 +1,5 @@
 param projectName string
+param applicationName string
 param uniquePostFix string
 
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
@@ -6,7 +7,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview
 }
 
 resource topic 'Microsoft.ServiceBus/namespaces/topics@2022-10-01-preview' = {
-  name: 'topic-payments'
+  name: 'topic-${applicationName}'
   parent: serviceBusNamespace
   properties: {
     maxMessageSizeInKilobytes: 256
