@@ -96,7 +96,6 @@ module appSettings '../../../shared/infra/app-settings.bicep' = {
   name: 'AppSettingsUpdate-${buildNumber}'
   params: {
     webAppName: functionAppName
-    resourceGroupName: rgLandingZoneName
     currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2023-12-01').properties
     extraAppSettings: {
       ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'

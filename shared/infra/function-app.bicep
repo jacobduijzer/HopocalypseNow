@@ -71,7 +71,6 @@ module appSettings 'app-settings.bicep' = {
     webAppName: functionApp.name
     currentAppSettings: basicAppSettings
     extraAppSettings: extraAppSettings
-    resourceGroupName: scopeResourceGroup
   }
 }
 
