@@ -22,7 +22,7 @@ title Hopocalypse Now - Best Beershop Online
 System_Boundary(landingZone, "Platform Team") {
     
     ' RESOURCES
-    AzureAppService(api, "Frontend API", "GraphQL", "")
+    AzureAppService(api, "Frontend API", "GraphQL, Azure Serverless Functions", "")
     AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
     AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
     AzureStorage(st, "Storage Account", "Azure Table Storage", "Storage account to be used by function apps.")
@@ -35,14 +35,12 @@ System_Boundary(landingZone, "Platform Team") {
     ' RELATIONS
     Rel_D(api, cosmosDb, "")
     Rel_L(api, st, "")
-    'BiRel_D(cosmosDb, orderDb, "Order information")
-    'Rel_U(productDb, cosmosDb, "Order information")
 }
 
 System_Boundary(marcom, "Marketing & Communication\nStream-aligned Team") {
 
     ' RESOURCES
-    AzureAppService(website, "Frontend", "Web App", "")
+    AzureAppService(website, "Frontend", "Web App", "The web shop where customers can search information, order products, etc.")
 
     ' RELATIONS
     Rel_D(website, api, "")
@@ -52,49 +50,55 @@ System_Boundary(marcom, "Marketing & Communication\nStream-aligned Team") {
 System_Boundary(products, "Products\n$streamAlignedTeam") {
     
     ' RESOURCES
-    'AzureFunction(productsApi, "Products API", $functionTech)
-    AzureCosmosDb(productDb, "Beer Collection", "CosmosDb Collection", "Collections with beers, breweries and styles.")
-
-    ' ' RELATIONS
-    'Rel(productsApi, productDb, "")
-    'Rel_L(productDb, cosmosDb, "")
-}
-
-System_Boundary(orders, "Orders\n$streamAlignedTeam") {
-    
-    ' RESOURCES
-    AzureServiceBusTopic(topicOrders, "topic-orders", $topicTech, "")
-    AzureFunction(orderPlacedTrigger, "OrderPlaced Trigger", $functionTech)
-    AzureCosmosDb(orderDb, "Order Collection", "CosmosDb Collection")
+    AzureAppService(productsCms, "Products CMS", "Web App", "Not implemented yet.")
+    AzureFunction(productsApi, "Products API", $functionTech)
+    AzureCosmosDb(beers, "Beers Collection", "CosmosDb Collection", "Collections with beers.")
+    AzureCosmosDb(breweries, "Breweries Collection", "CosmosDb Collection", "Collections with breweries.")
+    AzureCosmosDb(styles, "Styles Collection", "CosmosDb Collection", "Collections with different styles.")
 
     ' RELATIONS
-    'Rel_L(orderDb, cosmosDb, "")
-    Rel_R(api, topicOrders, "OrderPlaced Event")
-    Rel_D(topicOrders, orderPlacedTrigger, "Order details")
-    Rel_R(orderPlacedTrigger, orderDb, "Order details")
+    BiRel(api, productsApi, "Product Information")
+    Rel_R(productsCms, productsApi, "")
+    Rel(productsApi, beers, "")
+    Rel(productsApi, breweries, "")
+    Rel(productsApi, styles, "")
 }
 
-'System_Boundary(payments, "Payments\n$streamAlignedTeam") {
-'    AzureFunction(orderPlacedTrigger, "Order Placed Trigger", $functionTech)
-'    AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
-'    AzureServiceBusTopic(topicPayments, "topic-payments", $topicTech, "")
+'System_Boundary(orders, "Orders\n$streamAlignedTeam") {
+'    
+'    ' RESOURCES
+'    AzureServiceBusTopic(topicOrders, "topic-orders", $topicTech, "")
+'    AzureFunction(orderPlacedTrigger, "OrderPlaced Trigger", $functionTech)
+'    AzureCosmosDb(orderDb, "Order Collection", "CosmosDb Collection")
 '
 '    ' RELATIONS
-'    'Rel_D(orderDb, orderPlacedTrigger, "")
-'    Rel_L(orderPlacedTrigger, topicPayments, "OrderPaid events")
-'    'Rel_R(orderPlacedTrigger, orderDb, "Order details")
-'}
-
-'
-'System_Boundary(subscriptions, "Subscriptions Spoke") {
+'    'Rel_L(orderDb, cosmosDb, "")
+'    Rel_R(api, topicOrders, "OrderPlaced Event")
+'    Rel_D(topicOrders, orderPlacedTrigger, "Order details")
+'    Rel_R(orderPlacedTrigger, orderDb, "Order details")
 '}
 '
-'System_Boundary(machineLearning, "Taste Based Predictions\nComplicated Sybsystems Team") {
-'    AzureMachineLearningService(ml, "Azure Machine Learning Service", "", "Predicting subscription packages based on Untapp'd profile.")
-'}
+''System_Boundary(payments, "Payments\n$streamAlignedTeam") {
+''    AzureFunction(orderPlacedTrigger, "Order Placed Trigger", $functionTech)
+''    AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
+''    AzureServiceBusTopic(topicPayments, "topic-payments", $topicTech, "")
+''
+''    ' RELATIONS
+''    'Rel_D(orderDb, orderPlacedTrigger, "")
+''    Rel_L(orderPlacedTrigger, topicPayments, "OrderPaid events")
+''    'Rel_R(orderPlacedTrigger, orderDb, "Order details")
+''}
 '
-'Lay_D(products, subscriptions)
-'Lay_D(subscriptions, machineLearning)
-Lay_D(products, orders)
+''
+''System_Boundary(subscriptions, "Subscriptions Spoke") {
+''}
+''
+''System_Boundary(machineLearning, "Taste Based Predictions\nComplicated Sybsystems Team") {
+''    AzureMachineLearningService(ml, "Azure Machine Learning Service", "", "Predicting subscription packages based on Untapp'd profile.")
+''}
+''
+''Lay_D(products, subscriptions)
+''Lay_D(subscriptions, machineLearning)
+'Lay_D(products, orders)
 
 @enduml

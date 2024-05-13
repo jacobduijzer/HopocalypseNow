@@ -1,15 +1,15 @@
-name: Spoke - Frontend - Azure Infrastructure Deployment
+name: Spoke - Products - Azure Infrastructure Deployment
 on: 
   workflow_dispatch:
   push:
     paths:
-      - spokes/frontend/infra/**
+      - spokes/products/infra/**
       
 env:
   PROJECT_NAME: "hn"
   LOCATION: "westeurope"
-  BICEP_TEMPLATE: "spokes/frontend/infra/main.bicep"
-  BUILD_NAME: "frontend-${{ github.run_id }}"
+  BICEP_TEMPLATE: "spokes/products/infra/main.bicep"
+  BUILD_NAME: "products-${{ github.run_id }}"
 
 permissions:
       id-token: write

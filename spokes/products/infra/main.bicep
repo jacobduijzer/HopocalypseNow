@@ -25,8 +25,6 @@ resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing 
   name: rgLandingZoneName
 }
 
-// collection, TODO: style / beer things
-
 var beer = { name: 'beers', partitionKey: 'beerId'}
 var breweries = { name: 'breweries', partitionKey: 'breweryId' }
 var styles = { name: 'styles', partitionKey: 'styleId' }
@@ -59,6 +57,29 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     scopeResourceGroup: rgLandingZone.name
     
   ]
+  }
+  scope: resourceGroup(rgName)
+  dependsOn: [
+    rg
+  ]
+}
+
+module webApp '../../../shared/infra/web-app.bicep' = {
+  name: 'FunctionAppModule-${buildNumber}'
+  params: {
+    projectName: projectName
+    applicationName: 'cms'
+    location: location
+    uniquePostFix: uniqueString(rg.outputs.id)
+    hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
+    appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
+    cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
+    cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
+    scopeResourceGroup: rgLandingZone.name
+    extraAppSettings: [{
+      name: 'ProductsApiAddress'
+      value: 'https://${functionApp.outputs.defaultHostName}/api'
+    }]
   }
   scope: resourceGroup(rgName)
   dependsOn: [

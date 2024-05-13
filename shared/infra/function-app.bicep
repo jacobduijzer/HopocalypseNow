@@ -99,5 +99,7 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   }
 }
 
+output defaultHostName string = functionApp.properties.defaultHostName
+
 
 

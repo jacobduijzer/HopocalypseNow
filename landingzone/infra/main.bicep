@@ -45,26 +45,26 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
   scope: resourceGroup(rgName)
 }
 
-var order = { name: 'orders', partitionKey: 'orderId'}
-var beer = { name: 'beers', partitionKey: 'beerId'}
-var breweries = { name: 'breweries', partitionKey: 'breweryId' }
-var styles = { name: 'styles', partitionKey: 'styleId' }
+// var order = { name: 'orders', partitionKey: 'orderId'}
+// var beer = { name: 'beers', partitionKey: 'beerId'}
+// var breweries = { name: 'breweries', partitionKey: 'breweryId' }
+// var styles = { name: 'styles', partitionKey: 'styleId' }
 
-var collections = [ order, beer, breweries, styles]
+// var collections = [ order, beer, breweries, styles]
 
-module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = [for collection in collections: {
-  name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
-  params: {
-    databaseAccount: cosmosDb.outputs.cosmosDbAccountName
-    databaseName: cosmosDb.outputs.cosmosDbName
-    tableName: collection.name
-    partitionKey: collection.partitionKey
-  }
-  scope: resourceGroup(rgName)
-  dependsOn: [
-    cosmosDb
-  ]
-}]
+// module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = [for collection in collections: {
+//   name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
+//   params: {
+//     databaseAccount: cosmosDb.outputs.cosmosDbAccountName
+//     databaseName: cosmosDb.outputs.cosmosDbName
+//     tableName: collection.name
+//     partitionKey: collection.partitionKey
+//   }
+//   scope: resourceGroup(rgName)
+//   dependsOn: [
+//     cosmosDb
+//   ]
+// }]
 
 module serviceBus 'modules/service-bus.bicep' = {
   name: 'ServiceBusModule-${buildNumber}'
