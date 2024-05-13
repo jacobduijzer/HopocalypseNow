@@ -93,10 +93,10 @@ resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-01-01' existing = {
 }
 
 module appSettings '../../../shared/infra/app-settings.bicep' = {
-  name: '${functionAppName}-appsettings'
+  name: 'AppSettingsUpdate-${buildNumber}'
   params: {
     webAppName: functionAppName
-    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2022-03-01').properties
+    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2023-12-01').properties
     extraAppSettings: {
       ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'
     }
