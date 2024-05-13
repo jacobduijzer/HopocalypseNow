@@ -9,11 +9,9 @@ param cosmosDbAccountName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
 
-param extraAppSettings [object] = [{
-    name: 'PlaceholderSetting'
-    value: ''
-  }
-]
+param extraAppSettings object = {
+   PlaceholderSetting: ''
+}
 
 var functionAppName = 'fn-${projectName}-${applicationName}-${uniquePostFix}'
 
@@ -36,7 +34,19 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
   scope: resourceGroup(scopeResourceGroup)
 }
 
-var basicAppSettings = [
+var basicAppSettings = {
+  AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+  WEBSITE_CONTENTSHARE: toLower(functionAppName)
+  FUNCTIONS_EXTENSION_VERSION: '~4'
+  APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
+  APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString 
+  FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+  CosmosDbConnectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+  CosmosDbDatabaseName: cosmosDbDatabaseName
+}
+
+var basicAppSettings2 = [
   {
     name: 'AzureWebJobsStorage'
     value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
@@ -103,7 +113,7 @@ module appSettings 'app-settings.bicep' = {
   name: '${functionAppName}-appsettings'
   params: {
     webAppName: functionApp.name
-    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', functionApp.name, 'appsettings'), '2022-03-01').properties
+    currentAppSettings: basicAppSettings
     extraAppSettings: extraAppSettings
   }
 }

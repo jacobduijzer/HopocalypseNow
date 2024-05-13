@@ -109,12 +109,9 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     cosmosDbAccountName: cosmosDb.outputs.cosmosDbAccountName
     cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
-    extraAppSettings: [
-      {
-        name: 'ServiceBusConnectionString'
-        value: serviceBus.outputs.serviceBusConnectionString
-      }
-    ]
+    extraAppSettings: {
+      ServiceBusConnectionString: serviceBus.outputs.serviceBusConnectionString
+    }
   }
   scope: resourceGroup(rgName)
   dependsOn: [
