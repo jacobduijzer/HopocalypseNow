@@ -1,11 +1,11 @@
 param webAppName string
-param landingZoneName string
+param resourceGroupName string
 param currentAppSettings object
 param extraAppSettings object
 
 resource webApp 'Microsoft.Web/sites@2023-12-01' existing = {
   name: webAppName
-  scope: resourceGroup(landingZoneName)
+  scope: resourceGroup(resourceGroupName)
 }
 
 // resource siteconfig 'Microsoft.Web/sites/config@2023-12-01' = {
