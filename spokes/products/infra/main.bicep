@@ -63,7 +63,7 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
 }
 
 module webApp '../../../shared/infra/web-app.bicep' = {
-  name: 'FunctionAppModule-${buildNumber}'
+  name: 'WebAppModule-${buildNumber}'
   params: {
     projectName: projectName
     applicationName: 'cms'
