@@ -92,17 +92,17 @@ resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-01-01' existing = {
   scope: resourceGroup(rgLandingZoneName)
 }
 
-module appSettings '../../../shared/infra/app-settings.bicep' = {
-  name: 'AppSettingsUpdate-${buildNumber}'
-  params: {
-    webAppName: functionAppName
-    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2023-12-01').properties
-    extraAppSettings: {
-      ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'
-    }
-  }
-  scope: resourceGroup(rgLandingZoneName)
-}
+// module appSettings '../../../shared/infra/app-settings.bicep' = {
+//   name: 'AppSettingsUpdate-${buildNumber}'
+//   params: {
+//     webAppName: functionAppName
+//     currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2023-12-01').properties
+//     extraAppSettings: {
+//       ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'
+//     }
+//   }
+//   scope: resourceGroup(rgLandingZoneName)
+// }
 
 
 
