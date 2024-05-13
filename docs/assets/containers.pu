@@ -44,7 +44,6 @@ System_Boundary(marcom, "Marketing & Communication\nStream-aligned Team") {
 
     ' RELATIONS
     Rel_D(website, api, "")
-
 }
 
 System_Boundary(products, "Products\n$streamAlignedTeam") {
