@@ -85,5 +85,24 @@ module webApp '../../../shared/infra/web-app.bicep' = {
   ]
 }
 
+// TODO: Combine
+var functionAppName = 'fn-hn-api-${uniqueString(rgLandingZone.id)}'
+resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-01-01' existing = {
+  name: functionAppName
+  scope: resourceGroup(rgLandingZone.name)
+}
+
+module appSettings '../../../shared/infra/app-settings.bicep' = {
+  name: '${functionAppName}-appsettings'
+  params: {
+    webAppName: functionAppName
+    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2022-03-01').properties
+    extraAppSettings: {
+      ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'
+    }
+  }
+  scope: resourceGroup(rgLandingZone.name)
+}
+
 
 

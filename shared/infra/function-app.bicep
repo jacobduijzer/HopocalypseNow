@@ -15,16 +15,16 @@ param extraAppSettings object = {
 
 var functionAppName = 'fn-${projectName}-${applicationName}-${uniquePostFix}'
 
-resource hostingPlan 'Microsoft.Web/serverfarms@2023-01-01' existing = {
+resource hostingPlan 'Microsoft.Web/serverfarms@2023-12-01' existing = {
   name: hostingPlanName
   scope: resourceGroup(scopeResourceGroup)
 }
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' existing = {
   name: storageAccountName
   scope: resourceGroup(scopeResourceGroup)
 }
 
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview' existing = {
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' existing = {
   name: cosmosDbAccountName
   scope: resourceGroup(scopeResourceGroup)
 }
@@ -46,50 +46,7 @@ var basicAppSettings = {
   CosmosDbDatabaseName: cosmosDbDatabaseName
 }
 
-var basicAppSettings2 = [
-  {
-    name: 'AzureWebJobsStorage'
-    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
-  }
-  {
-    name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
-  }
-  {
-    name: 'WEBSITE_CONTENTSHARE'
-    value: toLower(functionAppName)
-  }
-  {
-    name: 'FUNCTIONS_EXTENSION_VERSION'
-    value: '~4'
-  }
-  {
-    name: 'WEBSITE_NODE_DEFAULT_VERSION'
-    value: '~14'
-  }
-  {
-    name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-    value: applicationInsights.properties.InstrumentationKey
-  }
-  {
-    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-    value: applicationInsights.properties.ConnectionString
-  }
-  {
-    name: 'FUNCTIONS_WORKER_RUNTIME'
-    value: 'dotnet'
-  }
-  {
-    name: 'CosmosDbConnectionString'
-    value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-  }
-  {
-    name: 'CosmosDbDatabaseName'
-    value: cosmosDbDatabaseName
-  }
-]
-
-resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
+resource functionApp 'Microsoft.Web/sites@2023-12-01' = {
   name: functionAppName
   location: location
   kind: 'functionapp,linux'
@@ -99,7 +56,6 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      // appSettings: union(basicAppSettings, extraAppSettings)
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
       linuxFxVersion: 'DOTNET|6.0'
