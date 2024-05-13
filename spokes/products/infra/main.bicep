@@ -87,7 +87,7 @@ module webApp '../../../shared/infra/web-app.bicep' = {
 
 // TODO: Combine
 var functionAppName = 'fn-hn-api-${uniqueString(rgLandingZone.id)}'
-resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-01-01' existing = {
+resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-12-01' existing = {
   name: functionAppName
   scope: resourceGroup(rgLandingZoneName)
 }
