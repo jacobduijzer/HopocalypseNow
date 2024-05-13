@@ -89,13 +89,22 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      appSettings: union(basicAppSettings, extraAppSettings)
+      // appSettings: union(basicAppSettings, extraAppSettings)
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
       linuxFxVersion: 'DOTNET|6.0'
       alwaysOn: false
     }
     httpsOnly: true
+  }
+}
+
+module appSettings 'app-settings.bicep' = {
+  name: '${functionAppName}-appsettings'
+  params: {
+    webAppName: functionApp.name
+    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', functionApp.name, 'appsettings'), '2022-03-01').properties
+    extraAppSettings: extraAppSettings
   }
 }
 
