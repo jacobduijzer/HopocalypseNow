@@ -89,7 +89,7 @@ module webApp '../../../shared/infra/web-app.bicep' = {
 var functionAppName = 'fn-hn-api-${uniqueString(rgLandingZone.id)}'
 resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-01-01' existing = {
   name: functionAppName
-  scope: resourceGroup(rgLandingZone.name)
+  scope: resourceGroup(rgLandingZoneName)
 }
 
 module appSettings '../../../shared/infra/app-settings.bicep' = {
@@ -101,7 +101,7 @@ module appSettings '../../../shared/infra/app-settings.bicep' = {
       ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'
     }
   }
-  scope: resourceGroup(rgLandingZone.name)
+  scope: resourceGroup(rgLandingZoneName)
 }
 
 
