@@ -85,24 +85,24 @@ module webApp '../../../shared/infra/web-app.bicep' = {
   ]
 }
 
-// TODO: Combine
-var functionAppName = 'fn-hn-api-${uniqueString(rgLandingZone.id)}'
-resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-12-01' existing = {
-  name: functionAppName
-  scope: resourceGroup(rgLandingZoneName)
-}
+// TODO: Write config to existing app
+// var functionAppName = 'fn-hn-api-${uniqueString(rgLandingZone.id)}'
+// resource landingZoneFunctionApp 'Microsoft.Web/sites@2023-12-01' existing = {
+//   name: functionAppName
+//   scope: resourceGroup(rgLandingZone.name)
+// }
 
-module appSettings '../../../shared/infra/app-settings.bicep' = {
-  name: 'AppSettingsUpdate-${buildNumber}'
-  params: {
-    webAppName: functionAppName
-    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2023-12-01').properties
-    extraAppSettings: {
-      ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'
-    }
-  }
-  scope: resourceGroup(rgLandingZoneName)
-}
+// module appSettings '../../../shared/infra/app-settings.bicep' = {
+//   name: 'AppSettingsUpdate-${buildNumber}'
+//   params: {
+//     webAppName: functionAppName
+//     currentAppSettings: list(resourceId('Microsoft.Web/sites/config', landingZoneFunctionApp.name, 'appsettings'), '2023-12-01').properties
+//     extraAppSettings: {
+//       ProductsApiUrl: 'https://${functionApp.outputs.defaultHostName}/api'
+//     }
+//   }
+//   scope: resourceGroup(rgLandingZone.name)
+// }
 
 
 
