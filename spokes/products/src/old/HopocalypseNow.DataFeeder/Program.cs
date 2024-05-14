@@ -1,13 +1,24 @@
 ﻿using HopocalypseNow.DataFeeder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-var serviceCollection = new ServiceCollection();
-serviceCollection.AddDbContext<DatabaseContext>(
-    options => options.UseCosmos(
-        "AccountEndpoint=https://cosmos-hn-f4trzz3cw5dkg.documents.azure.com:443/;AccountKey=ecCTwSLv3QZ24aS9jC5bqgrrYjOmBxBZP16mJBTIPBviRdhlb6Rwqd5oeNutAjxd1kml6NbR3owBACDbUhJVig==;",
-        "db-hn-f4trzz3cw5dkg"));
-serviceCollection.AddTransient<BeerFeederService>()
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .AddCommandLine(args)
+    .Build();
+
+var connectionString = configuration.GetConnectionString("CosmosDbConnectionString") 
+                       ?? throw new InvalidOperationException("CosmosDbConnectionString is missing");
+var databaseName = configuration.GetValue<string>("CosmosDbDatabaseName")
+                   ?? throw new InvalidOperationException("CosmosDbDatabaseName is missing");
+
+var serviceCollection = new ServiceCollection()
+    .AddDbContext<DatabaseContext>(options => options.UseCosmos(connectionString, databaseName))
+    .AddTransient<BeerFeederService>()
     .AddSingleton<BeerDataFeeder>();
 
 var container = serviceCollection.BuildServiceProvider();

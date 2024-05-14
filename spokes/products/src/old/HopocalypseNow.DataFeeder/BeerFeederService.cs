@@ -1,5 +1,3 @@
-using HopocalypseNow.Models;
-
 namespace HopocalypseNow.DataFeeder;
 
 public class BeerFeederService
@@ -23,7 +21,6 @@ public class BeerFeederService
     public async Task FeedBeersAsync()
     {
         var beers = _beerDataFeeder.GetRandomBeers(100);
-        // _databaseContext.Beers?.Add(new Beer { BeerId = Guid.NewGuid(), Name = "Hopocalypse Now", Brewery = new Brewery { BreweryId = Guid.NewGuid(), Name = "Evil Twin Brewing" } });
         _databaseContext.Beers?.AddRange(beers);
         var changed = await _databaseContext.SaveChangesAsync();
         Console.WriteLine($"created {changed} records");
