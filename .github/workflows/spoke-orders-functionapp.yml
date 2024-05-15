@@ -8,7 +8,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'fn-hn-orders-cfvsrb3vhosls'  
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './spokes/orders/src/HopocalypseNow.Orders.Processors.FunctionApp/HopocalypseNow.Orders.Processors.FunctionApp.csproj'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './spokes/orders/src/HopocalypseNow.Orders.Processors.FunctionApp'
   DOTNET_VERSION: '6.0.x' 
 
 permissions:
