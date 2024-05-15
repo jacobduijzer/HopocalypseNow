@@ -1,0 +1,103 @@
+@startuml "Container Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Compute/AzureAppService.puml
+!includeurl AzurePuml/Databases/AzureCosmosDb.puml
+!includeurl AzurePuml/DevOps/AzureApplicationInsights.puml
+!includeurl AzurePuml/Integration/AzureServiceBus.puml
+!includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
+!includeurl AzurePuml/Storage/AzureStorage.puml
+!includeurl AzurePuml/AIMachineLearning/AzureMachineLearningService.puml
+
+title Hopocalypse Now - Best Beershop Online
+
+' TEXTS
+!$functionTech = "Azure Serverless Function (.NET)"
+!$topicTech = "Azure Service Bus Topic"
+!$streamAlignedTeam = "Stream-aligned Team"
+
+System_Boundary(landingZone, "Platform Team") {
+    
+    ' RESOURCES
+    AzureAppService(api, "Frontend API", "GraphQL, Azure Serverless Functions", "")
+    AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
+    AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
+    AzureStorage(st, "Storage Account", "Azure Table Storage", "Storage account to be used by function apps.")
+    AzureServiceBus(azureServiceBus, "Azure Service Bus", "Azure Service Bus", "")
+
+    ' LAYOUT
+    Lay_D(st, appi)
+    Lay_D(appi, azureServiceBus)
+
+    ' RELATIONS
+    Rel_D(api, cosmosDb, "")
+    Rel_L(api, st, "")
+}
+
+System_Boundary(marcom, "Marketing & Communication\nStream-aligned Team") {
+
+    ' RESOURCES
+    AzureAppService(website, "Frontend", "Web App", "The web shop where customers can search information, order products, etc.")
+
+    ' RELATIONS
+    Rel_D(website, api, "")
+}
+
+System_Boundary(products, "Products\n$streamAlignedTeam") {
+    
+    ' RESOURCES
+    AzureAppService(productsCms, "Products CMS", "Web App", "Not implemented yet.")
+    AzureFunction(productsApi, "Products API", $functionTech)
+    AzureCosmosDb(beers, "Beers Collection", "CosmosDb Collection", "Collections with beers.")
+    AzureCosmosDb(breweries, "Breweries Collection", "CosmosDb Collection", "Collections with breweries.")
+    AzureCosmosDb(styles, "Styles Collection", "CosmosDb Collection", "Collections with different styles.")
+
+    ' RELATIONS
+    BiRel(api, productsApi, "Product Information")
+    Rel_D(productsCms, productsApi, "")
+    Rel(productsApi, beers, "")
+    Rel(productsApi, breweries, "")
+    Rel(productsApi, styles, "")
+}
+
+System_Boundary(orders, "Orders\n$streamAlignedTeam") {
+    
+    ' RESOURCES
+    AzureServiceBusTopic(topicOrders, "topic-orders", $topicTech, "")
+    AzureFunction(orderPlacedTrigger, "OrderPlaced Trigger", $functionTech)
+    AzureCosmosDb(orderDb, "Order Collection", "CosmosDb Collection")
+
+    ' RELATIONS
+    'Rel_L(orderDb, cosmosDb, "")
+    Rel_R(api, topicOrders, "OrderPlaced Event")
+    Rel_D(topicOrders, orderPlacedTrigger, "Order details")
+    Rel_R(orderPlacedTrigger, orderDb, "Order details")
+}
+
+System_Boundary(payments, "Payments\n$streamAlignedTeam") {
+    AzureFunction(paymentRequestedProcessor, "Payment Requested Processor", $functionTech)
+    AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
+    AzureServiceBusTopic(topicPayments, "topic-payments", $topicTech, "")
+
+    ' RELATIONS
+    Rel_D(orderPlacedTrigger, topicPayments, "OrderPaid events")
+    Rel_D(topicPayments, paymentRequestedProcessor, "")
+    Rel_R(paymentRequestedProcessor, paymentDb, "Payment details")
+}
+
+'
+'System_Boundary(subscriptions, "Subscriptions Spoke") {
+'}
+'
+'System_Boundary(machineLearning, "Taste Based Predictions\nComplicated Sybsystems Team") {
+'    AzureMachineLearningService(ml, "Azure Machine Learning Service", "", "Predicting subscription packages based on Untapp'd profile.")
+'}
+'
+''Lay_D(products, subscriptions)
+''Lay_D(subscriptions, machineLearning)
+'Lay_D(products, orders)
+
+@enduml

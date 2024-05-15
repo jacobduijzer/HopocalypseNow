@@ -1,0 +1,21 @@
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Hopocalypse Now - Best Beershop Online
+
+Person(customer, "Customer", "A customer, finding information about beers, styles, breweries, subscriptions. Also, placing beer orders.")
+
+Enterprise_Boundary(hn, "Hopocalypse Now Enterprise") {
+
+    System(hnSystem, "Online Beer Shop")
+
+}
+
+System_Ext(paymentProvider, "Payment Provider")
+System_Ext(deliveryProvider, "Delivery Service Provider")
+
+' RELATIONS
+Rel_D(customer, hnSystem, "Viewing beers,\nordering beers,\ncreating subscriptions")
+BiRel_R(hnSystem, paymentProvider, "Payment details")
+Rel_L(hnSystem, deliveryProvider, "Delivery details")
+Rel_D(customer, paymentProvider, "Paying orders and subscriptions")
+Rel_U(deliveryProvider, customer, "Delivering packages,\nsending delivery information")

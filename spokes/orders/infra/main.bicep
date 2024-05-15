@@ -26,6 +26,21 @@ resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing 
   name: rgLandingZoneName
 }
 
+var orders = { name: 'orders', partitionKey: 'orderId'}
+
+var collections = [orders]
+
+module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = [for collection in collections: {
+  name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
+  params: {
+    databaseAccount: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
+    databaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
+    tableName: collection.name
+    partitionKey: collection.partitionKey
+  }
+  scope: resourceGroup(rgLandingZoneName)
+}]
+
 module serviceBusTopic '../../../shared/infra/service-bus.topic.bicep' = {
   name: 'ServiceBusTopic-${buildNumber}'
   params: {
