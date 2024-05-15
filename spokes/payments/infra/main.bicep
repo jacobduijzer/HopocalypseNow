@@ -30,6 +30,7 @@ module serviceBusTopic '../../../shared/infra/service-bus.topic.bicep' = {
   params: {
     projectName: projectName
     uniquePostFix: uniqueString(rgLandingZone.id)
+    applicationName: 'payments'
   }
   scope: rgLandingZone
 }
@@ -47,10 +48,9 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
     cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
-    extraAppSettings: [{
-      name: 'ServiceBusConnectionString'
-      value: serviceBusTopic.outputs.sendConnectionString
-    }]
+    extraAppSettings: {
+      ServiceBusConnectionString: serviceBusTopic.outputs.sendConnectionString
+    }
   }
   scope: resourceGroup(rgName)
   dependsOn: [
