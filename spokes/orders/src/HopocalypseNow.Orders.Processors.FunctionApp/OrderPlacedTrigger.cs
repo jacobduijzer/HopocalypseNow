@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using HopocalypseNow.Orders.Processors.Domain;
@@ -25,7 +26,14 @@ public class OrderPlacedTrigger
         ILogger log)
     {
         log.LogInformation($"C# ServiceBus topic trigger function processed message: {orderMessage}");
-        var order = JsonSerializer.Deserialize<RootObject>(orderMessage);
-        await _storeOrderCommandHandler.Handle(new StoreOrderCommand(order.Order));
+        try
+        {
+            var order = JsonSerializer.Deserialize<RootObject>(orderMessage);
+            await _storeOrderCommandHandler.Handle(new StoreOrderCommand(order.Order));
+        }
+        catch (Exception e)
+        {
+            log.LogError(e, e.Message);
+        }
     }
 }
