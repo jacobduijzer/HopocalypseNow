@@ -1,7 +1,3 @@
-using HopocalypseNow.Frontend.BlazorApp.Data;
-
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 var frontendApiAddress = builder.Configuration.GetValue<string>( "FrontendApiAddress") ?? 
@@ -13,7 +9,6 @@ builder.Services
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
 

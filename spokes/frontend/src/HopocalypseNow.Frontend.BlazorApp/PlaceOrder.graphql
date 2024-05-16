@@ -1,0 +1,7 @@
+mutation placeOrder($input: OrderPayloadInput!){
+    addOrder(input: $input) {
+        order {
+            orderId
+        }
+    }
+}

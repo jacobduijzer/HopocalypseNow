@@ -1,7 +1,11 @@
 ﻿@page "/"
+@inject HopocalypseNowClient graphQlClient
 <PageTitle>Hopocalypse Now - World Class Beers!</PageTitle>
 
 <h1>Our Beers!</h1>
+
+@if(!orderPlaced)
+{
 <UseGetAllBeers Context="result">
     <ChildContent>
         <table class="table">
@@ -13,22 +17,26 @@
                 <th scope="col">Style</th>
                 <th scope="col">Brewery</th>
                 <th scope="col">Price</th>
+                <th scope="col">Amount</th>
             </tr>
             </thead>
             <tbody>
             @foreach (var beer in result.Beers!)
             {
+                var orderItem = OrderItem.From(beer!);
                 <tr>
-                    <td>@beer!.Name</td>
+                    <td>@beer.Name</td>
                     <td>@beer.Abv</td>
                     <td>@beer.Ibu</td>
                     <td>@beer.Style!.Name</td>
                     <td>@beer.Brewery!.Name</td>
                     <td>@beer.Price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("nl-NL"))</td>
+                    <td><input type="number" min="0" max="10" @oninput="args => OnAmountChanged(orderItem, args)"/></td>
                 </tr>
             }
             </tbody>
         </table>
+        <button @onclick="() => PlaceOrder()">Order</button>
     </ChildContent>
     <ErrorContent>
         Something went wrong ...<br />
@@ -38,3 +46,42 @@
         Loading ...
     </LoadingContent>
 </UseGetAllBeers>
+}
+else {
+<p>Order placed, order id: @orderId</p>
+}
+
+@code {
+
+    private List<OrderItem> _orderItems = new();
+    private bool orderPlaced = false;
+    private Guid orderId;
+
+    void OnAmountChanged(OrderItem orderItem, ChangeEventArgs e)
+    {
+        var amount = int.Parse(e.Value.ToString());
+        if (_orderItems.Any(x => x.BeerId.Equals(orderItem.BeerId)) && amount == 0)
+            _orderItems.RemoveAll(x => x.BeerId.Equals(orderItem.BeerId));
+        else if (_orderItems.Any(x => x.BeerId.Equals(orderItem.BeerId)))
+            _orderItems.FirstOrDefault(x => x.BeerId.Equals(orderItem.BeerId)).Amount = int.Parse(e.Value.ToString());
+        else
+            _orderItems.Add(orderItem);
+    }
+
+    async Task PlaceOrder()
+    {
+        var orderItems = _orderItems
+            .Select(item => new OrderItemPayloadInput { BeerId = item.BeerId, Amount = item.Amount })
+            .ToList();
+
+        var payload = new OrderPayloadInput
+        {
+            OrderItems = orderItems
+        };
+
+        var orderResult = await graphQlClient.PlaceOrder.ExecuteAsync(payload);
+        orderPlaced = true;
+        orderId = orderResult.Data!.AddOrder.Order.OrderId;
+    }
+    
+}
