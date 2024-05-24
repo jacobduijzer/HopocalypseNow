@@ -43,7 +43,7 @@ var basicAppSettings = {
   APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString 
   FUNCTIONS_WORKER_RUNTIME: 'dotnet'
-  CosmosDbConnectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+  //CosmosDbConnectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
   CosmosDbDatabaseName: cosmosDbDatabaseName
 }
 
