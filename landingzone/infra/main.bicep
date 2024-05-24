@@ -96,10 +96,8 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     hostingPlanName: appPlan.outputs.hostingPlanName
     appiName: applicationInsights.outputs.appiName
     storageAccountName: storageAccount.outputs.name
-    cosmosDbAccountName: cosmosDb.outputs.cosmosDbAccountName
     cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
-    kvName: keyVault.outputs.kvName
     extraAppSettings: {
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.keyvaultConnectionStringSecretName})'
       ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${serviceBus.outputs.keyvaultFullConnectionStringSecretName})'
@@ -107,6 +105,7 @@ module functionApp '../../shared/infra/function-app.bicep' = {
   }
   scope: resourceGroup(rgName)
   dependsOn: [
+    keyVault
     applicationInsights
     appPlan
     cosmosDb
@@ -125,4 +124,8 @@ module kvAccessPolicy '../../shared/infra/keyvault-access-policies.bicep' = {
   }
 
   scope: resourceGroup(rgName)
+  dependsOn: [
+    keyVault
+    functionApp
+  ]
 }

@@ -5,10 +5,8 @@ param uniquePostFix string
 param hostingPlanName string
 param appiName string
 param storageAccountName string
-param cosmosDbAccountName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
-param kvName string
 
 param extraAppSettings object = {
    PlaceholderSetting: ''
