@@ -61,6 +61,7 @@ module serviceBus 'modules/service-bus.bicep' = {
     projectName: projectName
     location: location
     uniquePostFix: uniquePostFix
+    kvName: keyVault.outputs.kvName
   }
   scope: resourceGroup(rgName)
 }
@@ -100,8 +101,8 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     scopeResourceGroup: rgName
     kvName: keyVault.outputs.kvName
     extraAppSettings: {
-      CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.cosmosDbConnectionStringSecretName})'
-      ServiceBusConnectionString: serviceBus.outputs.serviceBusConnectionString
+      CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.keyvaultConnectionStringSecretName})'
+      ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${serviceBus.outputs.keyvaultFullConnectionStringSecretName})'
     }
   }
   scope: resourceGroup(rgName)
@@ -112,4 +113,16 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     serviceBus
     storageAccount
   ]
+}
+
+module kvAccessPolicy '../../shared/infra/keyvault-access-policies.bicep' = {
+  name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
+  params: {
+    keyvaultName: keyVault.name
+    permissions: [ 'get' ]
+    tenantId: subscription().tenantId
+    principalId: functionApp.outputs.funcPrincipalId
+  }
+
+  scope: resourceGroup(rgName)
 }

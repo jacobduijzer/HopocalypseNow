@@ -25,11 +25,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' existing 
   scope: resourceGroup(scopeResourceGroup)
 }
 
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' existing = {
-  name: cosmosDbAccountName
-  scope: resourceGroup(scopeResourceGroup)
-}
-
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appiName
   scope: resourceGroup(scopeResourceGroup)
@@ -43,7 +38,6 @@ var basicAppSettings = {
   APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString 
   FUNCTIONS_WORKER_RUNTIME: 'dotnet'
-  //CosmosDbConnectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
   CosmosDbDatabaseName: cosmosDbDatabaseName
 }
 
@@ -75,29 +69,6 @@ module appSettings 'app-settings.bicep' = {
   }
 }
 
-resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
-  name: kvName
-}
-
-resource accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2023-07-01' = {
-  name: 'add'
-  parent: kv
-  properties: {
-    accessPolicies: [
-      {
-        tenantId: subscription().tenantId 
-        objectId: functionApp.identity.principalId
-        permissions: {
-          secrets: [
-            'get'
-          ]
-        }
-      }
-    ]
-  }
-}
-
+output funcName string = functionApp.name
 output defaultHostName string = functionApp.properties.defaultHostName
-
-
-
+output funcPrincipalId string = functionApp.identity.principalId

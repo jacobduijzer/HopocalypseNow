@@ -1,6 +1,7 @@
 param projectName string
 param location string
 param uniquePostFix string
+param kvName string
 
 var serviceBusNamespaceName = 'sbns${projectName}${uniquePostFix}'
 
@@ -25,4 +26,16 @@ resource authorizationRule 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2
   }
 }
 
-output serviceBusConnectionString string = authorizationRule.listKeys().primaryConnectionString
+resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: kvName
+}
+
+resource fullSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'servicebus-full-connection-string'
+  properties: {
+    value: authorizationRule.listKeys().primaryConnectionString
+  }
+}
+
+output keyvaultFullConnectionStringSecretName string = fullSecret.name
