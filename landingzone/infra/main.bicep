@@ -98,6 +98,7 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     cosmosDbAccountName: cosmosDb.outputs.cosmosDbAccountName
     cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
+    kvName: keyVault.outputs.kvName
     extraAppSettings: {
       CosmosDbConnectionStringTest: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.cosmosDbConnectionStringSecretName})'
       ServiceBusConnectionString: serviceBus.outputs.serviceBusConnectionString

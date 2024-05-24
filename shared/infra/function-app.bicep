@@ -8,6 +8,7 @@ param storageAccountName string
 param cosmosDbAccountName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
+param kvName string
 
 param extraAppSettings object = {
    PlaceholderSetting: ''
@@ -71,6 +72,28 @@ module appSettings 'app-settings.bicep' = {
     webAppName: functionApp.name
     currentAppSettings: basicAppSettings
     extraAppSettings: extraAppSettings
+  }
+}
+
+resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: kvName
+}
+
+resource accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2023-07-01' = {
+  name: 'add'
+  parent: kv
+  properties: {
+    accessPolicies: [
+      {
+        tenantId: subscription().tenantId 
+        objectId: functionApp.identity.principalId
+        permissions: {
+          secrets: [
+            'get'
+          ]
+        }
+      }
+    ]
   }
 }
 
