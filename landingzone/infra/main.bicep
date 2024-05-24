@@ -25,6 +25,15 @@ module rg '../../shared/infra/resource-group.bicep' = {
 
 var uniquePostFix = uniqueString(rg.outputs.id)
 
+module keyVault 'modules/keyvault.bicep' = {
+  name: 'KeyVaultModule-${buildNumber}'
+  params: {
+    projectName: projectName
+    uniquePostFix: uniquePostFix
+  }
+  scope: resourceGroup(rgName)
+}
+
 module applicationInsights 'modules/application-insights.bicep' = {
   name: 'ApplicationInsightsModule-${buildNumber}'
   params: {
@@ -44,27 +53,6 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
   }
   scope: resourceGroup(rgName)
 }
-
-// var order = { name: 'orders', partitionKey: 'orderId'}
-// var beer = { name: 'beers', partitionKey: 'beerId'}
-// var breweries = { name: 'breweries', partitionKey: 'breweryId' }
-// var styles = { name: 'styles', partitionKey: 'styleId' }
-
-// var collections = [ order, beer, breweries, styles]
-
-// module cosmosDbDatabases '../../shared/infra/cosmos-db.collection.bicep' = [for collection in collections: {
-//   name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
-//   params: {
-//     databaseAccount: cosmosDb.outputs.cosmosDbAccountName
-//     databaseName: cosmosDb.outputs.cosmosDbName
-//     tableName: collection.name
-//     partitionKey: collection.partitionKey
-//   }
-//   scope: resourceGroup(rgName)
-//   dependsOn: [
-//     cosmosDb
-//   ]
-// }]
 
 module serviceBus 'modules/service-bus.bicep' = {
   name: 'ServiceBusModule-${buildNumber}'
