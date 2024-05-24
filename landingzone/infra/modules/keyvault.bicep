@@ -9,17 +9,27 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
   properties: {
     enabledForDeployment: false
     enabledForDiskEncryption: false
-    enabledForTemplateDeployment: true 
+    enabledForTemplateDeployment: true  
     tenantId: subscription().tenantId
     enableSoftDelete: true
     softDeleteRetentionInDays: 90
     accessPolicies: [
+      {
+        objectId: '04b07795-8ddb-461a-bbee-02f9e1bf7b46'
+        tenantId: subscription().tenantId
+        permissions: {
+          secrets: [
+            'all'
+          ]
+        }
+      }
       {
         objectId: 'f960d6cf-408f-45ac-85da-8ff10e90d1d1'
         tenantId: subscription().tenantId
         permissions: {
           secrets: [
             'all'
+            'list'
           ]
           certificates: [
             'get'
