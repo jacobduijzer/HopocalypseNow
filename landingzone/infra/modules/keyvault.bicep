@@ -15,7 +15,7 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
     softDeleteRetentionInDays: 90
     accessPolicies: [
       {
-        objectId: '04b07795-8ddb-461a-bbee-02f9e1bf7b46'
+        objectId: '2aa0442f-8cac-4064-845b-257c44175cf7'
         tenantId: subscription().tenantId
         permissions: {
           secrets: [
