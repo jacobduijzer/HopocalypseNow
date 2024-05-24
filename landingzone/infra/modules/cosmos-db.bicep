@@ -34,6 +34,20 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
   }
 }
 
+var kvName = 'kv${projectName}${uniquePostFix}'
+
+resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: kvName
+}
+
+resource secret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'cosmosdb-connection-string'
+  properties: {
+    value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+  }
+}
+
 output cosmosDbAccountName string = cosmosDbAccount.name
 output cosmosDbName string = cosmosDbDatabase.name
 output cosmosDbDatabaseName string = cosmosDbDatabase.name

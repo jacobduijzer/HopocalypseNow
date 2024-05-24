@@ -11,6 +11,7 @@
 !includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
 !includeurl AzurePuml/Storage/AzureStorage.puml
 !includeurl AzurePuml/AIMachineLearning/AzureMachineLearningService.puml
+!includeurl AzurePuml/Security/AzureKeyVault.puml
 
 title Hopocalypse Now - Best Beershop Online
 
@@ -27,10 +28,12 @@ System_Boundary(landingZone, "Platform Team") {
     AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
     AzureStorage(st, "Storage Account", "Azure Table Storage", "Storage account to be used by function apps.")
     AzureServiceBus(azureServiceBus, "Azure Service Bus", "Azure Service Bus", "")
+    AzureKeyVault(keyvault, "Azure Key Vault", "")
 
     ' LAYOUT
     Lay_D(st, appi)
     Lay_D(appi, azureServiceBus)
+    Lay_L(azureServiceBus, keyvault)
 
     ' RELATIONS
     Rel_D(api, cosmosDb, "")
