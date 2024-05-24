@@ -50,6 +50,7 @@ module cosmosDb 'modules/cosmos-db.bicep' = {
     projectName: projectName
     location: dbLocation
     uniquePostFix: uniquePostFix
+    kvName: keyVault.outputs.kvName
   }
   scope: resourceGroup(rgName)
 }
@@ -98,6 +99,7 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
     extraAppSettings: {
+      CosmosDbConnectionStringTest: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.cosmosDbConnectionStringSecretName})'
       ServiceBusConnectionString: serviceBus.outputs.serviceBusConnectionString
     }
   }

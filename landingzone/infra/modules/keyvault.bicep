@@ -1,7 +1,7 @@
 param projectName string
 param uniquePostFix string
 
-var kvName = 'kv${projectName}${uniquePostFix}'
+var kvName = 'kv-${projectName}-${uniquePostFix}'
 
 resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: kvName
@@ -52,3 +52,5 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
     }
   }
 }
+
+output kvName string = kv.name
