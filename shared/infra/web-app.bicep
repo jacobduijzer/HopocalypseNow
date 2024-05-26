@@ -19,6 +19,9 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2023-01-01' existing = {
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webAppName
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
