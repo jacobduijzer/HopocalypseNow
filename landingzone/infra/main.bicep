@@ -100,6 +100,7 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     scopeResourceGroup: rgName
     extraAppSettings: {
       AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
       WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.keyvaultConnectionStringSecretName})'
       ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${serviceBus.outputs.keyvaultFullConnectionStringSecretName})'
