@@ -8,7 +8,7 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 }
 
 resource accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2023-07-01' = {
-  name: 'add'
+  name: 'replace'
   parent: kv
   properties: {
     accessPolicies: [
