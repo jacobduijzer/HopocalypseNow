@@ -39,6 +39,7 @@ module applicationInsights 'modules/application-insights.bicep' = {
   params: {
     projectName: projectName
     location: location
+    kvName: keyVault.outputs.kvName
     uniquePostFix: uniquePostFix
   }
   scope: resourceGroup(rgName)
@@ -95,14 +96,14 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     location: location
     uniquePostFix: uniquePostFix
     hostingPlanName: appPlan.outputs.hostingPlanName
-    appiName: applicationInsights.outputs.appiName
-    cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
     extraAppSettings: {
       AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
       WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
-      CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.keyvaultConnectionStringSecretName})'
+      APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${applicationInsights.outputs.secretConnectionStringName})'
+      CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.secretConnectionStringName})'
+      CosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
       ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${serviceBus.outputs.keyvaultFullConnectionStringSecretName})'
     }
   }

@@ -3,8 +3,6 @@ param applicationName string
 param location string
 param uniquePostFix string
 param hostingPlanName string
-param appiName string
-param cosmosDbDatabaseName string
 param scopeResourceGroup string
 
 param extraAppSettings object = {
@@ -18,18 +16,10 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2023-12-01' existing = {
   scope: resourceGroup(scopeResourceGroup)
 }
 
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: appiName
-  scope: resourceGroup(scopeResourceGroup)
-}
-
 var basicAppSettings = {
-  //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=${saConnectionStringName})'
   WEBSITE_CONTENTSHARE: toLower(functionAppName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
-  APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString 
   FUNCTIONS_WORKER_RUNTIME: 'dotnet'
-  CosmosDbDatabaseName: cosmosDbDatabaseName
 }
 
 resource functionApp 'Microsoft.Web/sites@2023-12-01' = {

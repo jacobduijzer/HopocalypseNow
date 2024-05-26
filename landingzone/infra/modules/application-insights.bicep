@@ -1,5 +1,6 @@
 param projectName string
 param location string
+param kvName string
 param uniquePostFix string
 
 var appiName = 'appi-${projectName}-${uniquePostFix}'
@@ -18,7 +19,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09
   }
 }
 
-resource fnsrp 'Microsoft.Insights/components@2020-02-02' = {
+resource appi 'Microsoft.Insights/components@2020-02-02' = {
   name: appiName
   location: location
   tags: {}
@@ -36,4 +37,17 @@ resource fnsrp 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-output appiName string = fnsrp.name
+resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: kvName
+}
+
+resource secret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'appi-connection-string'
+  properties: {
+    value: appi.properties.ConnectionString
+  }
+}
+
+output appiName string = appi.name
+output secretConnectionStringName string = secret.name

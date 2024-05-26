@@ -50,4 +50,4 @@ resource secret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
 output cosmosDbAccountName string = cosmosDbAccount.name
 output cosmosDbName string = cosmosDbDatabase.name
 output cosmosDbDatabaseName string = cosmosDbDatabase.name
-output keyvaultConnectionStringSecretName string = secret.name
+output secretConnectionStringName string = secret.name
