@@ -96,12 +96,11 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     uniquePostFix: uniquePostFix
     hostingPlanName: appPlan.outputs.hostingPlanName
     appiName: applicationInsights.outputs.appiName
-    storageAccountName: storageAccount.outputs.name
+    kvName: keyVault.outputs.kvName
+    saConnectionStringName: storageAccount.outputs.connectionStringName
     cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
     extraAppSettings: {
-      AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
-      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.keyvaultConnectionStringSecretName})'
       ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${serviceBus.outputs.keyvaultFullConnectionStringSecretName})'
     }

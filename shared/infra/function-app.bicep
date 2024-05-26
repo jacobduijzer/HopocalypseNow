@@ -4,7 +4,8 @@ param location string
 param uniquePostFix string
 param hostingPlanName string
 param appiName string
-param storageAccountName string
+param kvName string
+param saConnectionStringName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
 
@@ -18,10 +19,6 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2023-12-01' existing = {
   name: hostingPlanName
   scope: resourceGroup(scopeResourceGroup)
 }
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' existing = {
-  name: storageAccountName
-  scope: resourceGroup(scopeResourceGroup)
-}
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appiName
@@ -29,6 +26,8 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 }
 
 var basicAppSettings = {
+  AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${saConnectionStringName} )'
+  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${saConnectionStringName})'
   WEBSITE_CONTENTSHARE: toLower(functionAppName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
   APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
