@@ -63,7 +63,7 @@ module kvAccessPolicy '../../../shared/infra/keyvault-access-policies.bicep' = {
     tenantId: subscription().tenantId
     principalId: webApp.outputs.principalId
   }
-  scope: resourceGroup(rgName)
+  scope: resourceGroup(rgLandingZone.name)
   dependsOn: [
     webApp
   ]
