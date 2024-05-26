@@ -54,51 +54,18 @@ module webApp '../../../shared/infra/web-app.bicep' = {
     rg
   ]
 }
-// var basicAppSettings = [
-//   {
-//     name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-//     value: applicationInsights.properties.InstrumentationKey
-//   }
-//   {
-//     name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-//     value: applicationInsights.properties.ConnectionString
-//   }
-//   {
-//     name: 'CosmosDbConnectionString'
-//     value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-//   }
-//   {
-//     name: 'CosmosDbDatabaseName'
-//     value: cosmosDbDatabaseName
-//   }
-// ]
-//module functionApp '../../shared/infra/function-app.bicep' = {
-//  name: 'FunctionAppModule-${buildNumber}'
-//  params: {
-//    projectName: projectName
-//    applicationName: 'api'
-//    location: location
-//    uniquePostFix: uniquePostFix
-//    hostingPlanName: appPlan.outputs.hostingPlanName
-//    scopeResourceGroup: rgName
-//    extraAppSettings: {
-//      AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
-//      WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
-//      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
-//      APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${applicationInsights.outputs.secretConnectionStringName})'
-//      CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.secretConnectionStringName})'
-//      CosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
-//      ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${serviceBus.outputs.keyvaultFullConnectionStringSecretName})'
-//    }
-//  }
-//  scope: resourceGroup(rgName)
-//  dependsOn: [
-//    keyVault
-//    applicationInsights
-//    appPlan
-//    cosmosDb
-//    serviceBus
-//    storageAccount
-//  ]
-//}
-//
+
+module kvAccessPolicy '../../../shared/infra/keyvault-access-policies.bicep' = {
+  name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
+  params: {
+    keyvaultName: kvName
+    permissions: [ 'get' ]
+    tenantId: subscription().tenantId
+    principalId: webApp.outputs.principalId
+  }
+  scope: resourceGroup(rgName)
+  dependsOn: [
+    functionApp
+  ]
+}
+

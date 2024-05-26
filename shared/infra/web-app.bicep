@@ -23,7 +23,6 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: hostingPlan.id
     siteConfig: {
       linuxFxVersion: 'DOTNET|6.0'
-      //appSettings: extraAppSettings//union(basicAppSettings, extraAppSettings)
     }
   }
 }
@@ -36,3 +35,5 @@ module appSettings 'app-settings.bicep' = {
     extraAppSettings: extraAppSettings
   }
 }
+
+output principalId string = appService.identity.principalId

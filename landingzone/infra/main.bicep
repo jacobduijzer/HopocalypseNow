@@ -124,7 +124,7 @@ module kvAccessPolicy '../../shared/infra/keyvault-access-policies.bicep' = {
     keyvaultName: keyVault.outputs.kvName
     permissions: [ 'get' ]
     tenantId: subscription().tenantId
-    principalId: functionApp.outputs.funcPrincipalId
+    principalId: functionApp.outputs.principalId
   }
   scope: resourceGroup(rgName)
   dependsOn: [

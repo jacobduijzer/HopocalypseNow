@@ -52,4 +52,4 @@ module appSettings 'app-settings.bicep' = {
 
 output funcName string = functionApp.name
 output defaultHostName string = functionApp.properties.defaultHostName
-output funcPrincipalId string = functionApp.identity.principalId
+output principalId string = functionApp.identity.principalId
