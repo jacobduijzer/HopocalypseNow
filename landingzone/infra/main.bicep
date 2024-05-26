@@ -114,18 +114,17 @@ module functionApp '../../shared/infra/function-app.bicep' = {
   ]
 }
 
-module kvAccessPolicy '../../shared/infra/keyvault-access-policies.bicep' = {
-  name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
-  params: {
-    keyvaultName: keyVault.name
-    permissions: [ 'get' ]
-    tenantId: subscription().tenantId
-    principalId: functionApp.outputs.funcPrincipalId
-  }
-
-  scope: resourceGroup(rgName)
-  dependsOn: [
-    keyVault
-    functionApp
-  ]
-}
+// module kvAccessPolicy '../../shared/infra/keyvault-access-policies.bicep' = {
+//   name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
+//   params: {
+//     keyvaultName: keyVault.name
+//     permissions: [ 'get' ]
+//     tenantId: subscription().tenantId
+//     principalId: functionApp.outputs.funcPrincipalId
+//   }
+//   scope: resourceGroup(rgName)
+//   dependsOn: [
+//     keyVault
+//     functionApp
+//   ]
+// }
