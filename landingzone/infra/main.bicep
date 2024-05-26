@@ -96,7 +96,6 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     uniquePostFix: uniquePostFix
     hostingPlanName: appPlan.outputs.hostingPlanName
     appiName: applicationInsights.outputs.appiName
-    kvName: keyVault.outputs.kvName
     cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
     extraAppSettings: {
