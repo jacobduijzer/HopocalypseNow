@@ -4,8 +4,6 @@ param location string
 param uniquePostFix string
 param hostingPlanName string
 param appiName string
-param kvName string
-param saConnectionStringName string
 param cosmosDbDatabaseName string
 param scopeResourceGroup string
 
@@ -26,7 +24,6 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 }
 
 var basicAppSettings = {
-  AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=${saConnectionStringName} )'
   //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=${saConnectionStringName})'
   //WEBSITE_CONTENTSHARE: toLower(functionAppName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
