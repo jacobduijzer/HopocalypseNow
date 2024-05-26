@@ -13,6 +13,8 @@ targetScope = 'subscription'
 var applicationName = 'orders'
 var rgName = 'rg-${projectName}-${applicationName}'
 var rgLandingZoneName = 'rg-${projectName}-landingzone'
+var kvName = 'kv-${projectName}-${uniqueString(rgLandingZone.id)}'
+var cosmosDbDatabaseName = 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
 
 module rg '../../../shared/infra/resource-group.bicep' = {
   name: 'resourceGroupModule-${buildNumber}'
@@ -34,7 +36,7 @@ module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = [f
   name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
   params: {
     databaseAccount: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
-    databaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
+    databaseName: cosmosDbDatabaseName
     tableName: collection.name
     partitionKey: collection.partitionKey
   }
@@ -59,19 +61,35 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     location: location
     uniquePostFix: uniqueString(rg.outputs.id)
     hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
-    appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
-    storageAccountName: 'sa${projectName}${uniqueString(rgLandingZone.id)}'
-    cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
-    cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
     extraAppSettings: {
-      ServiceBusConnectionString: serviceBusTopic.outputs.listenConnectionString
+      ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sbns-full-connection-string)'
+      AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sa-connection-string)'
+      WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
+      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sa-connection-string)'
+      APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=appi-connection-string)'
+      CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=cosmosdb-connection-string)'
+      CosmosDbDatabaseName: cosmosDbDatabaseName
     }
   }
   scope: resourceGroup(rgName)
   dependsOn: [
     rg
     serviceBusTopic
+  ]
+}
+
+module kvAccessPolicy '../../../shared/infra/keyvault-access-policies.bicep' = {
+  name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
+  params: {
+    keyvaultName: kvName
+    permissions: [ 'get' ]
+    tenantId: subscription().tenantId
+    principalId: functionApp.outputs.principalId
+  }
+  scope: resourceGroup(rgName)
+  dependsOn: [
+    functionApp
   ]
 }
 
