@@ -29,8 +29,6 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 }
 
 var basicAppSettings = {
-  AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
   WEBSITE_CONTENTSHARE: toLower(functionAppName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
   APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey

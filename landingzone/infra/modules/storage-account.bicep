@@ -2,6 +2,7 @@
 @maxLength(8)
 param projectName string
 param location string
+param kvName string
 param uniquePostFix string
 
 var storageAccountName = 'sa${projectName}${uniquePostFix}'
@@ -24,4 +25,18 @@ resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2023-01-0
   parent: storageAccount
 }
 
+
+resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: kvName
+}
+
+resource secret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'sa-connection-string'
+  properties: {
+    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+  }
+}
+
 output name string = storageAccount.name
+output connectionStringName string = secret.name

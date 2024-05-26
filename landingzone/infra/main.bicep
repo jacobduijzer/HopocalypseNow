@@ -81,6 +81,7 @@ module storageAccount 'modules/storage-account.bicep' = {
   params: {
     projectName: projectName
     location: location
+    kvName: keyVault.outputs.kvName
     uniquePostFix: uniquePostFix
   }
   scope: resourceGroup(rgName)
@@ -99,6 +100,8 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     cosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName
     scopeResourceGroup: rgName
     extraAppSettings: {
+      AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.keyvaultConnectionStringSecretName})'
       ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${serviceBus.outputs.keyvaultFullConnectionStringSecretName})'
     }
