@@ -17,6 +17,7 @@ resource accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2023-07-01' = {
         objectId: principalId
         permissions: {
           secrets: permissions
+          storage: [ 'all' ] 
         }
       }
     ]
