@@ -32,7 +32,7 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 
 resource fullSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: kv
-  name: 'servicebus-full-connection-string'
+  name: 'sbns-full-connection-string'
   properties: {
     value: authorizationRule.listKeys().primaryConnectionString
   }
