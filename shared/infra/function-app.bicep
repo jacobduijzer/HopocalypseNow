@@ -25,9 +25,8 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 
 var basicAppSettings = {
   //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=${saConnectionStringName})'
-  //WEBSITE_CONTENTSHARE: toLower(functionAppName)
+  WEBSITE_CONTENTSHARE: toLower(functionAppName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
-  APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString 
   FUNCTIONS_WORKER_RUNTIME: 'dotnet'
   CosmosDbDatabaseName: cosmosDbDatabaseName
