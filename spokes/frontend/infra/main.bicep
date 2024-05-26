@@ -65,7 +65,7 @@ module kvAccessPolicy '../../../shared/infra/keyvault-access-policies.bicep' = {
   }
   scope: resourceGroup(rgName)
   dependsOn: [
-    functionApp
+    webApp
   ]
 }
 
