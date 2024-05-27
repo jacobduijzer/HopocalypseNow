@@ -1,6 +1,6 @@
 | | |
 |-|-|
-|[![Landingzone - Deploy FrontendApi FunctionApp](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone-frontendapi.yml/badge.svg)](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone-frontendapi.yml)||
+| [![Landingzone - Deploy FrontendApi FunctionApp](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone-frontendapi.yml/badge.svg)](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone-frontendapi.yml) | [![Landingzone - Azure Infrastructure Deployment](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone.yml/badge.svg)](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone.yml) |
 
 # Hopocalypse Now: Brews for the End Times!
 
