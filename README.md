@@ -1,3 +1,7 @@
+| | |
+|-|-|
+|[![Landingzone - Deploy FrontendApi FunctionApp](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone-frontendapi.yml/badge.svg)](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/landingzone-frontendapi.yml)||
+
 # Hopocalypse Now: Brews for the End Times!
 
 
