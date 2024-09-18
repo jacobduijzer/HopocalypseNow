@@ -27,10 +27,16 @@ The context diagram of this application looks like this:
 
 ## The Platform Team
 
+The Platform Team is one of the first teams that starts. They want to provide a platform where Stream-Aligned Teams (and other teams) can easily onboard, making use of all the services they provide. the Platform Team is the hub in the so-called 'Hub and Spoke Model'. The first service they are going to provision is a GraphQL Api, which other teams can use to get products, add orders,
+
 ![Platform Team](docs/assets/img/platform-01.png)
 
+### Deploy the hub
+
 1. Run landingzone action (duration: 6:08)
-2. 
+2. Run Landingzone - Deploy FrontendApi FunctionApp (duration: )
+
+### 
 
 ## Products Team (Stream-Aligned Team)
 
@@ -73,3 +79,4 @@ Except the Complicated Subsystems team implementation. Too complex for this exam
 * [C4 model website](https://c4model.com/)
 * [C4 model + PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML)
 * [PlantUML + Azure](https://github.com/plantuml-stdlib/Azure-PlantUML)
+* [Hub & Spoke Topology](https://www.cbtnuggets.com/blog/technology/networking/what-is-hub-and-spoke-topology)

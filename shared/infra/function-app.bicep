@@ -34,7 +34,7 @@ resource functionApp 'Microsoft.Web/sites@2023-12-01' = {
     siteConfig: {
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
-      linuxFxVersion: 'DOTNET|6.0'
+      linuxFxVersion: 'DOTNET|8.0'
       alwaysOn: false
     }
     httpsOnly: true
