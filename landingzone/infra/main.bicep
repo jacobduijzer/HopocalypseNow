@@ -45,6 +45,7 @@ module applicationInsights 'modules/application-insights.bicep' = {
   scope: resourceGroup(rgName)
 }
 
+
 module cosmosDb 'modules/cosmos-db.bicep' = {
   name: 'CosmosDbModule-${buildNumber}'
   params: {
@@ -115,6 +116,18 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     cosmosDb
     serviceBus
     storageAccount
+  ]
+}
+
+module containerRegistry 'modules/container-registry.bicep' = {
+  name: 'ContainerRegistryModel-${buildNumber}'
+  params: {
+    projectName: projectName
+    principalId: functionApp.outputs.principalId
+  }
+  scope: resourceGroup(rgName)
+  dependsOn: [
+    functionApp
   ]
 }
 
