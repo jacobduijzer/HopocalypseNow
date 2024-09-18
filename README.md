@@ -29,6 +29,9 @@ The context diagram of this application looks like this:
 
 ![Platform Team](docs/assets/img/platform-01.png)
 
+1. Run landingzone action (duration: 6:08)
+2. 
+
 ## Products Team (Stream-Aligned Team)
 
 ![Products Team](docs/assets/img/products-01.png)
@@ -58,6 +61,8 @@ The context diagram of this application looks like this:
 ![Tasted Based Predictions Team 1](docs/assets/img/tasted-based-predictions-02.png)
 
 ## The current situation
+
+Except the Complicated Subsystems team implementation. Too complex for this example.
 
 ![Organization](docs/diagrams/organization/Container%20Diagram.png)
 
