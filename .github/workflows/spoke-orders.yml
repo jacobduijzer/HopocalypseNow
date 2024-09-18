@@ -30,9 +30,10 @@ jobs:
       uses: actions/checkout@main
     
     - name: 'What-If Bicep Deployment'
-      uses: Azure/cli@v2.0.0
+      uses: Azure/cli@v2.1.0
       with:
         inlineScript: |
+          export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
           az deployment sub what-if \
             --name ${{ env.BUILD_NAME }} \
             --template-file ${{ env.BICEP_TEMPLATE }} \
@@ -40,9 +41,10 @@ jobs:
             --parameters buildNumber=${{ github.run_id }} projectName=${{ env.PROJECT_NAME }} location=${{ env.LOCATION }}
 
     - name: 'Bicep Deployment'
-      uses: Azure/cli@v2.0.0
+      uses: Azure/cli@v2.1.0
       with:
         inlineScript: |
+          export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
           az deployment sub create \
             --name ${{ env.BUILD_NAME }} \
             --template-file ${{ env.BICEP_TEMPLATE }} \
