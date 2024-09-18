@@ -15,12 +15,17 @@
 
 title Hopocalypse Now - Best Beershop Online
 
+' CUSTOM STYLES
+AddBoundaryTag("platform", $bgColor="#a9c1f3")
+AddBoundaryTag("stream-aligned", $bgColor="#fbe69b")
+AddBoundaryTag("complicated-subsystems-team", $bgColor="#df913e")
+
 ' TEXTS
 !$functionTech = "Azure Serverless Function (.NET)"
 !$topicTech = "Azure Service Bus Topic"
 !$streamAlignedTeam = "Stream-aligned Team"
 
-System_Boundary(landingZone, "Platform Team") {
+System_Boundary(landingZone, "Platform Team", $tags="platform") {
     
     ' RESOURCES
     AzureAppService(api, "Frontend API", "GraphQL, Azure Serverless Functions", "")
@@ -40,7 +45,7 @@ System_Boundary(landingZone, "Platform Team") {
     Rel_L(api, st, "")
 }
 
-System_Boundary(marcom, "Marketing & Communication\nStream-aligned Team") {
+System_Boundary(marcom, "Marketing & Communication\nStream-aligned Team", $tags="stream-aligned") {
 
     ' RESOURCES
     AzureAppService(website, "Frontend", "Web App", "The web shop where customers can search information, order products, etc.")
@@ -49,7 +54,7 @@ System_Boundary(marcom, "Marketing & Communication\nStream-aligned Team") {
     Rel_D(website, api, "")
 }
 
-System_Boundary(products, "Products\n$streamAlignedTeam") {
+System_Boundary(products, "Products\n$streamAlignedTeam", $tags="stream-aligned") {
     
     ' RESOURCES
     AzureAppService(productsCms, "Products CMS", "Web App", "Not implemented yet.")
@@ -66,7 +71,7 @@ System_Boundary(products, "Products\n$streamAlignedTeam") {
     Rel(productsApi, styles, "")
 }
 
-System_Boundary(orders, "Orders\n$streamAlignedTeam") {
+System_Boundary(orders, "Orders\n$streamAlignedTeam", $tags="stream-aligned") {
     
     ' RESOURCES
     AzureServiceBusTopic(topicOrders, "topic-orders", $topicTech, "")
@@ -80,7 +85,7 @@ System_Boundary(orders, "Orders\n$streamAlignedTeam") {
     Rel_R(orderPlacedTrigger, orderDb, "Order details")
 }
 
-System_Boundary(payments, "Payments\n$streamAlignedTeam") {
+System_Boundary(payments, "Payments\n$streamAlignedTeam", $tags="stream-aligned") {
     AzureFunction(paymentRequestedProcessor, "Payment Requested Processor", $functionTech)
     AzureCosmosDb(paymentDb, "Payment Collection", "CosmosDb Collection")
     AzureServiceBusTopic(topicPayments, "topic-payments", $topicTech, "")
@@ -91,16 +96,10 @@ System_Boundary(payments, "Payments\n$streamAlignedTeam") {
     Rel_R(paymentRequestedProcessor, paymentDb, "Payment details")
 }
 
-'
-'System_Boundary(subscriptions, "Subscriptions Spoke") {
-'}
-'
-'System_Boundary(machineLearning, "Taste Based Predictions\nComplicated Sybsystems Team") {
-'    AzureMachineLearningService(ml, "Azure Machine Learning Service", "", "Predicting subscription packages based on Untapp'd profile.")
-'}
-'
-''Lay_D(products, subscriptions)
-''Lay_D(subscriptions, machineLearning)
-'Lay_D(products, orders)
+System_Boundary(machineLearning, "Taste Based Predictions\nComplicated Sybsystems Team", $tags="complicated-subsystems-team") {
+    AzureMachineLearningService(ml, "Azure Machine Learning Service", "", "Predicting subscription packages based on order history.")
+}
+
+Rel_D(ml, api, "Customer details")
 
 @enduml
