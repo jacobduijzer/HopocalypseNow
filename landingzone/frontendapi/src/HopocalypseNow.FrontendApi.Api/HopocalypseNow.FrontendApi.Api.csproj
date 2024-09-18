@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AzureFunctionsVersion>v4</AzureFunctionsVersion>
@@ -14,16 +14,18 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.5" />
-        <PackageReference Include="HotChocolate.Abstractions" Version="13.9.0" />
-        <PackageReference Include="HotChocolate.Data" Version="13.9.0" />
-        <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.9.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.29" />
-        <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.3" />
-        <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.3.0" />
+        <PackageReference Include="Azure.Core" Version="1.43.0" />
+        <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.18.1" />
+        <PackageReference Include="BananaCakePop.Middleware" Version="17.0.0" />
+        <PackageReference Include="HotChocolate.Abstractions" Version="13.9.12" />
+        <PackageReference Include="HotChocolate.Data" Version="13.9.12" />
+        <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.9.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="8.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.5" />
+        <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.4.1" />
         <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0"/>
-        <PackageReference Include="HotChocolate.AzureFunctions" Version="13.9.0" />
-        <PackageReference Include="HotChocolate.Types.Analyzers" Version="13.9.0">
+        <PackageReference Include="HotChocolate.AzureFunctions" Version="13.9.12" />
+        <PackageReference Include="HotChocolate.Types.Analyzers" Version="13.9.12">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
