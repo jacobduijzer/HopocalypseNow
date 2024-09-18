@@ -35,6 +35,7 @@ jobs:
       uses: Azure/cli@v2.1.0
       with:
         inlineScript: |
+          export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
           az deployment sub what-if \
             --name ${{ env.BUILD_NAME }} \
             --template-file ${{ env.BICEP_TEMPLATE }} \
@@ -45,6 +46,7 @@ jobs:
       uses: Azure/cli@v2.1.0
       with:
         inlineScript: |
+          export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
           az deployment sub create \
             --name ${{ env.BUILD_NAME }} \
             --template-file ${{ env.BICEP_TEMPLATE }} \
