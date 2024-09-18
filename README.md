@@ -6,12 +6,12 @@
 | [![Spoke - Payments - Azure Infrastructure Deployment](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/spoke-payments-infra.yml/badge.svg)](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/spoke-payments-infra.yml) | [![Spoke - Payments - Deploy Payments FunctionApp](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/spoke-payments-functionapp.yml/badge.svg)](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/spoke-payments-functionapp.yml) |
 | [![Spoke - Products - Azure Infrastructure Deployment](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/spoke-products-infra.yml/badge.svg)](https://github.com/jacobduijzer/HopocalypseNow/actions/workflows/spoke-products-infra.yml) | |
 
-<img src="docs/assets/logo.png" width="300" />
-
 # Hopocalypse Now: Brews for the End Times
 
-This repository is used for a presentation to explain the basics of Team Topologies by using an online beer web shop as an example. It will start with a platform team, creating all services needed for value-stream teams to deploy services. 
-the context of this application looks like this:
+<img src="docs/assets/logo.png" width="200" align="left"/> This repository is used for a presentation to explain the basics of Team Topologies by using an online beer web shop as an example. It will start with a platform team, creating all services needed for value-stream teams to deploy services.
+<br clear="left"/>
+
+The context of this application looks like this:
 
 ![Context](docs/diagrams/context/context.png)
 
