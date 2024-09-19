@@ -7,7 +7,6 @@ on:
       
 env:
   PROJECT_NAME: "hn"
-  LOCATION: "westeurope"
   BICEP_TEMPLATE: "spokes/products/infra/main.bicep"
   BUILD_NAME: "products-${{ github.run_id }}"
 
@@ -18,6 +17,7 @@ permissions:
 jobs: 
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: 'Production'
     steps:
     - name: 'Az CLI login'
       uses: azure/login@v1
