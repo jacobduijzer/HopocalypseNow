@@ -8,7 +8,7 @@ on:
       
 env:
   PROJECT_NAME: "hn"
-  LOCATION: "westeurope"
+  LOCATION: "northeurope"
   DB_LOCATION: "northeurope"
   BICEP_TEMPLATE: "landingzone/infra/main.bicep"
   BUILD_NAME: "landingzone-${{ github.run_id }}"
