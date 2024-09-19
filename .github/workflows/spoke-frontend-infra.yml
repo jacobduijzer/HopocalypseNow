@@ -7,7 +7,7 @@ on:
       
 env:
   PROJECT_NAME: "hn"
-  LOCATION: "westeurope"
+  LOCATION: "northeurope"
   BICEP_TEMPLATE: "spokes/frontend/infra/main.bicep"
   BUILD_NAME: "frontend-${{ github.run_id }}"
 
