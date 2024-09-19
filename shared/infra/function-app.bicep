@@ -20,6 +20,7 @@ var basicAppSettings = {
   WEBSITE_CONTENTSHARE: toLower(functionAppName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
   FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+  WEBSITE_RUN_FROM_PACKAGE: 1
 }
 
 resource functionApp 'Microsoft.Web/sites@2023-12-01' = {
