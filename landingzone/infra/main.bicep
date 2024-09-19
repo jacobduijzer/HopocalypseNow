@@ -45,7 +45,6 @@ module applicationInsights 'modules/application-insights.bicep' = {
   scope: resourceGroup(rgName)
 }
 
-
 module cosmosDb 'modules/cosmos-db.bicep' = {
   name: 'CosmosDbModule-${buildNumber}'
   params: {
@@ -119,17 +118,17 @@ module functionApp '../../shared/infra/function-app.bicep' = {
   ]
 }
 
-module containerRegistry 'modules/container-registry.bicep' = {
-  name: 'ContainerRegistryModel-${buildNumber}'
-  params: {
-    projectName: projectName
-    principalId: functionApp.outputs.principalId
-  }
-  scope: resourceGroup(rgName)
-  dependsOn: [
-    functionApp
-  ]
-}
+// module containerRegistry 'modules/container-registry.bicep' = {
+//   name: 'ContainerRegistryModel-${buildNumber}'
+//   params: {
+//     projectName: projectName
+//     principalId: functionApp.outputs.principalId
+//   }
+//   scope: resourceGroup(rgName)
+//   dependsOn: [
+//     functionApp
+//   ]
+// }
 
 module kvAccessPolicy '../../shared/infra/keyvault-access-policies.bicep' = {
   name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
