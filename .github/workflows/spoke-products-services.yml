@@ -8,7 +8,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'fn-hn-api-7ijueojaqih3e'  
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './spokes/products/src/HopocalypseNow.Products.Api.FunctionApp'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './spokes/products/src/api/HopocalypseNow.Products.Api.FunctionApp'
   DOTNET_VERSION: '8.0.x' 
 
 permissions:
