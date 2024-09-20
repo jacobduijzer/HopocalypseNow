@@ -4,7 +4,6 @@ param location string
 param uniquePostFix string
 param hostingPlanName string
 param scopeResourceGroup string
-param storageAccountName string
 
 param extraAppSettings object = {
    PlaceholderSetting: ''
@@ -48,25 +47,6 @@ module appSettings 'app-settings.bicep' = {
     webAppName: functionApp.name
     currentAppSettings: basicAppSettings
     extraAppSettings: extraAppSettings
-  }
-}
-
-
-// storage account permissions
-
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
-  name: storageAccountName
-}
-
-var storageBlobDataContributorRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
-
-resource storageFunctionAppPermissions 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(storageAccount.name, functionApp.name, storageBlobDataContributorRole)
-  scope: storageAccount
-  properties: {
-    principalId: functionApp.identity.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: storageBlobDataContributorRole
   }
 }
 

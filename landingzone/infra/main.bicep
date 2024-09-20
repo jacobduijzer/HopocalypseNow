@@ -97,11 +97,12 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     uniquePostFix: uniquePostFix
     hostingPlanName: appPlan.outputs.hostingPlanName
     scopeResourceGroup: rgName
-    storageAccountName: storageAccount.outputs.name
     extraAppSettings: {
       AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
-      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
+      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccount.outputs.connectionString
       APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${applicationInsights.outputs.secretConnectionStringName})'
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${cosmosDb.outputs.secretConnectionStringName})'
       CosmosDbDatabaseName: cosmosDb.outputs.cosmosDbDatabaseName

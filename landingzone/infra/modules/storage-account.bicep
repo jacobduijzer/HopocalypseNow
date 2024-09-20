@@ -40,3 +40,5 @@ resource secret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
 
 output name string = storageAccount.name
 output connectionStringName string = secret.name
+// TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
+output connectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
