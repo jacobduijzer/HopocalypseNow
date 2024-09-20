@@ -98,7 +98,9 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     hostingPlanName: appPlan.outputs.hostingPlanName
     scopeResourceGroup: rgName
     extraAppSettings: {
-      AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      //AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
+      AzureWebJobsStorage: storageAccount.outputs.connectionString
       WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
       //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
