@@ -18,8 +18,8 @@ resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing 
   name: rgLandingZoneName
 }
 
-var uniquePostFix = uniqueString(rgLandingZone.id)
-var kvName = 'kv-${projectName}-${uniquePostFix}'
+var uniquePostFixForLandingzone = uniqueString(rgLandingZone.id)
+var kvName = 'kv-${projectName}-${uniquePostFixForLandingzone}'
 
 // end existing resources
 
@@ -31,13 +31,15 @@ module rg '../../../shared/infra/resource-group.bicep' = {
   }
 }
 
+var uniquePostFix = uniqueString(rg.outputs.id)
+
 module storageAccount '../../../shared/infra/storage-account.bicep' = {
   name: 'StorageAccountModule-${buildNumber}'
   params: {
     projectName: projectName
     location: location
     kvName: kvName
-    uniquePostFix: uniquePostFix
+    uniquePostFix: uniquePostFix 
   }
   scope: resourceGroup(rgName)
 }
@@ -47,12 +49,12 @@ var breweries = { name: 'breweries', partitionKey: 'breweryId' }
 var styles = { name: 'styles', partitionKey: 'styleId' }
 
 var collections = [beer, breweries, styles]
-var databaseName = 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
+var databaseName = 'db-${projectName}-${uniquePostFixForLandingzone}'
 
 module cosmosDbDatabases '../../../shared/infra/cosmos-db.collection.bicep' = [for collection in collections: {
   name: 'CosmosDbDatabaseModule-${collection.name}-${buildNumber}'
   params: {
-    databaseAccount: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
+    databaseAccount: 'cosmos-${projectName}-${uniquePostFixForLandingzone}'
     databaseName: databaseName
     tableName: collection.name
     partitionKey: collection.partitionKey
@@ -67,7 +69,7 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     applicationName: 'api'
     location: location
     uniquePostFix: uniqueString(rg.outputs.id)
-    hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
+    hostingPlanName: 'plan-${projectName}-${uniquePostFixForLandingzone}'
     scopeResourceGroup: rgLandingZoneName
     extraAppSettings: {
       //AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
