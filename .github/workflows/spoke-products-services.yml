@@ -1,4 +1,4 @@
-name: Spoke - Payments - Deploy Payments FunctionApp
+name: Spoke - Products- Deploy Products Team Services
 
 on: 
   workflow_dispatch:
