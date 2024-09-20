@@ -34,13 +34,19 @@ The Platform Team is one of the first teams that starts. They want to provide a 
 ### Deploy the hub
 
 1. Run landingzone action (duration: 6:08)
-2. Run Landingzone - Deploy FrontendApi FunctionApp (duration: )
+2. Run Landingzone - Deploy FrontendApi FunctionApp (duration: 1m 34s)
 
-### 
+### The current design
+
+TODO
 
 ## Products Team (Stream-Aligned Team)
 
 ![Products Team](docs/assets/img/products-01.png)
+
+### Deployments for the Products Team
+
+1. 
 
 ## Marketing Team (Stream-Aligned Team)
 

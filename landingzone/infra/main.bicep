@@ -77,7 +77,7 @@ module appPlan '../../shared/infra/hosting-plan.bicep' = {
   scope: resourceGroup(rgName)
 }
 
-module storageAccount 'modules/storage-account.bicep' = {
+module storageAccount '../../shared/infra/storage-account.bicep' = {
   name: 'StorageAccountModule-${buildNumber}'
   params: {
     projectName: projectName
