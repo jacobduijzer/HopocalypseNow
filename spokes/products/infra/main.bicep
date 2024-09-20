@@ -42,8 +42,6 @@ module storageAccount '../../../shared/infra/storage-account.bicep' = {
   scope: resourceGroup(rgName)
 }
 
-
-
 var beer = { name: 'beers', partitionKey: 'beerId'}
 var breweries = { name: 'breweries', partitionKey: 'breweryId' }
 var styles = { name: 'styles', partitionKey: 'styleId' }
