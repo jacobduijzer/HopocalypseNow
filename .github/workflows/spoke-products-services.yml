@@ -1,4 +1,4 @@
-name: Spoke - Products- Deploy Products Team Services
+name: Spoke - Products - Deploy Products Team Services
 
 on: 
   workflow_dispatch:
