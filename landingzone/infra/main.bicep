@@ -97,6 +97,7 @@ module functionApp '../../shared/infra/function-app.bicep' = {
     uniquePostFix: uniquePostFix
     hostingPlanName: appPlan.outputs.hostingPlanName
     scopeResourceGroup: rgName
+    storageAccountName: storageAccount.outputs.name
     extraAppSettings: {
       AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
@@ -118,17 +119,6 @@ module functionApp '../../shared/infra/function-app.bicep' = {
   ]
 }
 
-// module containerRegistry 'modules/container-registry.bicep' = {
-//   name: 'ContainerRegistryModel-${buildNumber}'
-//   params: {
-//     projectName: projectName
-//     principalId: functionApp.outputs.principalId
-//   }
-//   scope: resourceGroup(rgName)
-//   dependsOn: [
-//     functionApp
-//   ]
-// }
 
 module kvAccessPolicy '../../shared/infra/keyvault-access-policies.bicep' = {
   name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
