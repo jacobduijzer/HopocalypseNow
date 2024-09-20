@@ -92,6 +92,20 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
   ]
 }
 
+module kvAccessPolicy '../../../shared/infra/keyvault-access-policies.bicep' = {
+  name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
+  params: {
+    keyvaultName: kvName
+    permissions: [ 'get' ]
+    tenantId: subscription().tenantId
+    principalId: functionApp.outputs.principalId
+  }
+  scope: resourceGroup(rgLandingZoneName)
+  dependsOn: [
+    functionApp
+  ]
+}
+
 module webapp '../../../shared/infra/web-app.bicep' = {
   name: 'WebAppModule-${buildNumber}'
   params: {
