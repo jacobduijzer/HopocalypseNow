@@ -10,7 +10,7 @@ env:
   AZURE_WEBAPP_NAME: 'app-hn-frontend-zjllqjptqbkey'
   AZURE_WEBAPP_PACKAGE_PATH: './spokes/frontend/src/HopocalypseNow.Frontend.BlazorApp'
   AZURE_WEBAPP_SOLUTION_FILE: './spokes/frontend/src/HopocalypseNow.Frontend.sln'
-  DOTNET_VERSION: '6.0.x'                   
+  DOTNET_VERSION: '8.x'                   
 
 permissions:
   id-token: write
@@ -33,7 +33,7 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '8.x'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
        
     - name: Build with dotnet
       run: dotnet build ${{env.AZURE_WEBAPP_SOLUTION_FILE}} --configuration Release
