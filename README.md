@@ -71,11 +71,10 @@ After working together (in collaboration mode) for a short amount of time, the P
 
 ### Deployments for the Marketing Team
 
-1. Spoke - Frontend - Azure Infrastructure Deployment
-2. Spoke - Frontend - Deploy Frontend WebApp
+1. Spoke - Frontend - Azure Infrastructure Deployment (duration approx )
+2. Spoke - Frontend - Deploy Frontend WebApp (duration approx )
 
 ### The current design
-
 
 ![Platform Context Diagram - Platform + Products](docs/assets/img/context-platform-products-marketing.png)
 
