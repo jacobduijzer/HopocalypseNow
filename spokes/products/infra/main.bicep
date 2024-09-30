@@ -116,6 +116,7 @@ module webapp '../../../shared/infra/web-app.bicep' = {
     hostingPlanName: 'plan-${projectName}-${uniquePostFixForLandingzone}'
     scopeResourceGroup: rgLandingZoneName
     extraAppSettings: {
+      WEBSITE_RUN_FROM_PACKAGE: 1
       //AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
       // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
       AzureWebJobsStorage: storageAccount.outputs.connectionString
