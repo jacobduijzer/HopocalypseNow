@@ -53,7 +53,7 @@ jobs:
             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3.2.1-node20
         with:
           name: .net-app
 
