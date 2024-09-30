@@ -80,9 +80,17 @@ After working together (in collaboration mode) for a short amount of time, the P
 
 ## Orders Team (Stream-Aligned Team)
 
+It is nice to have a web shop, but it's not really a shop when ordering is not possible. So, the organization keeps pushing forward. First, the Marketing Team and the Orders Team work together, working to make it possible to place orders. Also, the Enabling Team comes to the rescue again, helping the Orders Team work with an Azure Service Bus.
+
 ![Orders  1](docs/assets/img/orders-01.png)
 
+After some hard work, they can all work together again, by using X-as-a-Service, which is the preferred way of working together.
+
 ![Orders Team 2](docs/assets/img/orders-02.png)
+
+### Deployments for the Orders Team
+
+1. 
 
 ## Payments Team (Stream-Aligned Team)
 

@@ -24,9 +24,16 @@ module rg '../../../shared/infra/resource-group.bicep' = {
   }
 }
 
+var uniquePostFix = uniqueString(rg.outputs.id)
+
+// existing resources
+
 resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
   name: rgLandingZoneName
 }
+
+// end existing resources
+
 
 var orders = { name: 'orders', partitionKey: 'orderId'}
 
@@ -53,6 +60,17 @@ module serviceBusTopic '../../../shared/infra/service-bus.topic.bicep' = {
   scope: rgLandingZone
 }
 
+module storageAccount '../../../shared/infra/storage-account.bicep' = {
+  name: 'StorageAccountModule-${buildNumber}'
+  params: {
+    projectName: projectName
+    location: location
+    kvName: kvName
+    uniquePostFix: uniquePostFix 
+  }
+  scope: resourceGroup(rgName)
+}
+
 module functionApp '../../../shared/infra/function-app.bicep' = {
   name: 'FunctionAppModule-${buildNumber}'
   params: {
@@ -63,10 +81,13 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
     extraAppSettings: {
-      ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sbns-full-connection-string)'
-      AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sa-connection-string)'
       WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
-      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sa-connection-string)'
+      ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sbns-full-connection-string)'
+      AzureWebJobsStorage: storageAccount.outputs.connectionString
+      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccount.outputs.connectionString
+      // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
+      // AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sa-connection-string)'
+      //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sa-connection-string)'
       APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=appi-connection-string)'
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=cosmosdb-connection-string)'
       CosmosDbDatabaseName: cosmosDbDatabaseName
