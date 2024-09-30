@@ -99,9 +99,17 @@ After some hard work, they can all work together again, by using X-as-a-Service,
 
 ## Payments Team (Stream-Aligned Team)
 
+Now that the orders can be placed, they also need to be paid. Again, teams are collaborating on new features: placing orders.
+
 ![Payments Team 1](docs/assets/img/payments-01.png)
 
+Which will lead to another X-as-a-Service way of collaborating.
+
 ![Payments Team 2](docs/assets/img/payments-02.png)
+
+### Deployments for the Payments Team
+
+1. 
 
 ## Tasted-based Predictions Team (Complicated Subsystem Team)
 

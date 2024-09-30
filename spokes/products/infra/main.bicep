@@ -68,7 +68,7 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     projectName: projectName
     applicationName: 'api'
     location: location
-    uniquePostFix: uniqueString(rg.outputs.id)
+    uniquePostFix: uniquePostFix
     hostingPlanName: 'plan-${projectName}-${uniquePostFixForLandingzone}'
     scopeResourceGroup: rgLandingZoneName
     extraAppSettings: {

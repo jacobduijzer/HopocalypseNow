@@ -13,6 +13,19 @@ targetScope = 'subscription'
 var rgName = 'rg-${projectName}-payments'
 var rgLandingZoneName = 'rg-${projectName}-landingzone'
 
+
+
+// existing resources
+
+resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
+  name: rgLandingZoneName
+}
+
+var uniquePostFixForLandingzone = uniqueString(rgLandingZone.id)
+var kvName = 'kv-${projectName}-${uniquePostFixForLandingzone}'
+
+// end existing resources
+
 module rg '../../../shared/infra/resource-group.bicep' = {
   name: 'resourceGroupModule-${buildNumber}'
   params: {
@@ -21,19 +34,30 @@ module rg '../../../shared/infra/resource-group.bicep' = {
   }
 }
 
-resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
-  name: rgLandingZoneName
+var uniquePostFix = uniqueString(rg.outputs.id)
+
+module storageAccount '../../../shared/infra/storage-account.bicep' = {
+  name: 'StorageAccountModule-${buildNumber}'
+  params: {
+    projectName: projectName
+    location: location
+    kvName: kvName
+    uniquePostFix: uniquePostFix 
+  }
+  scope: resourceGroup(rgName)
 }
 
 module serviceBusTopic '../../../shared/infra/service-bus.topic.bicep' = {
   name: 'ServiceBusTopic-${buildNumber}'
   params: {
     projectName: projectName
-    uniquePostFix: uniqueString(rgLandingZone.id)
+    uniquePostFix: uniquePostFixForLandingzone
     applicationName: 'payments'
   }
   scope: rgLandingZone
 }
+
+var databaseName = 'db-${projectName}-${uniquePostFixForLandingzone}'
 
 module functionApp '../../../shared/infra/function-app.bicep' = {
   name: 'FunctionAppModule-${buildNumber}'
@@ -41,21 +65,27 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
     projectName: projectName
     applicationName: 'payments'
     location: location
-    uniquePostFix: uniqueString(rg.outputs.id)
-    hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
-    appiName: 'appi-${projectName}-${uniqueString(rgLandingZone.id)}'
-    storageAccountName: 'sa${projectName}${uniqueString(rgLandingZone.id)}'
-    cosmosDbAccountName: 'cosmos-${projectName}-${uniqueString(rgLandingZone.id)}'
-    cosmosDbDatabaseName: 'db-${projectName}-${uniqueString(rgLandingZone.id)}'
-    scopeResourceGroup: rgLandingZone.name
+    uniquePostFix: uniquePostFix
+    hostingPlanName: 'plan-${projectName}-${uniquePostFixForLandingzone}'
+    scopeResourceGroup: rgLandingZoneName
     extraAppSettings: {
-      ServiceBusConnectionString: serviceBusTopic.outputs.sendConnectionString
+      //AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
+      AzureWebJobsStorage: storageAccount.outputs.connectionString
+      WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
+      //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
+      // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
+      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccount.outputs.connectionString
+      APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=appi-connection-string)'
+      CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=cosmosdb-connection-string)'
+      CosmosDbDatabaseName: databaseName
+      ServiceBusConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=sbns-full-connection-string)'
     }
   }
   scope: resourceGroup(rgName)
   dependsOn: [
+    storageAccount
     rg
-    serviceBusTopic
   ]
 }
 
