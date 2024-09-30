@@ -8,8 +8,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: 'app-hn-web-7ijueojaqih3e'  
-  AZURE_WEBAPP_PACKAGE_PATH: './spokes/products/src/web/HopocalypseNow.Products.Web'
-  AZURE_WEBAPP_SOLUTION_FILE: './spokes/products/src/web/HopocalypseNow.Products.sln'
+  AZURE_WEBAPP_SOLUTION_FILE: './spokes/products/src/web/HopocalypseNow.Products.Web.sln'
   DOTNET_VERSION: '8.x' 
 
 permissions:
