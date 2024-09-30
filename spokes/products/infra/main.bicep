@@ -17,7 +17,7 @@ var rgLandingZoneName = 'rg-${projectName}-landingzone'
 resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
   name: rgLandingZoneName
 }
-https://github.com/jacobduijzer/HopocalypseNow/actions/caches
+
 var uniquePostFixForLandingzone = uniqueString(rgLandingZone.id)
 var kvName = 'kv-${projectName}-${uniquePostFixForLandingzone}'
 
