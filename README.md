@@ -90,7 +90,12 @@ After some hard work, they can all work together again, by using X-as-a-Service,
 
 ### Deployments for the Orders Team
 
-1. 
+1. Spoke - Orders - Azure Infrastructure Deployment (duration approx 3:50)
+2. Spoke - Orders - Deploy Orders FunctionApp (duration approx 3:00)
+
+### The current design
+
+![Platform Context Diagram - Platform + Products + Orders](docs/assets/img/context-platform-products-marketing-orders.png)
 
 ## Payments Team (Stream-Aligned Team)
 
