@@ -109,7 +109,12 @@ Which will lead to another X-as-a-Service way of collaborating.
 
 ### Deployments for the Payments Team
 
-1. 
+1. Spoke - Payments - Azure Infrastructure Deployment (duration approx 6:00)
+2. Spoke - Payments - Deploy Payments FunctionApp (duration: 1:30)
+
+### The current design
+
+![Platform Context Diagram - Platform + Products + Orders + Payments](docs/assets/img/context-platform-products-marketing-orders-payments.png)
 
 ## Tasted-based Predictions Team (Complicated Subsystem Team)
 

@@ -1,7 +1,11 @@
+using Azure.Monitor.OpenTelemetry.Exporter;
 using HopocalypseNow.FrontendApi.Infrastructure;
 using HopocalypseNow.FrontendApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Logging;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 
@@ -20,7 +24,8 @@ public class Startup : FunctionsStartup
         var serviceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString") ??
                                         throw new ArgumentNullException("Can't find variable 'ServiceBusConnectionString'."); 
 
-      
+        var appInsightsConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING") ??
+                                          throw new ArgumentNullException("Can't find variable 'APPLICATIONINSIGHTS_CONNECTION_STRING'.");
         
         builder.Services
             .AddPooledDbContextFactory<DatabaseContext>(
@@ -37,5 +42,17 @@ public class Startup : FunctionsStartup
         
         builder.Services.AddAzureClients(clientBuilder =>
             clientBuilder.AddServiceBusClient(serviceBusConnectionString)); 
+        
+        Sdk.CreateTracerProviderBuilder()
+            .AddAzureMonitorTraceExporter(o => o.ConnectionString = appInsightsConnectionString)
+            .Build();
+        
+        LoggerFactory.Create(builder =>
+        {
+            builder.AddOpenTelemetry(options =>
+            {
+                options.AddAzureMonitorLogExporter(o => o.ConnectionString = appInsightsConnectionString);
+            });
+        });
     }
 }
