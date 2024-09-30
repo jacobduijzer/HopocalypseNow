@@ -27,26 +27,32 @@ The context diagram of this application looks like this:
 
 ## The Platform Team
 
-The Platform Team is one of the first teams that starts. They want to provide a platform where Stream-Aligned Teams (and other teams) can easily onboard, making use of all the services they provide. the Platform Team is the hub in the so-called 'Hub and Spoke Model'. The first service they are going to provision is a GraphQL Api, which other teams can use to get products, add orders,
+The Platform Team is one of the first teams that starts. They want to provide a platform where Stream-Aligned Teams (and other teams) can easily onboard, making use of all the services they provide. the Platform Team is the hub in the so-called 'Hub and Spoke Model'. The first service they are going to provision is a GraphQL Api, which other teams can use to get products, add orders, basically all operations go via this API.
 
 ![Platform Team](docs/assets/img/platform-01.png)
 
 ### Deploy the hub
 
-1. Run landingzone action (duration: 6:08)
-2. Run Landingzone - Deploy FrontendApi FunctionApp (duration: 1m 34s)
+1. Run landingzone action (duration aprox. 6:08)
+2. Run Landingzone - Deploy FrontendApi FunctionApp (duration aprox: 1:40)
 
 ### The current design
 
-TODO
+![Platform Context Diagram - Platform](docs/assets/img/context-platform-only.png)
 
 ## Products Team (Stream-Aligned Team)
+
+Now that the platform is ready, teams can actually start working. The Products Team of Value Stream, together with the Platform Team start working on getting a product database.
+
+In the diagram, we see 2 new team types: a value-stream team and an enabling team. The enabling team helps the value-stream team with anything they can to make sure they are not blocked. For example: they help them with a new technique, GraphQl.
 
 ![Products Team](docs/assets/img/products-01.png)
 
 ### Deployments for the Products Team
 
-1. 
+1. Spoke - Products - Azure Infrastructure Deployment (duration approx 3:32)
+2. Spoke - Products - Deploy Products Function App (durqation approx )
+
 
 ## Marketing Team (Stream-Aligned Team)
 
