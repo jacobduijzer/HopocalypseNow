@@ -8,7 +8,6 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: 'app-hn-frontend-zjllqjptqbkey'
-  AZURE_WEBAPP_PACKAGE_PATH: './spokes/frontend/src/HopocalypseNow.Frontend.BlazorApp'
   AZURE_WEBAPP_SOLUTION_FILE: './spokes/frontend/src/HopocalypseNow.Frontend.sln'
   DOTNET_VERSION: '8.x'                   
 
