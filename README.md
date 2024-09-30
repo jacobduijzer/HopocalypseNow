@@ -51,14 +51,33 @@ In the diagram, we see 2 new team types: a value-stream team and an enabling tea
 ### Deployments for the Products Team
 
 1. Spoke - Products - Azure Infrastructure Deployment (duration approx 3:32)
-2. Spoke - Products - Deploy Products Function App (durqation approx )
+2. Spoke - Products - Deploy Products Function App (duration approx 2:20)
 
+### The current design
+
+![Platform Context Diagram - Platform + Products](docs/assets/img/context-platform-products.png)
 
 ## Marketing Team (Stream-Aligned Team)
 
+Not that there are products available, the Marketing Team wants to start as soon as possible. So, together with the Products Stream-Aligned Team, they work together on making product information available.
+
+With the help of the Enabling Team, the Platform Team, together with the Products Team, developed an API, which they made available via the X-as-a-Service Principle.
+
 ![Marketing Team 1](docs/assets/img/marketing-01.png)
 
+After working together (in collaboration mode) for a short amount of time, the Products Team developed a service to make product information available for the Marketing Team.
+
 ![Marketing Team 2](docs/assets/img/marketing-02.png)
+
+### Deployments for the Marketing Team
+
+1. Spoke - Frontend - Azure Infrastructure Deployment
+2. Spoke - Frontend - Deploy Frontend WebApp
+
+### The current design
+
+
+![Platform Context Diagram - Platform + Products](docs/assets/img/context-platform-products-marketing.png)
 
 ## Orders Team (Stream-Aligned Team)
 

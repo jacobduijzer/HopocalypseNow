@@ -1,0 +1,65 @@
+@startuml "Container Diagram - Platform + Products"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Compute/AzureAppService.puml
+!includeurl AzurePuml/Databases/AzureCosmosDb.puml
+!includeurl AzurePuml/DevOps/AzureApplicationInsights.puml
+!includeurl AzurePuml/Integration/AzureServiceBus.puml
+!includeurl AzurePuml/Integration/AzureServiceBusTopic.puml
+!includeurl AzurePuml/Storage/AzureStorage.puml
+!includeurl AzurePuml/AIMachineLearning/AzureMachineLearningService.puml
+!includeurl AzurePuml/Security/AzureKeyVault.puml
+
+title Hopocalypse Now - Best Beershop Online
+
+' CUSTOM STYLES
+AddBoundaryTag("platform", $bgColor="#a9c1f3")
+AddBoundaryTag("stream-aligned", $bgColor="#fbe69b")
+AddBoundaryTag("complicated-subsystems-team", $bgColor="#df913e")
+
+' TEXTS
+!$functionTech = "Azure Serverless Function (.NET)"
+!$topicTech = "Azure Service Bus Topic"
+!$streamAlignedTeam = "Stream-aligned Team"
+
+System_Boundary(landingZone, "Platform Team", $tags="platform") {
+    
+    ' RESOURCES
+    AzureAppService(api, "Frontend API", "GraphQL, Azure Serverless Functions", "")
+    AzureCosmosDb(cosmosDb, "Database", "CosmosDb", "")
+    AzureApplicationInsights(appi, "Application Insights", "To be used for analytics and insights.")
+    AzureStorage(st, "Storage Account", "Azure Table Storage", "Storage account to be used by function apps.")
+    AzureServiceBus(azureServiceBus, "Azure Service Bus", "Azure Service Bus", "")
+    AzureKeyVault(keyvault, "Azure Key Vault", "")
+
+    ' LAYOUT
+    Lay_D(st, appi)
+    Lay_D(appi, azureServiceBus)
+    Lay_L(azureServiceBus, keyvault)
+
+    ' RELATIONS
+    Rel_D(api, cosmosDb, "")
+    Rel_L(api, st, "")
+}
+
+System_Boundary(products, "Products\n$streamAlignedTeam", $tags="stream-aligned") {
+    
+    ' RESOURCES
+    AzureAppService(productsCms, "Products CMS", "Web App", "Not implemented yet.")
+    AzureFunction(productsApi, "Products API", $functionTech)
+    AzureCosmosDb(beers, "Beers Collection", "CosmosDb Collection", "Collections with beers.")
+    AzureCosmosDb(breweries, "Breweries Collection", "CosmosDb Collection", "Collections with breweries.")
+    AzureCosmosDb(styles, "Styles Collection", "CosmosDb Collection", "Collections with different styles.")
+
+    ' RELATIONS
+    BiRel(api, productsApi, "Product Information")
+    Rel_D(productsCms, productsApi, "")
+    Rel(productsApi, beers, "")
+    Rel(productsApi, breweries, "")
+    Rel(productsApi, styles, "")
+}
+
+@enduml
