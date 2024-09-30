@@ -63,7 +63,7 @@ module webApp '../../../shared/infra/web-app.bicep' = {
     hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
     extraAppSettings: {
-      AzureWebJobsStorage: storageAccount.outputs.connectionString
+      WEBSITE_RUN_FROM_PACKAGE: 1
       WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccount.outputs.connectionString
       FrontendApiAddress: 'https://${functionApp.properties.defaultHostName}/api/graphql'
       APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=appi-connection-string)'
