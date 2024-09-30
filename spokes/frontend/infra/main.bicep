@@ -15,6 +15,23 @@ var rgName = 'rg-${projectName}-${applicationName}'
 var rgLandingZoneName = 'rg-${projectName}-landingzone'
 var kvName = 'kv-${projectName}-${uniqueString(rgLandingZone.id)}'
 
+
+// existing resources
+
+resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
+  name: rgLandingZoneName
+}
+
+var uniquePostFixForLandingzone = uniqueString(rgLandingZone.id)
+
+
+resource functionApp 'Microsoft.Web/sites@2023-01-01' existing = {
+  name: 'fn-${projectName}-api-${uniquePostFixForLandingzone}'
+  scope: resourceGroup(rgLandingZoneName)
+}
+
+// end existing resources
+
 module rg '../../../shared/infra/resource-group.bicep' = {
   name: 'resourceGroupModule-${buildNumber}'
   params: {
@@ -23,13 +40,17 @@ module rg '../../../shared/infra/resource-group.bicep' = {
   }
 }
 
-resource rgLandingZone 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
-  name: rgLandingZoneName
-}
+var uniquePostFix = uniqueString(rg.outputs.id)
 
-resource functionApp 'Microsoft.Web/sites@2023-01-01' existing = {
-  name: 'fn-${projectName}-api-${uniqueString(rgLandingZone.id)}'
-  scope: resourceGroup(rgLandingZoneName)
+module storageAccount '../../../shared/infra/storage-account.bicep' = {
+  name: 'StorageAccountModule-${buildNumber}'
+  params: {
+    projectName: projectName
+    location: location
+    kvName: kvName
+    uniquePostFix: uniquePostFix 
+  }
+  scope: resourceGroup(rgName)
 }
 
 module webApp '../../../shared/infra/web-app.bicep' = {
@@ -42,6 +63,7 @@ module webApp '../../../shared/infra/web-app.bicep' = {
     hostingPlanName: 'plan-${projectName}-${uniqueString(rgLandingZone.id)}'
     scopeResourceGroup: rgLandingZone.name
     extraAppSettings: {
+      WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccount.outputs.connectionString
       FrontendApiAddress: 'https://${functionApp.properties.defaultHostName}/api/graphql'
       APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=appi-connection-string)'
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=cosmosdb-connection-string)'
