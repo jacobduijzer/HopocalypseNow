@@ -1,23 +1,23 @@
-namespace HopocalypseNow.DataFeeder;
+﻿namespace HopocalypseNow.Products.Web.Products;
 
 public class BeerNameGenerator
 {
-    private static Random random = new Random();
+    private static readonly Random Random = new Random();
 
-    private static string[] prefixes =
+    private static readonly string[] Prefixes =
         { "Hoppy", "Golden", "Dark", "Crisp", "Smooth", "Bold", "Sour", "Fruity", "Spicy", "Cloudy" };
 
-    private static string[] adjectives =
+    private static readonly string[] Adjectives =
         { "Amber", "Bitter", "Velvet", "Smokey", "Zesty", "Tangy", "Caramel", "Robust", "Creamy", "Toasty" };
 
-    private static string[] nouns =
+    private static readonly string[] Nouns =
         { "Ale", "Stout", "Porter", "Lager", "Pilsner", "IPA", "Saison", "Wheat", "Barleywine", "Gose" };
 
     public static string GenerateBeerName()
     {
-        string prefix = GetRandomWord(prefixes);
-        string adjective = GetRandomWord(adjectives);
-        string noun = GetRandomWord(nouns);
+        string prefix = GetRandomWord(Prefixes);
+        string adjective = GetRandomWord(Adjectives);
+        string noun = GetRandomWord(Nouns);
 
         prefix = CapitalizeFirstLetter(prefix);
         adjective = CapitalizeFirstLetter(adjective);
@@ -29,7 +29,7 @@ public class BeerNameGenerator
     // Helper method to get a random word from an array
     private static string GetRandomWord(string[] words)
     {
-        return words[random.Next(0, words.Length)];
+        return words[Random.Next(0, words.Length)];
     }
 
     // Helper method to capitalize the first letter of a word
@@ -38,6 +38,6 @@ public class BeerNameGenerator
         if (string.IsNullOrEmpty(word))
             return string.Empty;
 
-        return char.ToUpper(word[0]) + word.Substring(1);
+        return char.ToUpper(word[0]) + word[1..];
     }
 }

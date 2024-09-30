@@ -118,6 +118,8 @@ Which will lead to another X-as-a-Service way of collaborating.
 
 ## Tasted-based Predictions Team (Complicated Subsystem Team)
 
+Not implemented. Too complicated for this talk. But, imagine, they want to sell custom-made boxes, subscriptions, based on preferred style and previously ordered beers. That is something that could be done by a Complicated Subsystems Team. 
+
 ![Tasted Based Predictions Team 1](docs/assets/img/tasted-based-predictions-01.png)
 
 ![Tasted Based Predictions Team 1](docs/assets/img/tasted-based-predictions-02.png)

@@ -1,13 +1,10 @@
-using HopocalypseNow.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace HopocalypseNow.DataFeeder;
+namespace HopocalypseNow.Products.Web.Products;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext(DbContextOptions<DatabaseContext> options)
+    : DbContext(options)
 {
-    public DatabaseContext(DbContextOptions<DatabaseContext> options)
-        : base(options) { }
-
     public DbSet<Beer>? Beers { get; set; }
     public DbSet<Brewery>? Breweries { get; set; }
     public DbSet<Style>? Styles { get; set; }
@@ -32,5 +29,5 @@ public class DatabaseContext : DbContext
             .ToContainer("styles")
             // .HasPartitionKey(x => x.StyleId)
             .HasKey(x => x.StyleId);
-    }
+    } 
 }

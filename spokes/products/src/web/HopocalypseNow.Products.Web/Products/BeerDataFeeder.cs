@@ -1,23 +1,23 @@
-using Bogus;
-using HopocalypseNow.Models;
+﻿using Bogus;
 
-namespace HopocalypseNow.DataFeeder;
+namespace HopocalypseNow.Products.Web.Products;
 
 public class BeerDataFeeder
 {
     private List<Brewery> breweries;
     private List<Style> styles;
+    private readonly Faker _faker;
 
     public BeerDataFeeder()
     {
-        var faker = new Faker("en");
+        _faker = new Faker("en");
 
         // Sample Breweries
         breweries = new List<Brewery>
         {
-            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{faker.Company.CompanyName()} Brewery" },
-            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{faker.Company.CompanyName()} Brewery" },
-            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{faker.Company.CompanyName()} Brewery" }
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
+            new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" }
         };
 
         // Sample Styles
@@ -25,7 +25,7 @@ public class BeerDataFeeder
         {
             new Style { StyleId = Guid.NewGuid(), Name = "IPA" },
             new Style { StyleId = Guid.NewGuid(), Name = "Stout" },
-            new Style { StyleId = Guid.NewGuid(), Name = "Pilsner" }
+            new Style { StyleId = Guid.NewGuid(), Name = "Tripel" }
         };
     }
 
@@ -49,7 +49,7 @@ public class BeerDataFeeder
                 Abv = GetRandomAbv(),
                 Ibu = GetRandomIbu(),
                 Description = $"A random beer with {randomStyle.Name} style from {randomBrewery.Name}.",
-                Price = (decimal)(abv + (ibu * 0.1))
+                Price = _faker.Random.Decimal(1, 5)
             });
         }
 

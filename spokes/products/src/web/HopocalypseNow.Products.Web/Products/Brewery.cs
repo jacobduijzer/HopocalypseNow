@@ -1,4 +1,4 @@
-namespace HopocalypseNow.Models;
+﻿namespace HopocalypseNow.Products.Web.Products;
 
 public class Brewery
 {
@@ -7,7 +7,4 @@ public class Brewery
     public string Name { get; set; }
     
     public List<Beer> Beers { get; set; } = new List<Beer>();
-
-    // private List<Beer> _beers = new List<Beer>();
-    // public IEnumerable<Beer> Beers => _beers;
 }

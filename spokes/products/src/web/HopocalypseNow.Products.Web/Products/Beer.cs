@@ -1,4 +1,4 @@
-namespace HopocalypseNow.Models;
+﻿namespace HopocalypseNow.Products.Web.Products;
 
 public class Beer
 {

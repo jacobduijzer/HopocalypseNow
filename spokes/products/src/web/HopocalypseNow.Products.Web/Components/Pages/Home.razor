@@ -1,0 +1,20 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@using HopocalypseNow.Products.Web.Products
+@inject BeerFeederService BeerFeederService
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hopocalypse Now - Beer Management System</h1>
+
+<button class="btn btn-primary" @onclick="@(async () => await FeedBeers())">Add beers to the database</button>
+
+@code {
+
+    private async Task FeedBeers()
+    {
+        await BeerFeederService.CreateDatabaseAsync();
+        await BeerFeederService.FeedBeersAsync(15);
+    }
+}
