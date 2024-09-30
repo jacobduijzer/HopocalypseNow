@@ -117,12 +117,6 @@ module webapp '../../../shared/infra/web-app.bicep' = {
     scopeResourceGroup: rgLandingZoneName
     extraAppSettings: {
       WEBSITE_RUN_FROM_PACKAGE: 1
-      //AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
-      // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
-      AzureWebJobsStorage: storageAccount.outputs.connectionString
-      WEBSITE_SKIP_CONTENTSHARE_VALIDATION: 1
-      //WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.kvName};SecretName=${storageAccount.outputs.connectionStringName})'
-      // TEMP WORKAROUND, ISSUE WITH FUNCTION APP DEPLOYMENT
       WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccount.outputs.connectionString
       APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=appi-connection-string)'
       CosmosDbConnectionString: '@Microsoft.KeyVault(VaultName=${kvName};SecretName=cosmosdb-connection-string)'
