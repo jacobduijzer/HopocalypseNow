@@ -92,7 +92,7 @@ module functionApp '../../../shared/infra/function-app.bicep' = {
   ]
 }
 
-module kvAccessPolicy '../../../shared/infra/keyvault-access-policies.bicep' = {
+module kvAccessPolicyForFunc '../../../shared/infra/keyvault-access-policies.bicep' = {
   name: 'KeyVaultAccessPolicy-${projectName}func-${buildNumber}'
   params: {
     keyvaultName: kvName
@@ -133,6 +133,20 @@ module webapp '../../../shared/infra/web-app.bicep' = {
   dependsOn: [
     storageAccount
     rg
+  ]
+}
+
+module kvAccessPolicyForWeb '../../../shared/infra/keyvault-access-policies.bicep' = {
+  name: 'KeyVaultAccessPolicy-${projectName}web-${buildNumber}'
+  params: {
+    keyvaultName: kvName
+    permissions: [ 'get' ]
+    tenantId: subscription().tenantId
+    principalId: webapp.outputs.principalId
+  }
+  scope: resourceGroup(rgLandingZoneName)
+  dependsOn: [
+    functionApp
   ]
 }
 
