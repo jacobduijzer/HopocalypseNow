@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("CosmosDbConnectionString") 
+var connectionString = builder.Configuration.GetValue<string>("CosmosDbConnectionString") 
                        ?? throw new InvalidOperationException("CosmosDbConnectionString is missing");
 
 var databaseName = builder.Configuration.GetValue<string>("CosmosDbDatabaseName")
