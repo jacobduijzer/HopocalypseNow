@@ -28,7 +28,6 @@ builder.Services
 
 builder.Services.AddHealthChecks();
 
-
 builder.Services
     .AddOpenTelemetry()
     .UseAzureMonitor()

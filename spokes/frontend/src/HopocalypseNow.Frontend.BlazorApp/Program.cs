@@ -6,7 +6,7 @@ var frontendApiAddress = builder.Configuration.GetValue<string>( "FrontendApiAdd
 builder.Services
     .AddHopocalypseNowClient()
     .ConfigureHttpClient(sp => sp.BaseAddress = new Uri(frontendApiAddress));
-
+builder.Services.AddHealthChecks();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
@@ -23,4 +23,5 @@ app.UseStaticFiles();
 app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+app.MapHealthChecks("/healthz");
 app.Run();
