@@ -26,6 +26,9 @@ builder.Services
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddHealthChecks();
+
+
 builder.Services
     .AddOpenTelemetry()
     .UseAzureMonitor()
@@ -51,5 +54,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapHealthChecks("/healthz");
 
 app.Run();
