@@ -110,7 +110,7 @@ module webapp '../../../shared/infra/web-app.bicep' = {
   name: 'WebAppModule-${buildNumber}'
   params: {
     projectName: projectName
-    applicationName: 'web'
+    applicationName: 'products'
     location: location
     uniquePostFix: uniqueString(rg.outputs.id)
     hostingPlanName: 'plan-${projectName}-${uniquePostFixForLandingzone}'

@@ -7,7 +7,7 @@ on:
       - spokes/products/src/**
 
 env:
-  AZURE_WEBAPP_NAME: 'app-hn-web-7ijueojaqih3e'  
+  AZURE_WEBAPP_NAME: 'app-hn-products-7ijueojaqih3e'  
   AZURE_WEBAPP_SOLUTION_FILE: './spokes/products/src/web/HopocalypseNow.Products.Web.sln'
   DOTNET_VERSION: '8.x' 
 
