@@ -3,6 +3,7 @@
 
 @using HopocalypseNow.Products.Web.Products
 @inject BeerFeederService BeerFeederService
+@inject ILogger<Home> Logger
 
 <PageTitle>Home</PageTitle>
 
@@ -10,11 +11,38 @@
 
 <button class="btn btn-primary" @onclick="@(async () => await FeedBeers())">Add beers to the database</button>
 
+@{
+    if (IsLoading)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+}
+
 @code {
 
+    private bool IsLoading { get; set; }
+    
     private async Task FeedBeers()
     {
-        await BeerFeederService.CreateDatabaseAsync();
-        await BeerFeederService.FeedBeersAsync(15);
+        IsLoading = true;
+        try
+        {
+            Logger.LogInformation("Feeding beers to the database");
+            await BeerFeederService.CreateDatabaseAsync();
+            await BeerFeederService.FeedBeersAsync(15);
+            Logger.LogInformation("Beers fed to the database");
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Error feeding beers to the database");
+            throw;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
+
 }

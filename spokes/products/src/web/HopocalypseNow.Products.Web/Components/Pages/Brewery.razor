@@ -1,0 +1,23 @@
+﻿@page "/brewery"
+@using HopocalypseNow.Products.Web.Products
+@rendermode InteractiveServer
+@inject BreweryRepository Breweries
+
+<PageTitle>Breweries</PageTitle>
+
+<h1>Breweries</h1>
+
+@if (_breweries!.Any())
+{
+    foreach (var brewery in _breweries!)
+    {
+        <p>@brewery.Name</p>
+    }
+}
+
+@code {
+    private IEnumerable<Products.Brewery>? _breweries = new List<Products.Brewery>();
+
+    protected override async Task OnInitializedAsync() =>
+        _breweries = await Breweries.All();
+}

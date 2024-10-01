@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Immutable;
+using Microsoft.EntityFrameworkCore;
 
 namespace HopocalypseNow.Products.Web.Products;
 
@@ -28,6 +29,6 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options)
             .HasNoDiscriminator()
             .ToContainer("styles")
             // .HasPartitionKey(x => x.StyleId)
-            .HasKey(x => x.StyleId);
+            .HasKey(x => x.StyleId);;
     } 
 }

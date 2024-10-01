@@ -4,16 +4,17 @@ namespace HopocalypseNow.Products.Web.Products;
 
 public class BeerDataFeeder
 {
-    private List<Brewery> breweries;
-    private List<Style> styles;
+    public List<Brewery> Breweries { get; init; }
+    public List<Style> Styles { get; init; }
+    
     private readonly Faker _faker;
 
     public BeerDataFeeder()
     {
         _faker = new Faker("en");
-
+        
         // Sample Breweries
-        breweries = new List<Brewery>
+        Breweries = new List<Brewery>
         {
             new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
             new Brewery { BreweryId = Guid.NewGuid(), Name = $"{_faker.Company.CompanyName()} Brewery" },
@@ -21,7 +22,7 @@ public class BeerDataFeeder
         };
 
         // Sample Styles
-        styles = new List<Style>
+        Styles = new List<Style>
         {
             new Style { StyleId = Guid.NewGuid(), Name = "IPA" },
             new Style { StyleId = Guid.NewGuid(), Name = "Stout" },
@@ -29,7 +30,7 @@ public class BeerDataFeeder
         };
     }
 
-    public IEnumerable<Beer> GetRandomBeers(int count)
+    public IEnumerable<Beer> GetRandomBeers(int count, List<Brewery> breweries, List<Style> styles)
     {
         List<Beer> beers = new List<Beer>();
 

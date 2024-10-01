@@ -1,5 +1,8 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Azure.Monitor.OpenTelemetry.Exporter;
 using HopocalypseNow.Products.Web.Components;
 using HopocalypseNow.Products.Web.Products;
+using Microsoft.AspNetCore.Hosting.Builder;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +13,28 @@ var connectionString = builder.Configuration.GetValue<string>("CosmosDbConnectio
 var databaseName = builder.Configuration.GetValue<string>("CosmosDbDatabaseName")
                    ?? throw new InvalidOperationException("CosmosDbDatabaseName is missing");
 
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseCosmos(connectionString, databaseName))
-    .AddTransient<BeerFeederService>()
-    .AddSingleton<BeerDataFeeder>()
+var appInsightsConnectionString = builder.Configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING")
+                                 ?? throw new InvalidOperationException("ApplicationInsightsConnectionString is missing");
+
+builder.Services
+    .AddDbContext<DatabaseContext>(options => options.UseCosmos(connectionString, databaseName))
+    .AddScoped<BreweryRepository>()
+    .AddScoped<StylesRepository>()
+    .AddScoped<BeersRepository>()
+    .AddScoped<BeerFeederService>()
+    .AddScoped<BeerDataFeeder>()
     .AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services
+    .AddOpenTelemetry()
+    .UseAzureMonitor()
+    .WithTracing();
+
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options.AddAzureMonitorLogExporter(settings => settings.ConnectionString = appInsightsConnectionString);
+});
 
 var app = builder.Build();
 

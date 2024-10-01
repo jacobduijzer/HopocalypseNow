@@ -6,5 +6,5 @@ public class Brewery
     
     public string Name { get; set; }
     
-    public List<Beer> Beers { get; set; } = new List<Beer>();
+    public ICollection<Beer> Beers { get; set; } = new List<Beer>();
 }

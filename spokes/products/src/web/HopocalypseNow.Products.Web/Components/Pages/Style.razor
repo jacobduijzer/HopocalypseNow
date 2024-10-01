@@ -1,0 +1,23 @@
+﻿@page "/style"
+@using HopocalypseNow.Products.Web.Products
+@rendermode InteractiveServer
+@inject StylesRepository Styles
+
+<PageTitle>Styles</PageTitle>
+
+<h1>Styles</h1>
+
+@if (_styles!.Any())
+{
+    foreach (var style in _styles!)
+    {
+        <p>@style.Name</p>
+    }
+}
+
+@code {
+    private IEnumerable<Products.Style>? _styles = new List<Products.Style>();
+
+    protected override async Task OnInitializedAsync() =>
+        _styles = await Styles.All();
+}

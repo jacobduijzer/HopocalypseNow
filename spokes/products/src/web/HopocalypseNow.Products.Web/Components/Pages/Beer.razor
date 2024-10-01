@@ -1,0 +1,45 @@
+﻿@page "/beer"
+@using HopocalypseNow.Products.Web.Products
+@rendermode InteractiveServer
+@inject BeersRepository Beers
+
+<PageTitle>Beers</PageTitle>
+
+<h1>Beers</h1>
+
+@if (_beers!.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">ABV</th>
+            <th scope="col">IBU</th>
+            <th scope="col">Style</th>
+            <th scope="col">Brewery</th>
+            <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var beer in _beers!)
+        {
+            <tr>
+                <td>@beer.Name</td>
+                <td>@beer.Abv</td>
+                <td>@beer.Ibu</td>
+                <td>@beer.Style!.Name</td>
+                <td>@beer.Brewery!.Name</td>
+                <td>@beer.Price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("nl-NL"))</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<Products.Beer>? _beers = new List<Products.Beer>();
+
+    protected override async Task OnInitializedAsync() =>
+        _beers = await Beers.All();
+
+}
