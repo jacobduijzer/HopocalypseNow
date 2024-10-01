@@ -34,7 +34,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     siteConfig: {
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
-      linuxFxVersion: 'DOTNET|8.0'
+      linuxFxVersion: 'DOTNETCORE|8.0'
     }
     httpsOnly: true
   }
